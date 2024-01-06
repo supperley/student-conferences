@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import styles from './Aside.module.css';
 
-const Aside = () => {
+const Aside = ({ isAsideOpen }) => {
   return (
-    <aside className={styles.container}>
+    <aside className={clsx(styles.container, isAsideOpen && styles.container_open)}>
       <a className={styles.logoContainer} href="#">
         <img className={styles.logo} alt="photoURL" src="/src/assets/react.svg" />
       </a>

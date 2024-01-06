@@ -7,3 +7,21 @@
 .buttonsContainer {
   display: flex;
 }
+
+button {
+  width: 40px;
+  height: 40px;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+button:hover {
+  background-color: rgba(145, 158, 171, 0.12);
+}
+
+button:active {
+  background-color: #c3cacf;
+}
+
+button svg {
+  opacity: 0.5;
+}
