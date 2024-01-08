@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import styles from './Aside.module.css';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { ROUTE_CONSTANTS } from '../../shared/config/routes';
 
 const Aside = ({ isAsideOpen }) => {
@@ -16,15 +16,27 @@ const Aside = ({ isAsideOpen }) => {
         <span className={styles.userName}>User name</span>
       </div>
       <nav>
-        <Link to={ROUTE_CONSTANTS.HOME} className={clsx(styles.link, 1 == 1 && styles.link_active)}>
+        <NavLink
+          to={ROUTE_CONSTANTS.HOME}
+          className={({ isActive }) =>
+            isActive ? clsx(styles.link, styles.link_active) : styles.link
+          }>
           Dashboard
-        </Link>
-        <Link to={ROUTE_CONSTANTS.USERS} className={styles.link}>
+        </NavLink>
+        <NavLink
+          to={ROUTE_CONSTANTS.USERS}
+          className={({ isActive }) =>
+            isActive ? clsx(styles.link, styles.link_active) : styles.link
+          }>
           Users
-        </Link>
-        <Link to={ROUTE_CONSTANTS.BLOG} className={styles.link}>
+        </NavLink>
+        <NavLink
+          to={ROUTE_CONSTANTS.BLOG}
+          className={({ isActive }) =>
+            isActive ? clsx(styles.link, styles.link_active) : styles.link
+          }>
           Blog
-        </Link>
+        </NavLink>
       </nav>
     </aside>
   );

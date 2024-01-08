@@ -4,6 +4,7 @@ import { ROUTE_CONSTANTS } from '../shared/config/routes';
 import Home from './Home/Home';
 import NotFound from './NotFound/NotFound';
 import PageLayout from '../components/PageLayout/PageLayout';
+import Login from './Login/Login';
 
 const Router: FC = () => {
   return (
@@ -16,7 +17,7 @@ const Router: FC = () => {
           <Route path={ROUTE_CONSTANTS.SETTINGS} element={<NotFound />} />
           <Route path={ROUTE_CONSTANTS.NOT_FOUND} element={<NotFound />} />
         </Route>
-        <Route path={ROUTE_CONSTANTS.LOGIN} element={<NotFound />} />
+        <Route path={ROUTE_CONSTANTS.LOGIN} element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
