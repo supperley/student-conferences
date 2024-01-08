@@ -4,7 +4,7 @@ import { faBars, faBell, faGlobe, faSearch, faUser } from '@fortawesome/free-sol
 
 const Header = ({ isWideScreen, setIsAsideOpen }) => {
   return (
-    <div className={styles.container}>
+    <header className={styles.container}>
       <div className={styles.buttonsContainer}>
         {!isWideScreen && (
           <button
@@ -30,7 +30,7 @@ const Header = ({ isWideScreen, setIsAsideOpen }) => {
           <FontAwesomeIcon icon={faUser} />
         </button>
       </div>
-    </div>
+    </header>
   );
 };
 
