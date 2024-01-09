@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import Aside from '../Aside/Aside';
-import Header from '../Header/Header';
 import styles from './PageLayout.module.css';
 import clsx from 'clsx';
 import { Outlet } from 'react-router-dom';
+import Header from '../../widgets/Header/Header';
 
 const PageLayout = () => {
   const [isWideScreen, setIsWideScreen] = useState(

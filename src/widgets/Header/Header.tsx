@@ -1,6 +1,7 @@
 import styles from './Header.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faBell, faGlobe, faSearch, faUser } from '@fortawesome/free-solid-svg-icons';
+import ChangeLanguage from '../../features/language/changeLanguage/ui/ChangeLanguage/ChangeLanguage';
 
 const Header = ({ isWideScreen, setIsAsideOpen }) => {
   return (
@@ -23,6 +24,7 @@ const Header = ({ isWideScreen, setIsAsideOpen }) => {
         <button className={styles.buttonLanguage}>
           <FontAwesomeIcon icon={faGlobe} />
         </button>
+        <ChangeLanguage />
         <button className={styles.buttonNotification}>
           <FontAwesomeIcon icon={faBell} />
         </button>
