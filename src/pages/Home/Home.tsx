@@ -1,12 +1,7 @@
-import Dashboard from '../../components/Dashboard/Dashboard';
-import styles from './Home.module.css';
+import { Button } from '@nextui-org/react';
 
 const Home = () => {
-  return (
-    <main className={styles.container}>
-      <Dashboard />
-    </main>
-  );
+  return <>Home</>;
 };
 
 export default Home;
