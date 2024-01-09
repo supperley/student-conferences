@@ -22,8 +22,9 @@ const Router: FC = () => {
           <Route path={ROUTE_CONSTANTS.BLOG} element={<Blog />} />
           <Route path={ROUTE_CONSTANTS.SETTINGS} element={<Settings />} />
           <Route path={ROUTE_CONSTANTS.NOT_FOUND} element={<NotFound />} />
+          <Route path={ROUTE_CONSTANTS.LOGIN} element={<Login />} />
+          <Route path={ROUTE_CONSTANTS.REGISTER} element={<Login />} />
         </Route>
-        <Route path={ROUTE_CONSTANTS.LOGIN} element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
