@@ -2,32 +2,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-  font-family: 'Public Sans', sans-serif;
-  line-height: 1.5;
-  font-size: 16px;
-  font-weight: 400;
-
-  /* color: rgb(33, 43, 54);
-  background-color: rgb(249, 250, 251); */
-}
-
-body {
-  box-sizing: border-box;
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-button {
-  font-size: 16px;
-  background-color: none;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  margin: 0;
-  padding: 0;
-  background: transparent;
-  line-height: normal;
-}

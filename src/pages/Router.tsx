@@ -8,6 +8,7 @@ import Login from './Login/Login';
 import Users from './Users/Users';
 import Blog from './Blog/Blog';
 import Settings from './Settings/Settings';
+import Dashboard from './Dashboard/Dashboard';
 
 const Router: FC = () => {
   return (
@@ -16,6 +17,7 @@ const Router: FC = () => {
         <Route element={<PageLayout />}>
           <Route path="*" element={<NotFound />} />
           <Route path={ROUTE_CONSTANTS.HOME} element={<Home />} />
+          <Route path={ROUTE_CONSTANTS.DASHBOARD} element={<Dashboard />} />
           <Route path={ROUTE_CONSTANTS.USERS} element={<Users />} />
           <Route path={ROUTE_CONSTANTS.BLOG} element={<Blog />} />
           <Route path={ROUTE_CONSTANTS.SETTINGS} element={<Settings />} />

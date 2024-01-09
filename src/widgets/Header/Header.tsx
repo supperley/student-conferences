@@ -43,16 +43,30 @@ const Header = () => {
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           className="sm:hidden"
         />
-        <NavbarBrand>
-          <AppLogo />
-          <p className="font-bold text-inherit">ACME</p>
-        </NavbarBrand>
+        <NavLink to={ROUTE_CONSTANTS.HOME}>
+          <NavbarBrand>
+            <AppLogo />
+            <p className="font-bold text-inherit">ACME</p>
+          </NavbarBrand>
+        </NavLink>
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
           <NavLink
             to={ROUTE_CONSTANTS.HOME}
+            className={({ isActive }) => {
+              if (isActive) {
+                return 'text-center block font-bold text-blue-500 p-2';
+              }
+              return 'text-center block border-blue-500 p-2';
+            }}>
+            Home
+          </NavLink>
+        </NavbarItem>
+        <NavbarItem>
+          <NavLink
+            to={ROUTE_CONSTANTS.DASHBOARD}
             className={({ isActive }) => {
               if (isActive) {
                 return 'text-center block font-bold text-blue-500 p-2';
@@ -121,7 +135,6 @@ const Header = () => {
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
             <Avatar
-              isBordered
               as="button"
               className="transition-transform"
               color="secondary"

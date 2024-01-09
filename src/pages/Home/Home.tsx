@@ -1,7 +1,7 @@
-import Dashboard from '../../components/Dashboard/Dashboard';
+import { Button } from '@nextui-org/react';
 
 const Home = () => {
-  return <Dashboard />;
+  return <>Home</>;
 };
 
 export default Home;

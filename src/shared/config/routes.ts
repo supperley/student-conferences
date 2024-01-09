@@ -3,6 +3,7 @@ export const ROUTE_CONSTANTS = {
   LOGIN: "/login",
   REGISTER: "/register",
   BLOG: "/blog",
+  DASHBOARD: "/dashboard",
   USERS: "/users",
   USER: "/user/:userId",
   SETTINGS: "/settings",
