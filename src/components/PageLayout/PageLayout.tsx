@@ -6,7 +6,7 @@ const PageLayout = () => {
     <>
       <div>
         <Header />
-        <main className="container mx-auto px-10">
+        <main className="container mx-auto px-10 max-w-7xl">
           <Outlet />
         </main>
       </div>
