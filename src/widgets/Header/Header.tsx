@@ -57,9 +57,9 @@ const Header = () => {
             to={ROUTE_CONSTANTS.HOME}
             className={({ isActive }) => {
               if (isActive) {
-                return 'text-center block font-bold text-blue-500 p-2';
+                return 'text-center block font-bold text-blue-500 hover:text-blue-600 p-2';
               }
-              return 'text-center block border-blue-500 p-2';
+              return 'text-center block border-blue-500 hover:text-gray-500 p-2';
             }}>
             Home
           </NavLink>
@@ -69,9 +69,9 @@ const Header = () => {
             to={ROUTE_CONSTANTS.DASHBOARD}
             className={({ isActive }) => {
               if (isActive) {
-                return 'text-center block font-bold text-blue-500 p-2';
+                return 'text-center block font-bold text-blue-500 hover:text-blue-600 p-2';
               }
-              return 'text-center block border-blue-500 p-2';
+              return 'text-center block border-blue-500 hover:text-gray-500 p-2';
             }}>
             Dashboard
           </NavLink>
@@ -82,9 +82,9 @@ const Header = () => {
             to={ROUTE_CONSTANTS.USERS}
             className={({ isActive }) => {
               if (isActive) {
-                return 'text-center block font-bold text-blue-500 p-2';
+                return 'text-center block font-bold text-blue-500 hover:text-blue-600 p-2';
               }
-              return 'text-center block border-blue-500 p-2';
+              return 'text-center block border-blue-500 hover:text-gray-500 p-2';
             }}>
             Users
           </NavLink>
@@ -95,9 +95,9 @@ const Header = () => {
             to={ROUTE_CONSTANTS.BLOG}
             className={({ isActive }) => {
               if (isActive) {
-                return 'text-center block font-bold text-blue-500 p-2';
+                return 'text-center block font-bold text-blue-500 hover:text-blue-600 p-2';
               }
-              return 'text-center block border-blue-500 p-2';
+              return 'text-center block border-blue-500 hover:text-gray-500 p-2';
             }}>
             Blog
           </NavLink>
@@ -137,7 +137,7 @@ const Header = () => {
             <Avatar
               as="button"
               className="transition-transform"
-              color="secondary"
+              color="default"
               name="Jason Hughes"
               size="sm"
               src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
@@ -146,13 +146,9 @@ const Header = () => {
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownItem key="profile" className="h-14 gap-2">
               <p className="font-semibold">Signed in as</p>
-              <p className="font-semibold">zoey@example.com</p>
+              <p className="font-semibold">admin@example.com</p>
             </DropdownItem>
             <DropdownItem key="settings">My Settings</DropdownItem>
-            <DropdownItem key="team_settings">Team Settings</DropdownItem>
-            <DropdownItem key="analytics">Analytics</DropdownItem>
-            <DropdownItem key="system">System</DropdownItem>
-            <DropdownItem key="configurations">Configurations</DropdownItem>
             <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
             <DropdownItem key="logout" color="danger">
               Log Out
@@ -171,35 +167,5 @@ const Header = () => {
     </Navbar>
   );
 };
-
-// const Header = ({ isWideScreen, setIsAsideOpen }) => {
-//   return (
-//     <header className={styles.container}>
-//       <div className={styles.buttonsContainer}>
-//         {!isWideScreen && (
-//           <IconButton
-//             className={styles.menuContainer}
-//             onClick={() => {
-//               setIsAsideOpen((value) => !value);
-//             }}>
-//             <FontAwesomeIcon icon={faBars} />
-//           </IconButton>
-//         )}
-//         <button className={styles.buttonSearch}>
-//           <FontAwesomeIcon icon={faSearch} />
-//         </button>
-//       </div>
-//       <Stack direction="row" alignItems="center" spacing={1}>
-//         <ChangeLanguage />
-//         <button className={styles.buttonNotification}>
-//           <FontAwesomeIcon icon={faBell} />
-//         </button>
-//         <button className={styles.buttonProfile}>
-//           <FontAwesomeIcon icon={faUser} />
-//         </button>
-//       </Stack>
-//     </header>
-//   );
-// };
 
 export default Header;

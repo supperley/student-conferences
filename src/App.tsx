@@ -1,10 +1,14 @@
+import { NextUIProvider } from '@nextui-org/react';
 import Router from './pages/Router';
+import { useNavigate } from 'react-router-dom';
 
 function App() {
+  const navigate = useNavigate();
+
   return (
-    <>
-      <Router></Router>
-    </>
+    <NextUIProvider navigate={navigate}>
+      <Router />
+    </NextUIProvider>
   );
 }
 
