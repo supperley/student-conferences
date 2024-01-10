@@ -22,6 +22,7 @@ import { ROUTE_CONSTANTS } from '../../shared/config/routes';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
 
   const menuItems = [
     'Profile',
@@ -37,7 +38,7 @@ const Header = () => {
   ];
 
   return (
-    <Navbar isBordered onMenuOpenChange={setIsMenuOpen}>
+    <Navbar isBordered maxWidth="2xl" onMenuOpenChange={setIsMenuOpen}>
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
@@ -120,8 +121,9 @@ const Header = () => {
       </NavbarMenu>
       <NavbarContent as="div" className="items-center" justify="end">
         <Input
+          className="hidden lg:block"
           classNames={{
-            base: 'max-w-full sm:max-w-[10rem] h-10',
+            base: 'max-w-full sm:max-w-[14rem] h-10 mr-[1rem]',
             mainWrapper: 'h-full',
             input: 'text-small',
             inputWrapper:
@@ -132,37 +134,42 @@ const Header = () => {
           // startContent={<SearchIcon size={18} />}
           type="search"
         />
-        <Dropdown placement="bottom-end">
-          <DropdownTrigger>
-            <Avatar
-              as="button"
-              className="transition-transform"
-              color="default"
-              name="Jason Hughes"
-              size="sm"
-              src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-            />
-          </DropdownTrigger>
-          <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownItem key="profile" className="h-14 gap-2">
-              <p className="font-semibold">Signed in as</p>
-              <p className="font-semibold">admin@example.com</p>
-            </DropdownItem>
-            <DropdownItem key="settings">My Settings</DropdownItem>
-            <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-            <DropdownItem key="logout" color="danger">
-              Log Out
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-        {/* <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
-            Sign Up
-          </Button>
-        </NavbarItem> */}
+        {isAuth ? (
+          <Dropdown placement="bottom-end">
+            <DropdownTrigger>
+              <Avatar
+                as="button"
+                className="transition-transform"
+                color="default"
+                name="Jason Hughes"
+                size="sm"
+                src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+              />
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Profile Actions" variant="flat">
+              <DropdownItem key="profile" className="h-14 gap-2">
+                <p className="font-semibold">Signed in as</p>
+                <p className="font-semibold">admin@example.com</p>
+              </DropdownItem>
+              <DropdownItem key="settings">My Settings</DropdownItem>
+              <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+              <DropdownItem key="logout" color="danger">
+                Log Out
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        ) : (
+          <>
+            <NavbarItem className="flex">
+              <Link href={ROUTE_CONSTANTS.LOGIN}>Login</Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Button as={Link} color="primary" href={ROUTE_CONSTANTS.REGISTER} variant="flat">
+                Sign Up
+              </Button>
+            </NavbarItem>
+          </>
+        )}
       </NavbarContent>
     </Navbar>
   );

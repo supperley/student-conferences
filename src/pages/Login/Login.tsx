@@ -23,6 +23,7 @@ const Login = () => {
               className="mb-6"
               label="Password"
               variant="bordered"
+              type="password"
               // {...register('password')}
               // helperText={errors?.password?.message}
               // status={errors?.password ? 'error' : 'primary'}
@@ -31,6 +32,7 @@ const Login = () => {
               Forgot Password ?
             </Link>
             <Button
+              size="lg"
               type="submit"
               color="primary"
               variant="shadow"
