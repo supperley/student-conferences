@@ -19,10 +19,10 @@ import {
   ChipProps,
   SortDescriptor,
 } from '@nextui-org/react';
-import { PlusIcon } from './PlusIcon';
-import { VerticalDotsIcon } from './VerticalDotsIcon';
-import { ChevronDownIcon } from './ChevronDownIcon';
-import { SearchIcon } from './SearchIcon';
+import { PlusIcon } from '../../shared/assets/icons/PlusIcon';
+import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
+import { ChevronDownIcon } from '../../shared/assets/icons/ChevronDownIcon';
+import { SearchIcon } from '../../shared/assets/icons/SearchIcon';
 import { columns, users, statusOptions } from '../../shared/data/mockData';
 import { capitalize } from '../../shared/utils/utils';
 
