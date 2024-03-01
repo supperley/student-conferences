@@ -93,14 +93,27 @@ const Header = () => {
         <NavbarItem>
           <NavLink
             color="foreground"
-            to={ROUTE_CONSTANTS.BLOG}
+            to={ROUTE_CONSTANTS.NEWS}
             className={({ isActive }) => {
               if (isActive) {
                 return 'text-center block font-bold text-blue-500 hover:text-blue-600 p-2';
               }
               return 'text-center block border-blue-500 hover:text-gray-500 p-2';
             }}>
-            Blog
+            News
+          </NavLink>
+        </NavbarItem>
+        <NavbarItem>
+          <NavLink
+            color="foreground"
+            to={ROUTE_CONSTANTS.REPORTS}
+            className={({ isActive }) => {
+              if (isActive) {
+                return 'text-center block font-bold text-blue-500 hover:text-blue-600 p-2';
+              }
+              return 'text-center block border-blue-500 hover:text-gray-500 p-2';
+            }}>
+            Reports
           </NavLink>
         </NavbarItem>
       </NavbarContent>
@@ -120,20 +133,6 @@ const Header = () => {
         ))}
       </NavbarMenu>
       <NavbarContent as="div" className="items-center" justify="end">
-        <Input
-          className="hidden lg:block"
-          classNames={{
-            base: 'max-w-full sm:max-w-[14rem] h-10 mr-[1rem]',
-            mainWrapper: 'h-full',
-            input: 'text-small',
-            inputWrapper:
-              'h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20',
-          }}
-          placeholder="Type to search..."
-          size="sm"
-          // startContent={<SearchIcon size={18} />}
-          type="search"
-        />
         {isAuth ? (
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
