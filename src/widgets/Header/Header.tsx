@@ -17,12 +17,12 @@ import {
 } from '@nextui-org/react';
 import { useState } from 'react';
 import { AppLogo } from '../../shared/components/AppLogo';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link as RouteLink } from 'react-router-dom';
 import { ROUTE_CONSTANTS } from '../../shared/config/routes';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(true);
 
   const menuItems = [
     'Profile',
@@ -47,7 +47,7 @@ const Header = () => {
         <NavLink to={ROUTE_CONSTANTS.HOME}>
           <NavbarBrand>
             <AppLogo />
-            <p className="font-bold text-inherit">ACME</p>
+            <p className="ml-2 font-bold text-inherit">SNTK BNTU</p>
           </NavbarBrand>
         </NavLink>
       </NavbarContent>
@@ -58,11 +58,11 @@ const Header = () => {
             to={ROUTE_CONSTANTS.HOME}
             className={({ isActive }) => {
               if (isActive) {
-                return 'text-center block font-bold text-blue-500 hover:text-blue-600 p-2';
+                return 'text-center block font-bold text-primary p-2';
               }
-              return 'text-center block border-blue-500 hover:text-gray-500 p-2';
+              return 'text-center block hover:text-gray-500 p-2';
             }}>
-            Home
+            Главная
           </NavLink>
         </NavbarItem>
         <NavbarItem>
@@ -70,9 +70,9 @@ const Header = () => {
             to={ROUTE_CONSTANTS.DASHBOARD}
             className={({ isActive }) => {
               if (isActive) {
-                return 'text-center block font-bold text-blue-500 hover:text-blue-600 p-2';
+                return 'text-center block font-bold text-primary p-2';
               }
-              return 'text-center block border-blue-500 hover:text-gray-500 p-2';
+              return 'text-center block hover:text-gray-500 p-2';
             }}>
             Dashboard
           </NavLink>
@@ -83,9 +83,9 @@ const Header = () => {
             to={ROUTE_CONSTANTS.USERS}
             className={({ isActive }) => {
               if (isActive) {
-                return 'text-center block font-bold text-blue-500 hover:text-blue-600 p-2';
+                return 'text-center block font-bold text-primary p-2';
               }
-              return 'text-center block border-blue-500 hover:text-gray-500 p-2';
+              return 'text-center block hover:text-gray-500 p-2';
             }}>
             Users
           </NavLink>
@@ -93,14 +93,27 @@ const Header = () => {
         <NavbarItem>
           <NavLink
             color="foreground"
-            to={ROUTE_CONSTANTS.BLOG}
+            to={ROUTE_CONSTANTS.NEWS}
             className={({ isActive }) => {
               if (isActive) {
-                return 'text-center block font-bold text-blue-500 hover:text-blue-600 p-2';
+                return 'text-center block font-bold text-primary p-2';
               }
-              return 'text-center block border-blue-500 hover:text-gray-500 p-2';
+              return 'text-center block hover:text-gray-500 p-2';
             }}>
-            Blog
+            News
+          </NavLink>
+        </NavbarItem>
+        <NavbarItem>
+          <NavLink
+            color="foreground"
+            to={ROUTE_CONSTANTS.REPORTS}
+            className={({ isActive }) => {
+              if (isActive) {
+                return 'text-center block font-bold text-primary p-2';
+              }
+              return 'text-center block hover:text-gray-500 p-2';
+            }}>
+            Reports
           </NavLink>
         </NavbarItem>
       </NavbarContent>
@@ -120,20 +133,6 @@ const Header = () => {
         ))}
       </NavbarMenu>
       <NavbarContent as="div" className="items-center" justify="end">
-        <Input
-          className="hidden lg:block"
-          classNames={{
-            base: 'max-w-full sm:max-w-[14rem] h-10 mr-[1rem]',
-            mainWrapper: 'h-full',
-            input: 'text-small',
-            inputWrapper:
-              'h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20',
-          }}
-          placeholder="Type to search..."
-          size="sm"
-          // startContent={<SearchIcon size={18} />}
-          type="search"
-        />
         {isAuth ? (
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
@@ -147,25 +146,29 @@ const Header = () => {
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="profile" className="h-14 gap-2">
+              <DropdownItem key="profile" className="h-14 gap-2" href={ROUTE_CONSTANTS.PROFILE}>
                 <p className="font-semibold">Signed in as</p>
                 <p className="font-semibold">admin@example.com</p>
               </DropdownItem>
-              <DropdownItem key="settings">My Settings</DropdownItem>
-              <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-              <DropdownItem key="logout" color="danger">
-                Log Out
+              <DropdownItem key="settings" href={ROUTE_CONSTANTS.SETTINGS}>
+                Settings
+              </DropdownItem>
+              <DropdownItem key="help_and_feedback" href={ROUTE_CONSTANTS.HELP}>
+                Help & Feedback
+              </DropdownItem>
+              <DropdownItem key="logout" color="danger" href={ROUTE_CONSTANTS.LOGOUT}>
+                Выйти
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
         ) : (
           <>
             <NavbarItem className="flex">
-              <Link href={ROUTE_CONSTANTS.LOGIN}>Login</Link>
+              <Link href={ROUTE_CONSTANTS.LOGIN}>Войти</Link>
             </NavbarItem>
             <NavbarItem>
               <Button as={Link} color="primary" href={ROUTE_CONSTANTS.REGISTER} variant="flat">
-                Sign Up
+                Зарегистрироваться
               </Button>
             </NavbarItem>
           </>

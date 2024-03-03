@@ -227,7 +227,7 @@ const posts = [
     tags: ['Test'],
     author: 'Test',
     image: 'https://nextui.org/blog/v2.2.0.jpg',
-    url: '/post/1',
+    url: '/news/1',
   },
   {
     title: 'Introducing v2.2.0 🚀',
@@ -237,7 +237,7 @@ const posts = [
     tags: ['Test'],
     author: 'Test',
     image: 'https://nextui.org/blog/v2.2.0.jpg',
-    url: '/post/1',
+    url: '/news/1',
   },
   {
     title: 'Introducing v2.2.0 🚀',
@@ -247,7 +247,7 @@ const posts = [
     tags: ['Test'],
     author: 'Test',
     image: 'https://nextui.org/blog/v2.2.0.jpg',
-    url: '/post/1',
+    url: '/news/1',
   },
 ];
 

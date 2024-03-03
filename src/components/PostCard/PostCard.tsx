@@ -1,6 +1,6 @@
 import { Card, CardFooter, CardBody, CardHeader, Link, Avatar, Image } from '@nextui-org/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { CustomCard } from './CustomCard';
+import { CustomCard } from './PostCardSkeleton';
 import { format, parseISO } from 'date-fns';
 
 export const BlogPostCard = (post) => {

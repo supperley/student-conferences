@@ -1,14 +1,18 @@
 import { NextUIProvider } from '@nextui-org/react';
 import Router from './pages/Router';
 import { useNavigate } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from './app/store';
 
 function App() {
   const navigate = useNavigate();
 
   return (
-    <NextUIProvider navigate={navigate}>
-      <Router />
-    </NextUIProvider>
+    <Provider store={store}>
+      <NextUIProvider navigate={navigate}>
+        <Router />
+      </NextUIProvider>
+    </Provider>
   );
 }
 
