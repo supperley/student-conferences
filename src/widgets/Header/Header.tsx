@@ -62,7 +62,7 @@ const Header = () => {
               }
               return 'text-center block border-blue-500 hover:text-gray-500 p-2';
             }}>
-            Home
+            Главная
           </NavLink>
         </NavbarItem>
         <NavbarItem>
@@ -160,11 +160,11 @@ const Header = () => {
         ) : (
           <>
             <NavbarItem className="flex">
-              <Link href={ROUTE_CONSTANTS.LOGIN}>Login</Link>
+              <Link href={ROUTE_CONSTANTS.LOGIN}>Войти</Link>
             </NavbarItem>
             <NavbarItem>
               <Button as={Link} color="primary" href={ROUTE_CONSTANTS.REGISTER} variant="flat">
-                Sign Up
+                Зарегистрироваться
               </Button>
             </NavbarItem>
           </>
