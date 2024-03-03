@@ -10,6 +10,8 @@ import Settings from './Settings/Settings';
 import Dashboard from './Dashboard/Dashboard';
 import Reports from './Reports/Reports';
 import Auth from './Auth/Auth';
+import ForgotPassword from './ForgotPassword/ForgotPassword';
+import NewsPost from './NewsPost/NewsPost';
 
 const Router: FC = () => {
   return (
@@ -20,10 +22,12 @@ const Router: FC = () => {
         <Route path={ROUTE_CONSTANTS.DASHBOARD} element={<Dashboard />} />
         <Route path={ROUTE_CONSTANTS.USERS} element={<Users />} />
         <Route path={ROUTE_CONSTANTS.NEWS} element={<News />} />
+        <Route path={ROUTE_CONSTANTS.NEWS_POST} element={<NewsPost />} />
         <Route path={ROUTE_CONSTANTS.SETTINGS} element={<Settings />} />
         <Route path={ROUTE_CONSTANTS.NOT_FOUND} element={<NotFound />} />
         <Route path={ROUTE_CONSTANTS.LOGIN} element={<Auth preSelected="login" />} />
         <Route path={ROUTE_CONSTANTS.REGISTER} element={<Auth preSelected="sign-up" />} />
+        <Route path={ROUTE_CONSTANTS.FORGOT_PASSWORD} element={<ForgotPassword />} />
         <Route path={ROUTE_CONSTANTS.REPORTS} element={<Reports />} />
       </Route>
     </Routes>

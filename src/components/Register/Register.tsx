@@ -50,7 +50,7 @@ const Register = ({ setSelected }: Props) => {
       <Input
         control={control}
         required="Обязательное поле"
-        label="Имя"
+        label="Имя пользователя"
         name="name"
         variant="bordered"
       />
