@@ -1,4 +1,8 @@
-import { posts as conferencesData, faculties } from '../../shared/data/mockData';
+import {
+  conferenceStatus,
+  conferences as conferencesData,
+  faculties,
+} from '../../shared/data/mockData';
 import { CardList } from '../../components/CardList/CardList';
 import { Input, Select, SelectItem } from '@nextui-org/react';
 import { SearchIcon } from '../../shared/assets/icons/SearchIcon';
@@ -30,6 +34,13 @@ const Conferences = () => {
           {faculties.map((faculty) => (
             <SelectItem key={faculty.value} value={faculty.value}>
               {faculty.label}
+            </SelectItem>
+          ))}
+        </Select>
+        <Select label="Состояние" selectionMode="multiple" className="max-w-xs">
+          {conferenceStatus.map((status) => (
+            <SelectItem key={status.value} value={status.value}>
+              {status.label}
             </SelectItem>
           ))}
         </Select>

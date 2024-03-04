@@ -1,7 +1,6 @@
 import {
   Navbar,
   NavbarContent,
-  Input,
   DropdownItem,
   DropdownTrigger,
   Dropdown,
