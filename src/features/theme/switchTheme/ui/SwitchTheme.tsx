@@ -19,9 +19,7 @@ export const SwitchTheme = () => {
         startContent={<SunIcon />}
         endContent={<MoonIcon />}
         isSelected={isSelected}
-        onValueChange={setIsSelected}>
-        Ночной режим
-      </Switch>
+        onValueChange={setIsSelected}></Switch>
     </div>
   );
 };

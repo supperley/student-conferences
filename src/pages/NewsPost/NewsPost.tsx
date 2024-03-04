@@ -3,18 +3,19 @@ import { posts } from '../../shared/data/mockData';
 import { Image, Link, User } from '@nextui-org/react';
 import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
+import { ROUTE_CONSTANTS } from '../../shared/config/routes';
 
 const NewsPost = () => {
   const params = useParams();
   const newsId = params.newsId;
-  const post = posts[newsId];
+  const post = posts[newsId - 1];
 
   return (
-    <div className="w-full lg:px-16 mt-12">
+    <div className="w-full lg:px-16 my-10">
       <div>
         <Link
           isBlock
-          href="/news"
+          href={ROUTE_CONSTANTS.NEWS}
           color="foreground"
           className="text-default-500 text-small mb-5 -ml-3">
           <ArrowIcon />

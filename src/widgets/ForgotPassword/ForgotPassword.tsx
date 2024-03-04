@@ -1,13 +1,20 @@
-import { Button, Input, Link } from '@nextui-org/react';
+import { Button, Link } from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
 import { useLazyCurrentQuery, useLoginMutation } from '../../app/services/userApi';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { hasErrorField } from '../../shared/utils/hasErrorField';
-import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
+import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
+import { Input } from '../../components/Input/Input';
 
 const ForgotPasswordCard = () => {
-  const { register, handleSubmit } = useForm();
+  const { control, handleSubmit } = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onBlur',
+    defaultValues: {
+      email: '',
+    },
+  });
 
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
@@ -30,16 +37,20 @@ const ForgotPasswordCard = () => {
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
       <Input
+        control={control}
+        name="email"
         label="Email"
         variant="bordered"
-        {...register('email')}
-        // helperText={errors?.login?.message}
-        // status={errors?.login ? 'error' : 'primary'}
+        type="email"
+        required="Обязательное поле"
       />
       <ErrorMessage error={error} />
       <Button size="lg" type="submit" color="primary" className="font-bold">
         Восстановить пароль
       </Button>
+      <Link className="justify-center my-2" href="/login">
+        Назад
+      </Link>
     </form>
   );
 };
