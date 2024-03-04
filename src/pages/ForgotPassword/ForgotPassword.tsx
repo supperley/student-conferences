@@ -1,5 +1,5 @@
 import { Card, CardBody } from '@nextui-org/react';
-import ForgotPasswordCard from '../../components/ForgotPassword/ForgotPassword';
+import ForgotPasswordCard from '../../widgets/ForgotPassword/ForgotPassword';
 
 const ForgotPassword = () => {
   return (

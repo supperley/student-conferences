@@ -230,24 +230,24 @@ const posts = [
     url: '/news/1',
   },
   {
-    title: 'Introducing v2.2.0 🚀',
+    title: 'Introducing v2.2.1 🚀',
     description:
       'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
     date: '2022-08-12T20:17:46.384Z',
     tags: ['Test'],
     author: 'Test',
     image: 'https://nextui.org/blog/v2.2.0.jpg',
-    url: '/news/1',
+    url: '/news/2',
   },
   {
-    title: 'Introducing v2.2.0 🚀',
+    title: 'Introducing v2.2.2 🚀',
     description:
       'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
     date: '2022-08-12T20:17:46.384Z',
     tags: ['Test'],
     author: 'Test',
     image: 'https://nextui.org/blog/v2.2.0.jpg',
-    url: '/news/1',
+    url: '/news/3',
   },
 ];
 

@@ -1,5 +1,5 @@
 import { posts } from '../../shared/data/mockData';
-import { NewsList } from './NewsList';
+import { NewsList } from '../../components/NewsList/NewsList';
 
 const News = () => {
   return (

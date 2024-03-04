@@ -7,7 +7,7 @@ import { formatToClientDate } from '../../shared/utils/formatToClientDate';
 const NewsPost = () => {
   const params = useParams();
   const newsId = params.newsId;
-  const post = posts[newsId];
+  const post = posts[newsId - 1];
 
   return (
     <div className="w-full lg:px-16 mt-12">

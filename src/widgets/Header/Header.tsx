@@ -87,7 +87,7 @@ const Header = () => {
               }
               return 'text-center block hover:text-gray-500 p-2';
             }}>
-            Users
+            Пользователи
           </NavLink>
         </NavbarItem>
         <NavbarItem>
@@ -100,7 +100,7 @@ const Header = () => {
               }
               return 'text-center block hover:text-gray-500 p-2';
             }}>
-            News
+            Новости
           </NavLink>
         </NavbarItem>
         <NavbarItem>
@@ -113,7 +113,20 @@ const Header = () => {
               }
               return 'text-center block hover:text-gray-500 p-2';
             }}>
-            Reports
+            Научные работы
+          </NavLink>
+        </NavbarItem>
+        <NavbarItem>
+          <NavLink
+            color="foreground"
+            to={ROUTE_CONSTANTS.CONFERENCES}
+            className={({ isActive }) => {
+              if (isActive) {
+                return 'text-center block font-bold text-primary p-2';
+              }
+              return 'text-center block hover:text-gray-500 p-2';
+            }}>
+            Конференции
           </NavLink>
         </NavbarItem>
       </NavbarContent>
@@ -147,14 +160,14 @@ const Header = () => {
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
               <DropdownItem key="profile" className="h-14 gap-2" href={ROUTE_CONSTANTS.PROFILE}>
-                <p className="font-semibold">Signed in as</p>
+                <p className="font-semibold">Вход выполнен как</p>
                 <p className="font-semibold">admin@example.com</p>
               </DropdownItem>
               <DropdownItem key="settings" href={ROUTE_CONSTANTS.SETTINGS}>
-                Settings
+                Настройки
               </DropdownItem>
               <DropdownItem key="help_and_feedback" href={ROUTE_CONSTANTS.HELP}>
-                Help & Feedback
+                Поддержка (Помощь)
               </DropdownItem>
               <DropdownItem key="logout" color="danger" href={ROUTE_CONSTANTS.LOGOUT}>
                 Выйти

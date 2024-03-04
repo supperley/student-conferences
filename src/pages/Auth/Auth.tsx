@@ -1,7 +1,7 @@
 import { Card, CardBody, Tab, Tabs } from '@nextui-org/react';
-import Login from '../../components/Login/Login';
+import Login from '../../widgets/Login/Login';
 import { useEffect, useState } from 'react';
-import Register from '../../components/Register/Register';
+import Register from '../../widgets/Register/Register';
 
 const Auth = ({ preSelected = 'login' }) => {
   const [selected, setSelected] = useState(preSelected);

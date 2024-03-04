@@ -1,4 +1,4 @@
-import { BlogPostCard } from '../../components/PostCard/PostCard';
+import { BlogPostCard } from '../PostCard/PostCard';
 
 export const NewsList = ({ posts }) => {
   return (
