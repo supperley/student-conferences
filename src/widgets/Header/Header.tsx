@@ -1,7 +1,6 @@
 import {
   Navbar,
   NavbarContent,
-  Input,
   DropdownItem,
   DropdownTrigger,
   Dropdown,
@@ -17,24 +16,22 @@ import {
 } from '@nextui-org/react';
 import { useState } from 'react';
 import { AppLogo } from '../../shared/components/AppLogo';
-import { NavLink, Link as RouteLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { ROUTE_CONSTANTS } from '../../shared/config/routes';
+import { SwitchTheme } from '../../features/theme/switchTheme/ui/SwitchTheme';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuth, setIsAuth] = useState(true);
+  const navigate = useNavigate();
 
   const menuItems = [
-    'Profile',
-    'Dashboard',
-    'Activity',
-    'Analytics',
-    'System',
-    'Deployments',
-    'My Settings',
-    'Team Settings',
-    'Help & Feedback',
-    'Log Out',
+    { label: 'Главная', link: ROUTE_CONSTANTS.HOME },
+    { label: 'Пользователи', link: ROUTE_CONSTANTS.USERS },
+    { label: 'Новости', link: ROUTE_CONSTANTS.NEWS },
+    { label: 'Научные работы', link: ROUTE_CONSTANTS.REPORTS },
+    { label: 'Конференции', link: ROUTE_CONSTANTS.CONFERENCES },
+    { label: 'Дашборд', link: ROUTE_CONSTANTS.DASHBOARD },
   ];
 
   return (
@@ -42,7 +39,7 @@ const Header = () => {
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-          className="sm:hidden"
+          className="lg:hidden"
         />
         <NavLink to={ROUTE_CONSTANTS.HOME}>
           <NavbarBrand>
@@ -52,87 +49,40 @@ const Header = () => {
         </NavLink>
       </NavbarContent>
 
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          <NavLink
-            to={ROUTE_CONSTANTS.HOME}
-            className={({ isActive }) => {
-              if (isActive) {
-                return 'text-center block font-bold text-primary p-2';
-              }
-              return 'text-center block hover:text-gray-500 p-2';
-            }}>
-            Главная
-          </NavLink>
-        </NavbarItem>
-        <NavbarItem>
-          <NavLink
-            to={ROUTE_CONSTANTS.DASHBOARD}
-            className={({ isActive }) => {
-              if (isActive) {
-                return 'text-center block font-bold text-primary p-2';
-              }
-              return 'text-center block hover:text-gray-500 p-2';
-            }}>
-            Dashboard
-          </NavLink>
-        </NavbarItem>
-        <NavbarItem>
-          <NavLink
-            color="foreground"
-            to={ROUTE_CONSTANTS.USERS}
-            className={({ isActive }) => {
-              if (isActive) {
-                return 'text-center block font-bold text-primary p-2';
-              }
-              return 'text-center block hover:text-gray-500 p-2';
-            }}>
-            Users
-          </NavLink>
-        </NavbarItem>
-        <NavbarItem>
-          <NavLink
-            color="foreground"
-            to={ROUTE_CONSTANTS.NEWS}
-            className={({ isActive }) => {
-              if (isActive) {
-                return 'text-center block font-bold text-primary p-2';
-              }
-              return 'text-center block hover:text-gray-500 p-2';
-            }}>
-            News
-          </NavLink>
-        </NavbarItem>
-        <NavbarItem>
-          <NavLink
-            color="foreground"
-            to={ROUTE_CONSTANTS.REPORTS}
-            className={({ isActive }) => {
-              if (isActive) {
-                return 'text-center block font-bold text-primary p-2';
-              }
-              return 'text-center block hover:text-gray-500 p-2';
-            }}>
-            Reports
-          </NavLink>
-        </NavbarItem>
+      <NavbarContent className="hidden lg:flex gap-4" justify="center">
+        {menuItems.map((item, index) => (
+          <NavbarItem>
+            <NavLink
+              to={item.link}
+              className={({ isActive }) => {
+                if (isActive) {
+                  return 'text-center block font-bold text-primary p-2';
+                }
+                return 'text-center block hover:text-gray-500 p-2';
+              }}>
+              {item.label}
+            </NavLink>
+          </NavbarItem>
+        ))}
       </NavbarContent>
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
-            <Link
-              color={
-                index === 2 ? 'primary' : index === menuItems.length - 1 ? 'danger' : 'foreground'
-              }
-              className="w-full"
-              href="#"
-              size="lg">
-              {item}
-            </Link>
+            <NavLink
+              className={({ isActive }) => {
+                if (isActive) {
+                  return 'w-full block font-bold text-primary p-2';
+                }
+                return 'w-full block hover:text-gray-500 p-2';
+              }}
+              to={item.link}>
+              {item.label}
+            </NavLink>
           </NavbarMenuItem>
         ))}
       </NavbarMenu>
       <NavbarContent as="div" className="items-center" justify="end">
+        <SwitchTheme />
         {isAuth ? (
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
@@ -146,17 +96,23 @@ const Header = () => {
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="profile" className="h-14 gap-2" href={ROUTE_CONSTANTS.PROFILE}>
-                <p className="font-semibold">Signed in as</p>
+              <DropdownItem
+                key="profile"
+                className="h-14 gap-2"
+                onPress={() => navigate(ROUTE_CONSTANTS.PROFILE)}>
+                <p className="font-semibold">Вход выполнен как</p>
                 <p className="font-semibold">admin@example.com</p>
               </DropdownItem>
-              <DropdownItem key="settings" href={ROUTE_CONSTANTS.SETTINGS}>
-                Settings
+              <DropdownItem key="settings" onPress={() => navigate(ROUTE_CONSTANTS.SETTINGS)}>
+                Настройки
               </DropdownItem>
-              <DropdownItem key="help_and_feedback" href={ROUTE_CONSTANTS.HELP}>
-                Help & Feedback
+              <DropdownItem key="help_and_feedback" onPress={() => navigate(ROUTE_CONSTANTS.HELP)}>
+                Поддержка (Помощь)
               </DropdownItem>
-              <DropdownItem key="logout" color="danger" href={ROUTE_CONSTANTS.LOGOUT}>
+              <DropdownItem
+                key="logout"
+                color="danger"
+                onPress={() => navigate(ROUTE_CONSTANTS.LOGOUT)}>
                 Выйти
               </DropdownItem>
             </DropdownMenu>

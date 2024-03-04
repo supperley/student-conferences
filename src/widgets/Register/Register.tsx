@@ -2,9 +2,9 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@nextui-org/react';
 import { useRegisterMutation } from '../../app/services/userApi';
 import { useState } from 'react';
-import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
-import { Input } from '../Input/Input';
+import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
 import { hasErrorField } from '../../shared/utils/hasErrorField';
+import { Input } from '../../components/Input/Input';
 
 type Register = {
   email: string;

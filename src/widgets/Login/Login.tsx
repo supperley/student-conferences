@@ -1,11 +1,11 @@
 import { Button, Link } from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
-import { Input } from '../Input/Input';
+import { Input } from '../../components/Input/Input';
 import { useLazyCurrentQuery, useLoginMutation } from '../../app/services/userApi';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { hasErrorField } from '../../shared/utils/hasErrorField';
-import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
+import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
 
 const Login = () => {
   const { control, handleSubmit } = useForm({

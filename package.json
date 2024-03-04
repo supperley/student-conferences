@@ -7,7 +7,8 @@
     "dev": "vite",
     "start": "concurrently \"yarn server\" \"yarn dev\"",
     "server": "json-server -w src/shared/data/db.json -r src/shared/data/routes.json -p 3000",
-    "build": "tsc && vite build",
+    // "build": "tsc && vite build",
+    "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

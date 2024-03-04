@@ -1,6 +1,6 @@
 import { Card, Skeleton } from '@nextui-org/react';
 
-export const CustomCard = () => (
+export const CustomCardSkeleton = () => (
   <Card className="p-2 h-full border-transparent text-start bg-white/5 dark:bg-default-400/10 backdrop-blur-lg backdrop-saturate-[1.8]">
     <Skeleton className="w-3/5 rounded-lg my-3">
       <div className="h-6 w-3/5 rounded-lg bg-default-200"></div>
