@@ -11,7 +11,7 @@ const NewsPost = () => {
   const post = posts[newsId - 1];
 
   return (
-    <div className="w-full lg:px-16 mt-12">
+    <div className="w-full lg:px-16 my-10">
       <div>
         <Link
           isBlock

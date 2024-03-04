@@ -26,16 +26,12 @@ const Header = () => {
   const navigate = useNavigate();
 
   const menuItems = [
-    'Profile',
-    'Dashboard',
-    'Activity',
-    'Analytics',
-    'System',
-    'Deployments',
-    'My Settings',
-    'Team Settings',
-    'Help & Feedback',
-    'Log Out',
+    { label: 'Главная', link: ROUTE_CONSTANTS.HOME },
+    { label: 'Пользователи', link: ROUTE_CONSTANTS.USERS },
+    { label: 'Новости', link: ROUTE_CONSTANTS.NEWS },
+    { label: 'Научные работы', link: ROUTE_CONSTANTS.REPORTS },
+    { label: 'Конференции', link: ROUTE_CONSTANTS.CONFERENCES },
+    { label: 'Дашборд', link: ROUTE_CONSTANTS.DASHBOARD },
   ];
 
   return (
@@ -43,7 +39,7 @@ const Header = () => {
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-          className="sm:hidden"
+          className="lg:hidden"
         />
         <NavLink to={ROUTE_CONSTANTS.HOME}>
           <NavbarBrand>
@@ -53,96 +49,35 @@ const Header = () => {
         </NavLink>
       </NavbarContent>
 
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          <NavLink
-            to={ROUTE_CONSTANTS.HOME}
-            className={({ isActive }) => {
-              if (isActive) {
-                return 'text-center block font-bold text-primary p-2';
-              }
-              return 'text-center block hover:text-gray-500 p-2';
-            }}>
-            Главная
-          </NavLink>
-        </NavbarItem>
-        <NavbarItem>
-          <NavLink
-            to={ROUTE_CONSTANTS.DASHBOARD}
-            className={({ isActive }) => {
-              if (isActive) {
-                return 'text-center block font-bold text-primary p-2';
-              }
-              return 'text-center block hover:text-gray-500 p-2';
-            }}>
-            Дашборд
-          </NavLink>
-        </NavbarItem>
-        <NavbarItem>
-          <NavLink
-            color="foreground"
-            to={ROUTE_CONSTANTS.USERS}
-            className={({ isActive }) => {
-              if (isActive) {
-                return 'text-center block font-bold text-primary p-2';
-              }
-              return 'text-center block hover:text-gray-500 p-2';
-            }}>
-            Пользователи
-          </NavLink>
-        </NavbarItem>
-        <NavbarItem>
-          <NavLink
-            color="foreground"
-            to={ROUTE_CONSTANTS.NEWS}
-            className={({ isActive }) => {
-              if (isActive) {
-                return 'text-center block font-bold text-primary p-2';
-              }
-              return 'text-center block hover:text-gray-500 p-2';
-            }}>
-            Новости
-          </NavLink>
-        </NavbarItem>
-        <NavbarItem>
-          <NavLink
-            color="foreground"
-            to={ROUTE_CONSTANTS.REPORTS}
-            className={({ isActive }) => {
-              if (isActive) {
-                return 'text-center block font-bold text-primary p-2';
-              }
-              return 'text-center block hover:text-gray-500 p-2';
-            }}>
-            Научные работы
-          </NavLink>
-        </NavbarItem>
-        <NavbarItem>
-          <NavLink
-            color="foreground"
-            to={ROUTE_CONSTANTS.CONFERENCES}
-            className={({ isActive }) => {
-              if (isActive) {
-                return 'text-center block font-bold text-primary p-2';
-              }
-              return 'text-center block hover:text-gray-500 p-2';
-            }}>
-            Конференции
-          </NavLink>
-        </NavbarItem>
+      <NavbarContent className="hidden lg:flex gap-4" justify="center">
+        {menuItems.map((item, index) => (
+          <NavbarItem>
+            <NavLink
+              to={item.link}
+              className={({ isActive }) => {
+                if (isActive) {
+                  return 'text-center block font-bold text-primary p-2';
+                }
+                return 'text-center block hover:text-gray-500 p-2';
+              }}>
+              {item.label}
+            </NavLink>
+          </NavbarItem>
+        ))}
       </NavbarContent>
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
-            <Link
-              color={
-                index === 2 ? 'primary' : index === menuItems.length - 1 ? 'danger' : 'foreground'
-              }
-              className="w-full"
-              href="#"
-              size="lg">
-              {item}
-            </Link>
+            <NavLink
+              className={({ isActive }) => {
+                if (isActive) {
+                  return 'w-full block font-bold text-primary p-2';
+                }
+                return 'w-full block hover:text-gray-500 p-2';
+              }}
+              to={item.link}>
+              {item.label}
+            </NavLink>
           </NavbarMenuItem>
         ))}
       </NavbarMenu>
