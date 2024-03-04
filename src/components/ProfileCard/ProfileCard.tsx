@@ -1,15 +1,4 @@
-import {
-  Card,
-  CardFooter,
-  CardBody,
-  CardHeader,
-  Link,
-  Avatar,
-  Image,
-  Divider,
-  Button,
-} from '@nextui-org/react';
-import { format, parseISO } from 'date-fns';
+import { Card, CardBody, Link, Image, Divider, Button } from '@nextui-org/react';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
 
 export const ProfileCard = ({ profile }) => {
@@ -20,7 +9,6 @@ export const ProfileCard = ({ profile }) => {
           <Image
             width={250}
             height={250}
-            // isBlurred
             shadow="sm"
             alt="Avatar"
             src="https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
@@ -32,27 +20,32 @@ export const ProfileCard = ({ profile }) => {
             <div>
               <h1 className="inline mb-5 font-bold text-3xl">{profile.title}</h1>
               <p className="font-normal w-full text-default-600">{profile.description}</p>
+              <p className="font-normal w-full text-default-600">{profile.email}</p>
               <time className="block text-small text-default-500" dateTime={profile.date}>
                 Дата регистрации: {formatToClientDate(profile.date)}
               </time>
             </div>
-            <Button href="/profile/edit" as={Link} color="primary" variant="solid">
-              Редактировать
+            <Button href="/settings" as={Link} color="primary" variant="solid">
+              Настройки
             </Button>
           </div>
           <Divider className="mt-3" />
           <div className="grow flex items-center">
             <div className="flex w-full justify-around">
-              <div className="flex flex-col gap-2 items-center">
+              <div className="flex flex-col gap-1 items-center">
                 <div>Участие в конференциях</div>
-                <div className="text-xl font-bold">10</div>
+                <Link className="text-xl font-bold" href="/conferences?user=id">
+                  10
+                </Link>
               </div>
-              <div className="flex flex-col gap-2 items-center">
-                <div>Участие в конференциях</div>
-                <div className="text-xl font-bold">10</div>
+              <div className="flex flex-col gap-1 items-center">
+                <div>Количество публикаций</div>
+                <Link className="text-xl font-bold" href="/conferences?user=id">
+                  10
+                </Link>
               </div>
-              <div className="flex flex-col gap-2 items-center">
-                <div>Участие в конференциях</div>
+              <div className="flex flex-col gap-1 items-center">
+                <div>Психологический возраст</div>
                 <div className="text-xl font-bold">10</div>
               </div>
             </div>

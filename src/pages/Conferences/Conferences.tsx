@@ -1,8 +1,7 @@
-import { posts } from '../../shared/data/mockData';
-import { NewsList } from '../../components/NewsList/NewsList';
+import { posts as conferencesData, faculties } from '../../shared/data/mockData';
+import { CardList } from '../../components/CardList/CardList';
 import { Input, Select, SelectItem } from '@nextui-org/react';
 import { SearchIcon } from '../../shared/assets/icons/SearchIcon';
-import { animals } from '../../shared/data/animals.ts';
 
 const Conferences = () => {
   return (
@@ -27,19 +26,15 @@ const Conferences = () => {
           startContent={<SearchIcon size={18} />}
           type="search"
         />
-        <Select
-          label="Favorite Animal"
-          placeholder="Select an animal"
-          selectionMode="multiple"
-          className="max-w-xs">
-          {animals.map((animal) => (
-            <SelectItem key={animal.value} value={animal.value}>
-              {animal.label}
+        <Select label="Факультет" selectionMode="multiple" className="max-w-xs">
+          {faculties.map((faculty) => (
+            <SelectItem key={faculty.value} value={faculty.value}>
+              {faculty.label}
             </SelectItem>
           ))}
         </Select>
       </div>
-      <NewsList posts={posts} />
+      <CardList list={conferencesData} />
     </div>
   );
 };

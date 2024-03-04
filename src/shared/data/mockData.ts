@@ -224,7 +224,7 @@ const posts = [
     description:
       'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
     date: '2022-08-12T20:17:46.384Z',
-    tags: ['Test'],
+    tags: ['ФИТР'],
     author: 'Test',
     image: 'https://nextui.org/blog/v2.2.0.jpg',
     url: '/news/1',
@@ -234,7 +234,7 @@ const posts = [
     description:
       'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
     date: '2022-08-12T20:17:46.384Z',
-    tags: ['Test'],
+    tags: ['ФММП'],
     author: 'Test',
     image: 'https://nextui.org/blog/v2.2.0.jpg',
     url: '/news/2',
@@ -251,4 +251,16 @@ const posts = [
   },
 ];
 
-export { columns, users, statusOptions, posts };
+const faculties = [
+  { label: 'ФИТР', value: 'fitr', description: 'Лучший' },
+  { label: 'ФММП', value: 'fmmp', description: 'Лучший' },
+];
+
+const profile = {
+  description: 'profile description',
+  title: 'Ivanov Ivan',
+  date: '2022-08-12T20:17:46.384Z',
+  email: 'test@test.com',
+};
+
+export { columns, users, statusOptions, posts, faculties, profile };

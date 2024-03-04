@@ -17,12 +17,14 @@ import {
 } from '@nextui-org/react';
 import { useState } from 'react';
 import { AppLogo } from '../../shared/components/AppLogo';
-import { NavLink, Link as RouteLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { ROUTE_CONSTANTS } from '../../shared/config/routes';
+import { SwitchTheme } from '../../features/theme/switchTheme/ui/SwitchTheme';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuth, setIsAuth] = useState(true);
+  const navigate = useNavigate();
 
   const menuItems = [
     'Profile',
@@ -74,7 +76,7 @@ const Header = () => {
               }
               return 'text-center block hover:text-gray-500 p-2';
             }}>
-            Dashboard
+            Дашборд
           </NavLink>
         </NavbarItem>
         <NavbarItem>
@@ -146,6 +148,7 @@ const Header = () => {
         ))}
       </NavbarMenu>
       <NavbarContent as="div" className="items-center" justify="end">
+        <SwitchTheme />
         {isAuth ? (
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
@@ -159,17 +162,23 @@ const Header = () => {
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="profile" className="h-14 gap-2" href={ROUTE_CONSTANTS.PROFILE}>
+              <DropdownItem
+                key="profile"
+                className="h-14 gap-2"
+                onPress={() => navigate(ROUTE_CONSTANTS.PROFILE)}>
                 <p className="font-semibold">Вход выполнен как</p>
                 <p className="font-semibold">admin@example.com</p>
               </DropdownItem>
-              <DropdownItem key="settings" href={ROUTE_CONSTANTS.SETTINGS}>
+              <DropdownItem key="settings" onPress={() => navigate(ROUTE_CONSTANTS.SETTINGS)}>
                 Настройки
               </DropdownItem>
-              <DropdownItem key="help_and_feedback" href={ROUTE_CONSTANTS.HELP}>
+              <DropdownItem key="help_and_feedback" onPress={() => navigate(ROUTE_CONSTANTS.HELP)}>
                 Поддержка (Помощь)
               </DropdownItem>
-              <DropdownItem key="logout" color="danger" href={ROUTE_CONSTANTS.LOGOUT}>
+              <DropdownItem
+                key="logout"
+                color="danger"
+                onPress={() => navigate(ROUTE_CONSTANTS.LOGOUT)}>
                 Выйти
               </DropdownItem>
             </DropdownMenu>

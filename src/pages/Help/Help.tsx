@@ -1,4 +1,4 @@
-import { NewsList } from '../../components/NewsList/NewsList';
+import { CardList } from '../../components/CardList/CardList';
 import { posts } from '../../shared/data/mockData';
 
 const Help = () => {
@@ -10,7 +10,7 @@ const Help = () => {
           Инструкции для проведения студенческих научно-технических конференций БНТУ
         </h5>
       </div>
-      <NewsList posts={posts} />
+      <CardList list={posts} />
     </div>
   );
 };

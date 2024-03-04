@@ -1,9 +1,18 @@
-import { Card, CardFooter, CardBody, CardHeader, Link, Avatar, Image } from '@nextui-org/react';
+import {
+  Card,
+  CardFooter,
+  CardBody,
+  CardHeader,
+  Link,
+  Avatar,
+  Image,
+  Chip,
+} from '@nextui-org/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { CustomCard } from './PostCardSkeleton';
+import { CustomCardSkeleton } from './CustomCardSkeleton';
 import { format, parseISO } from 'date-fns';
 
-export const BlogPostCard = (post) => {
+export const CustomCard = (data) => {
   const isLoaded = true;
 
   const handlePress = () => {
@@ -28,32 +37,33 @@ export const BlogPostCard = (post) => {
               isBlurred
               // as={NextLink}
               className="p-2 h-full border-transparent text-start bg-white/5 dark:bg-default-400/10 backdrop-blur-lg backdrop-saturate-[1.8]"
-              isPressable={!!post.url}
+              isPressable={!!data.url}
               onPress={handlePress}>
-              <CardHeader>
+              <CardHeader className="flex justify-between">
                 <Link
                   // as={NextLink}
                   className="font-semibold "
-                  href={post.url}
+                  href={data.url}
                   size="lg"
                   underline="hover"
                   onPress={handlePress}>
-                  {post.title}
+                  {data.title}
                 </Link>
+                {data?.tags[0] && <Chip>{data?.tags[0]}</Chip>}
               </CardHeader>
               <CardBody className="pt-0 px-2 pb-1">
-                <Image className="mb-4" src={post.image} />
-                <p className="font-normal w-full text-default-600">{post.description}</p>
+                <Image className="mb-4" src={data.image} />
+                <p className="font-normal w-full text-default-600">{data.description}</p>
               </CardBody>
               <CardFooter className="flex justify-between items-center">
-                <time className="block text-small text-default-500" dateTime={post.date}>
-                  {format(parseISO(post.date), 'LLLL d, yyyy')}
+                <time className="block text-small text-default-500" dateTime={data.date}>
+                  {format(parseISO(data.date), 'LLLL d, yyyy')}
                 </time>
-                <Avatar size="sm" src={post.author?.avatar} />
+                <Avatar size="sm" src={data.author?.avatar} />
               </CardFooter>
             </Card>
           ) : (
-            <CustomCard />
+            <CustomCardSkeleton />
           )}
         </motion.article>
       }
