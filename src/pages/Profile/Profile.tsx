@@ -4,7 +4,7 @@ import { profile } from '../../shared/data/mockData';
 const Profile = () => {
   return (
     <div className="my-10">
-      <ProfileCard profile={profile} />
+      <ProfileCard user={profile} isPersonal />
     </div>
   );
 };

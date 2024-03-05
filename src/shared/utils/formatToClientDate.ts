@@ -1,14 +1,13 @@
-export const formatToClientDate = (date?: Date) => {
+const defaultOptions = {
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+};
+
+export const formatToClientDate = (date?: Date, options = defaultOptions) => {
   if (!date) {
     return '';
   }
-
-  const options = {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  };
 
   return new Date(date).toLocaleDateString('ru-RU', options);
 };

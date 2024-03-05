@@ -1,7 +1,9 @@
 import { Card, CardBody, Link, Image, Divider, Button } from '@nextui-org/react';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
+import { ChevronDownIcon } from '../../shared/assets/icons/ChevronDownIcon';
+import { MailIcon } from '../../shared/assets/icons/MailIcon';
 
-export const ProfileCard = ({ profile }) => {
+export const ProfileCard = ({ user, isPersonal = false }) => {
   return (
     <Card className="min-h-[250px] px-5">
       <CardBody className="flex md:flex-row gap-5 pt-5 items-center md:items-stretch">
@@ -11,28 +13,40 @@ export const ProfileCard = ({ profile }) => {
             height={250}
             shadow="sm"
             alt="Avatar"
-            src="https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
+            src={user.avatar}
             className="aspect-square object-cover"
           />
         </div>
         <div className="w-full flex flex-col">
           <div className="flex justify-between items-center flex-col gap-3 md:flex-row">
             <div>
-              <h1 className="inline mb-5 font-bold text-3xl">{profile.title}</h1>
-              <p className="font-normal w-full text-default-600">{profile.description}</p>
-              <p className="font-normal w-full text-default-600">{profile.email}</p>
-              <time className="block text-small text-default-500" dateTime={profile.date}>
-                Дата регистрации: {formatToClientDate(profile.date)}
+              <h1 className="inline mb-5 font-bold text-3xl">{user.name}</h1>
+              <p className="font-normal w-full text-default-600">{user.description}</p>
+              <p className="font-normal w-full text-default-600">{user.email}</p>
+              <time className="block text-small text-default-500" dateTime={user.date}>
+                Дата регистрации: {formatToClientDate(user.date)}
               </time>
             </div>
-            <Button
-              href="/settings"
-              as={Link}
-              color="primary"
-              variant="solid"
-              className="min-w-[200px] md:w-40">
-              Настройки
-            </Button>
+            {isPersonal ? (
+              <Button
+                href="/settings"
+                as={Link}
+                color="primary"
+                variant="solid"
+                className="min-w-[200px] md:w-40">
+                Настройки
+              </Button>
+            ) : (
+              <Button
+                href={'mailto:' + user.email}
+                as={Link}
+                color="primary"
+                variant="solid"
+                className="min-w-[200px] md:w-40"
+                endContent={<MailIcon />}>
+                Написать письмо
+              </Button>
+            )}
           </div>
           <Divider className="mt-3" />
           <div className="grow flex items-center">

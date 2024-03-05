@@ -16,6 +16,7 @@ import Conferences from './Conferences/Conferences';
 import Help from './Help/Help';
 import Profile from './Profile/Profile';
 import Conference from './Conference/Conference';
+import User from './User/User';
 
 const Router: FC = () => {
   return (
@@ -25,6 +26,7 @@ const Router: FC = () => {
         <Route path={ROUTE_CONSTANTS.HOME} element={<Home />} />
         <Route path={ROUTE_CONSTANTS.DASHBOARD} element={<Dashboard />} />
         <Route path={ROUTE_CONSTANTS.USERS} element={<Users />} />
+        <Route path={ROUTE_CONSTANTS.USER} element={<User />} />
         <Route path={ROUTE_CONSTANTS.NEWS} element={<News />} />
         <Route path={ROUTE_CONSTANTS.NEWS_POST} element={<NewsPost />} />
         <Route path={ROUTE_CONSTANTS.HELP} element={<Help />} />
