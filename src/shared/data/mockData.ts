@@ -1,26 +1,9 @@
-const columns = [
-  { name: 'ID', uid: 'id', sortable: true },
-  { name: 'NAME', uid: 'name', sortable: true },
-  { name: 'AGE', uid: 'age', sortable: true },
-  { name: 'ROLE', uid: 'role', sortable: true },
-  { name: 'TEAM', uid: 'team' },
-  { name: 'EMAIL', uid: 'email' },
-  { name: 'STATUS', uid: 'status', sortable: true },
-  { name: 'ACTIONS', uid: 'actions' },
-];
-
-const statusOptions = [
-  { name: 'Active', uid: 'active' },
-  { name: 'Paused', uid: 'paused' },
-  { name: 'Vacation', uid: 'vacation' },
-];
-
 const users = [
   {
     id: 1,
-    name: 'Tony Reichert',
-    role: 'CEO',
-    team: 'Management',
+    name: 'Юрий Полозков',
+    role: 'Заведующий кафедры',
+    team: 'ПОИСиТ',
     status: 'active',
     age: '29',
     avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026024d',
@@ -38,9 +21,9 @@ const users = [
   },
   {
     id: 3,
-    name: 'Jane Fisher',
-    role: 'Sr. Dev',
-    team: 'Development',
+    name: 'Ирина Тетерюкова',
+    role: 'Ст. преподаватель',
+    team: 'ПОИСиТ',
     status: 'active',
     age: '22',
     avatar: 'https://i.pravatar.cc/150?u=a04258114e29026702d',
@@ -48,9 +31,9 @@ const users = [
   },
   {
     id: 4,
-    name: 'William Howard',
-    role: 'C.M.',
-    team: 'Marketing',
+    name: 'Сергей Станкевич',
+    role: 'Преподаватель',
+    team: 'ПОИСиТ',
     status: 'vacation',
     age: '28',
     avatar: 'https://i.pravatar.cc/150?u=a048581f4e29026701d',
@@ -59,8 +42,8 @@ const users = [
   {
     id: 5,
     name: 'Kristen Copper',
-    role: 'S. Manager',
-    team: 'Sales',
+    role: 'Студент',
+    team: 'ПОИСиТ',
     status: 'active',
     age: '24',
     avatar: 'https://i.pravatar.cc/150?u=a092581d4ef9026700d',
@@ -291,9 +274,10 @@ const faculties = [
 
 const profile = {
   description: 'profile description',
-  title: 'Ivanov Ivan',
+  name: 'Ivanov Ivan',
   date: '2022-08-12T20:17:46.384Z',
   email: 'test@test.com',
+  avatar: 'https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg',
 };
 
 const conferenceStatus = [
@@ -302,4 +286,4 @@ const conferenceStatus = [
   { label: 'Завершена', value: 'complete' },
 ];
 
-export { columns, users, statusOptions, posts, faculties, profile, conferences, conferenceStatus };
+export { users, posts, faculties, profile, conferences, conferenceStatus };

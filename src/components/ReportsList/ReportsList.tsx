@@ -18,12 +18,12 @@ import {
   Selection,
   ChipProps,
   SortDescriptor,
+  Link,
 } from '@nextui-org/react';
-import { PlusIcon } from '../../shared/assets/icons/PlusIcon';
 import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import { ChevronDownIcon } from '../../shared/assets/icons/ChevronDownIcon';
 import { SearchIcon } from '../../shared/assets/icons/SearchIcon';
-import { columns, users, statusOptions } from '../../shared/data/mockData';
+import { users } from '../../shared/data/mockData';
 import { capitalize } from '../../shared/utils/utils';
 
 const statusColorMap: Record<string, ChipProps['color']> = {
@@ -31,6 +31,25 @@ const statusColorMap: Record<string, ChipProps['color']> = {
   paused: 'danger',
   vacation: 'warning',
 };
+
+export const userTableColumns = [
+  { name: 'ID', uid: 'id', sortable: true },
+  { name: 'Имя', uid: 'name', sortable: true },
+  { name: 'Возраст', uid: 'age', sortable: true },
+  { name: 'Роль', uid: 'role', sortable: true },
+  { name: 'Факультет', uid: 'faculty' },
+  { name: 'Email', uid: 'email' },
+  { name: 'Состояние', uid: 'status', sortable: true },
+  { name: 'Действия', uid: 'actions' },
+];
+
+export const userStatusOptions = [
+  { name: 'Активен', uid: 'active' },
+  { name: 'Заблокирован', uid: 'paused' },
+  { name: 'Заморожен', uid: 'vacation' },
+];
+
+const searchInObjectArrayByUid = (arr, what) => arr.find((element) => element.uid === what);
 
 const INITIAL_VISIBLE_COLUMNS = ['name', 'role', 'status', 'actions'];
 
@@ -54,9 +73,9 @@ export default function ReportsList() {
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
-    if (visibleColumns === 'all') return columns;
+    if (visibleColumns === 'all') return userTableColumns;
 
-    return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
+    return userTableColumns.filter((column) => Array.from(visibleColumns).includes(column.uid));
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
@@ -67,7 +86,7 @@ export default function ReportsList() {
         user.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
-    if (statusFilter !== 'all' && Array.from(statusFilter).length !== statusOptions.length) {
+    if (statusFilter !== 'all' && Array.from(statusFilter).length !== userStatusOptions.length) {
       filteredUsers = filteredUsers.filter((user) =>
         Array.from(statusFilter).includes(user.status),
       );
@@ -101,24 +120,26 @@ export default function ReportsList() {
     switch (columnKey) {
       case 'name':
         return (
-          <User
-            avatarProps={{ radius: 'lg', src: user.avatar }}
-            description={user.email}
-            name={cellValue}>
-            {user.email}
-          </User>
+          <Link href={'/report/' + user.id}>
+            <User
+              avatarProps={{ radius: 'lg', src: user.avatar }}
+              description={user.email}
+              name={cellValue}>
+              {user.email}
+            </User>
+          </Link>
         );
       case 'role':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-            <p className="text-bold text-tiny capitalize text-default-400">{user.team}</p>
+            <p className="text-bold text-small">{cellValue}</p>
+            <p className="text-bold text-tiny text-default-400">{user.team}</p>
           </div>
         );
       case 'status':
         return (
           <Chip className="capitalize" color={statusColorMap[user.status]} size="sm" variant="flat">
-            {cellValue}
+            {searchInObjectArrayByUid(userStatusOptions, cellValue)?.name || cellValue}
           </Chip>
         );
       case 'actions':
@@ -131,9 +152,9 @@ export default function ReportsList() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem>Подробнее</DropdownItem>
-                <DropdownItem>Редактировать</DropdownItem>
-                <DropdownItem>Удалить</DropdownItem>
+                <DropdownItem href={'/report/' + user.id}>Подробнее</DropdownItem>
+                <DropdownItem href={'/report/' + user.id + '/edit'}>Редактировать</DropdownItem>
+                <DropdownItem href={'/report/' + user.id + '/delete'}>Удалить</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -187,6 +208,7 @@ export default function ReportsList() {
             onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
+
           <div className="flex gap-3">
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
@@ -201,7 +223,7 @@ export default function ReportsList() {
                 selectedKeys={statusFilter}
                 selectionMode="multiple"
                 onSelectionChange={setStatusFilter}>
-                {statusOptions.map((status) => (
+                {userStatusOptions.map((status) => (
                   <DropdownItem key={status.uid} className="capitalize">
                     {capitalize(status.name)}
                   </DropdownItem>
@@ -221,16 +243,13 @@ export default function ReportsList() {
                 selectedKeys={visibleColumns}
                 selectionMode="multiple"
                 onSelectionChange={setVisibleColumns}>
-                {columns.map((column) => (
+                {userTableColumns.map((column) => (
                   <DropdownItem key={column.uid} className="capitalize">
                     {capitalize(column.name)}
                   </DropdownItem>
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button color="primary" endContent={<PlusIcon />}>
-              Добавить новую
-            </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -313,7 +332,7 @@ export default function ReportsList() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'No users found'} items={sortedItems}>
+      <TableBody emptyContent={'Список пуст'} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
