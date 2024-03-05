@@ -27,15 +27,15 @@ const Header = () => {
 
   const menuItems = [
     { label: 'Главная', link: ROUTE_CONSTANTS.HOME },
-    { label: 'Пользователи', link: ROUTE_CONSTANTS.USERS },
     { label: 'Новости', link: ROUTE_CONSTANTS.NEWS },
-    { label: 'Научные работы', link: ROUTE_CONSTANTS.REPORTS },
     { label: 'Конференции', link: ROUTE_CONSTANTS.CONFERENCES },
+    { label: 'Научные работы', link: ROUTE_CONSTANTS.REPORTS },
+    { label: 'Пользователи', link: ROUTE_CONSTANTS.USERS },
     { label: 'Дашборд', link: ROUTE_CONSTANTS.DASHBOARD },
   ];
 
   return (
-    <Navbar isBordered maxWidth="2xl" onMenuOpenChange={setIsMenuOpen}>
+    <Navbar isBordered shouldHideOnScroll maxWidth="2xl" onMenuOpenChange={setIsMenuOpen}>
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
@@ -67,11 +67,7 @@ const Header = () => {
       </NavbarContent>
       <NavbarMenu>
         {menuItems.map((item, index) => (
-          <NavbarMenuItem
-            key={`${item}-${index}`}
-            onClick={() => {
-              setIsMenuOpen(false);
-            }}>
+          <NavbarMenuItem key={`${item}-${index}`}>
             <NavLink
               className={({ isActive }) => {
                 if (isActive) {
