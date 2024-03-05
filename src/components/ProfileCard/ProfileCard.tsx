@@ -1,7 +1,9 @@
 import { Card, CardBody, Link, Image, Divider, Button } from '@nextui-org/react';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
+import { ChevronDownIcon } from '../../shared/assets/icons/ChevronDownIcon';
+import { MailIcon } from '../../shared/assets/icons/MailIcon';
 
-export const ProfileCard = ({ user }) => {
+export const ProfileCard = ({ user, isPersonal = false }) => {
   return (
     <Card className="min-h-[250px] px-5">
       <CardBody className="flex md:flex-row gap-5 pt-5 items-center md:items-stretch">
@@ -25,14 +27,26 @@ export const ProfileCard = ({ user }) => {
                 Дата регистрации: {formatToClientDate(user.date)}
               </time>
             </div>
-            <Button
-              href="/settings"
-              as={Link}
-              color="primary"
-              variant="solid"
-              className="min-w-[200px] md:w-40">
-              Настройки
-            </Button>
+            {isPersonal ? (
+              <Button
+                href="/settings"
+                as={Link}
+                color="primary"
+                variant="solid"
+                className="min-w-[200px] md:w-40">
+                Настройки
+              </Button>
+            ) : (
+              <Button
+                href={'mailto:' + user.email}
+                as={Link}
+                color="primary"
+                variant="solid"
+                className="min-w-[200px] md:w-40"
+                endContent={<MailIcon />}>
+                Написать письмо
+              </Button>
+            )}
           </div>
           <Divider className="mt-3" />
           <div className="grow flex items-center">

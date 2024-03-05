@@ -1,3 +1,15 @@
+const userConferences = [
+  {
+    id: 1,
+    name: 'Расчет погрешностей',
+    conference: { id: 1, name: '77-я студенческая конференция' },
+    author: { id: 1, name: 'Юрий Полозков' },
+    faculty: 'ПОИСиТ',
+    status: 'pending',
+    date: '2022-08-12T20:17:46.384Z',
+  },
+];
+
 const users = [
   {
     id: 1,
@@ -286,4 +298,4 @@ const conferenceStatus = [
   { label: 'Завершена', value: 'complete' },
 ];
 
-export { users, posts, faculties, profile, conferences, conferenceStatus };
+export { userConferences, conferences, users, posts, faculties, profile, conferenceStatus };

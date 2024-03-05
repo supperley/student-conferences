@@ -22,7 +22,14 @@ const NewsPost = () => {
           Вернуться назад
         </Link>
       </div>
-      <div className="text-default-500 text-small mb-5">{formatToClientDate(post.date)}</div>
+      <div className="text-default-500 text-small mb-5">
+        {formatToClientDate(post.date, {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })}
+      </div>
       <Link isBlock href="/news" color="foreground" className="text-default-500 text-small mb-5">
         <User
           name={post.author}

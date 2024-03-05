@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { conferences } from '../../shared/data/mockData';
 import { Button, Card, Chip, Image, Link, User, useDisclosure } from '@nextui-org/react';
 import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
@@ -7,6 +7,7 @@ import { ROUTE_CONSTANTS } from '../../shared/config/routes';
 import ApplyForm from '../../components/ApplyForm/ApplyForm';
 
 const Conference = () => {
+  const navigate = useNavigate();
   const params = useParams();
   const conferenceId = params.conferenceId;
   const conferenceData = conferences[conferenceId - 1];
@@ -17,7 +18,7 @@ const Conference = () => {
       <div>
         <Link
           isBlock
-          href={ROUTE_CONSTANTS.CONFERENCES}
+          onClick={() => navigate(-1)}
           color="foreground"
           className="text-default-500 text-small mb-5 -ml-3">
           <ArrowIcon />
