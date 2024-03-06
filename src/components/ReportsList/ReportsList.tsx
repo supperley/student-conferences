@@ -21,17 +21,11 @@ import TableData from '../TableData/TableData';
 import { userReports } from '../../shared/data/mockData';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
 
-const statusColorMap: Record<string, ChipProps['color']> = {
-  accepted: 'success',
-  declined: 'danger',
-  pending: 'warning',
+export const reportStatusMap = {
+  accepted: { name: 'Активен', color: 'success' },
+  pending: { name: 'На рассмотрении', color: 'warning' },
+  declined: { name: 'Отклонен', color: 'danger' },
 };
-
-export const reportStatusOptions = [
-  { name: 'Активен', uid: 'accepted' },
-  { name: 'Отклонен', uid: 'declined' },
-  { name: 'На рассмотрении', uid: 'pending' },
-];
 
 export const reportTableColumns = [
   { name: 'ID', uid: 'id', sortable: true },
@@ -45,8 +39,6 @@ export const reportTableColumns = [
 ];
 
 const INITIAL_VISIBLE_COLUMNS = ['name', 'author', 'conference', 'date', 'status', 'actions'];
-
-const searchInObjectArrayByUid = (arr, what) => arr.find((element) => element.uid === what);
 
 export default function ReportsList() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -88,8 +80,8 @@ export default function ReportsList() {
         return formatToClientDate(cellValue);
       case 'status':
         return (
-          <Chip color={statusColorMap[report.status]} size="sm" variant="flat">
-            {searchInObjectArrayByUid(reportStatusOptions, cellValue)?.name || cellValue}
+          <Chip color={reportStatusMap[report.status].color} size="sm" variant="flat">
+            {reportStatusMap[report.status].name || cellValue}
           </Chip>
         );
       case 'actions':
@@ -133,7 +125,7 @@ export default function ReportsList() {
     <>
       <TableData
         renderCell={renderCell}
-        statusOptions={reportStatusOptions}
+        statusOptions={reportStatusMap}
         tableColumns={reportTableColumns}
         initialVisibleColumns={INITIAL_VISIBLE_COLUMNS}
         data={userReports}

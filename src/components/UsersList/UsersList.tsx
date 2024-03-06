@@ -20,17 +20,11 @@ import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import TableData from '../TableData/TableData';
 import { users } from '../../shared/data/mockData';
 
-const statusColorMap: Record<string, ChipProps['color']> = {
-  active: 'success',
-  paused: 'danger',
-  vacation: 'warning',
+export const userStatusMap = {
+  active: { name: 'Активен', color: 'success' },
+  paused: { name: 'Заморожен', color: 'warning' },
+  vacation: { name: 'Заблокирован', color: 'danger' },
 };
-
-export const userStatusOptions = [
-  { name: 'Активен', uid: 'active' },
-  { name: 'Заблокирован', uid: 'paused' },
-  { name: 'Заморожен', uid: 'vacation' },
-];
 
 export const userTableColumns = [
   { name: 'ID', uid: 'id', sortable: true },
@@ -44,8 +38,6 @@ export const userTableColumns = [
 ];
 
 const INITIAL_VISIBLE_COLUMNS = ['name', 'role', 'status', 'actions'];
-
-const searchInObjectArrayByUid = (arr, what) => arr.find((element) => element.uid === what);
 
 type User = (typeof users)[0];
 
@@ -76,8 +68,12 @@ export default function UsersList() {
         );
       case 'status':
         return (
-          <Chip className="capitalize" color={statusColorMap[user.status]} size="sm" variant="flat">
-            {searchInObjectArrayByUid(userStatusOptions, cellValue)?.name || cellValue}
+          <Chip
+            className="capitalize"
+            color={userStatusMap[user.status].color}
+            size="sm"
+            variant="flat">
+            {userStatusMap[user.status].name || cellValue}
           </Chip>
         );
       case 'actions':
@@ -115,7 +111,7 @@ export default function UsersList() {
       <TableData
         data={users}
         renderCell={renderCell}
-        statusOptions={userStatusOptions}
+        statusOptions={userStatusMap}
         tableColumns={userTableColumns}
         initialVisibleColumns={INITIAL_VISIBLE_COLUMNS}
       />

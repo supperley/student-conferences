@@ -3,8 +3,7 @@ import { conferences } from '../../shared/data/mockData';
 import { Button, Card, Chip, Image, Link, User, useDisclosure } from '@nextui-org/react';
 import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
-import { ROUTE_CONSTANTS } from '../../shared/config/routes';
-import ApplyForm from '../../components/ApplyForm/ApplyForm';
+import ApplyFormModal from '../../components/ApplyFormModal/ApplyFormModal';
 
 const Conference = () => {
   const navigate = useNavigate();
@@ -69,7 +68,7 @@ const Conference = () => {
             <Button onPress={onOpen} color="primary" variant="solid" className="md:w-full">
               Подать заявку
             </Button>
-            <ApplyForm isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} />
+            <ApplyFormModal isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} />
           </div>
         </div>
       </Card>

@@ -20,20 +20,14 @@ import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import TableData from '../TableData/TableData';
 import { conferences } from '../../shared/data/mockData';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
+import EditConferenceModal from '../EditConferenceModal/EditConferenceModal';
 
-const statusColorMap: Record<string, ChipProps['color']> = {
-  completed: 'default',
-  registrationOpen: 'success',
-  registrationClosed: 'warning',
-  declined: 'danger',
+export const conferenceStatusMap = {
+  registrationOpen: { name: 'Регистрация открыта', color: 'success' },
+  registrationClosed: { name: 'Регистрация закрыта', color: 'warning' },
+  declined: { name: 'Отменена', color: 'danger' },
+  completed: { name: 'Проведена', color: 'default' },
 };
-
-export const conferencesStatusOptions = [
-  { name: 'Проведена', uid: 'completed' },
-  { name: 'Отменена', uid: 'declined' },
-  { name: 'Регистрация открыта', uid: 'registrationOpen' },
-  { name: 'Регистрация закрыта', uid: 'registrationClosed' },
-];
 
 export const conferencesTableColumns = [
   { name: 'ID', uid: 'id', sortable: true },
@@ -54,10 +48,17 @@ const INITIAL_VISIBLE_COLUMNS = [
   'actions',
 ];
 
-const searchInObjectArrayByUid = (arr, what) => arr.find((element) => element.uid === what);
-
 export default function ConferencesList() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isOpenModalDialog,
+    onOpen: onOpenModalDialog,
+    onOpenChange: onOpenChangeModalDialog,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenModalEdit,
+    onOpen: onOpenModalEdit,
+    onOpenChange: onOpenChangeModalEdit,
+  } = useDisclosure();
   const [modalConferenceId, setModalConferenceId] = useState(undefined);
   const renderCell = React.useCallback((conference, columnKey: React.Key) => {
     const cellValue = conference[columnKey];
@@ -85,8 +86,8 @@ export default function ConferencesList() {
         return formatToClientDate(cellValue);
       case 'status':
         return (
-          <Chip color={statusColorMap[conference.status]} size="sm" variant="flat">
-            {searchInObjectArrayByUid(conferencesStatusOptions, cellValue)?.name || cellValue}
+          <Chip color={conferenceStatusMap[conference.status].color} size="sm" variant="flat">
+            {conferenceStatusMap[conference.status].name || cellValue}
           </Chip>
         );
       case 'actions':
@@ -100,7 +101,15 @@ export default function ConferencesList() {
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem href={'/conference/' + conference.id}>Подробнее</DropdownItem>
-                <DropdownItem href={'/conference/' + conference.id}>Редактировать</DropdownItem>
+                <DropdownItem
+                  onPress={() => {
+                    setModalConferenceId(conference?.id);
+                    onOpenModalEdit();
+                  }}
+                  // href={'/conference/' + conference.id}
+                >
+                  Редактировать
+                </DropdownItem>
                 <DropdownItem href={'/conference/' + conference.id + '/download'}>
                   Сформировать сборник
                 </DropdownItem>
@@ -113,7 +122,7 @@ export default function ConferencesList() {
                 <DropdownItem
                   onPress={() => {
                     setModalConferenceId(conference?.id);
-                    onOpen();
+                    onOpenModalDialog();
                   }}
                   className="text-danger"
                   color="danger">
@@ -133,13 +142,13 @@ export default function ConferencesList() {
     <>
       <TableData
         renderCell={renderCell}
-        statusOptions={conferencesStatusOptions}
+        statusOptions={conferenceStatusMap}
         tableColumns={conferencesTableColumns}
         initialVisibleColumns={INITIAL_VISIBLE_COLUMNS}
         data={conferences}
         isAddButton
       />
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal isOpen={isOpenModalDialog} onOpenChange={onOpenChangeModalDialog}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -163,6 +172,11 @@ export default function ConferencesList() {
           )}
         </ModalContent>
       </Modal>
+      <EditConferenceModal
+        isOpen={isOpenModalEdit}
+        onOpen={onOpenModalEdit}
+        onOpenChange={onOpenChangeModalEdit}
+      />
     </>
   );
 }

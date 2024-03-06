@@ -12,19 +12,19 @@ import {
 } from '@nextui-org/react';
 import { UploadIcon } from '../../shared/assets/icons/UploadIcon';
 
-const ApplyForm = ({ isOpen, onOpen, onOpenChange }) => {
+const EditConferenceModal = ({ isOpen, onOpen, onOpenChange }) => {
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center">
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">Подать заявку</ModalHeader>
+            <ModalHeader className="flex flex-col gap-1">Редактировать</ModalHeader>
             <ModalBody>
-              <Input label="Тема научной работы" variant="bordered" required />
+              <Input label="Название конференции" variant="bordered" required />
               <Input label="Дополнительная информация" variant="bordered" />
               {/* <Input type="file" label="Файл научной работы (.pdf)" variant="bordered" /> */}
               <Button color="primary" startContent={<UploadIcon />}>
-                Загрузить файл
+                Загрузить изображение
               </Button>
               <Checkbox
                 required
@@ -39,11 +39,11 @@ const ApplyForm = ({ isOpen, onOpen, onOpenChange }) => {
                 Возникли вопросы?
               </Link>
               <div className="flex gap-2">
-                <Button color="danger" variant="flat" onPress={onClose}>
+                <Button variant="flat" onPress={onClose}>
                   Отменить
                 </Button>
                 <Button color="primary" onPress={onClose}>
-                  Отправить
+                  Сохранить
                 </Button>
               </div>
             </ModalFooter>
@@ -54,4 +54,4 @@ const ApplyForm = ({ isOpen, onOpen, onOpenChange }) => {
   );
 };
 
-export default ApplyForm;
+export default EditConferenceModal;
