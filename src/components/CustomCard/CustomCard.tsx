@@ -49,12 +49,12 @@ export const CustomCard = (data) => {
                   onPress={handlePress}>
                   {data.title}
                 </Link>
-                {data?.status && <Chip color="success">{data?.status}</Chip>}
+                {data?.chip && <Chip color="success">{data?.chip}</Chip>}
               </CardHeader>
               <CardBody className="pt-0 px-2 pb-1">
                 <Image src={data.image} />
-                {data?.tags && data?.tags[0] && <Chip className="mt-4 mb-3">{data?.tags[0]}</Chip>}
-                <p className="font-normal w-full text-default-600">{data.description}</p>
+                {data?.tags && data?.tags[0] && <Chip className="mt-4">{data?.tags[0]}</Chip>}
+                <p className="mt-3 font-normal w-full text-default-600">{data.description}</p>
               </CardBody>
               <CardFooter className="flex justify-between items-center">
                 <time className="block text-small text-default-500" dateTime={data.date}>

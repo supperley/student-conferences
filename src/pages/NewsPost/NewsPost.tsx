@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { posts } from '../../shared/data/mockData';
+import { news } from '../../shared/data/mockData';
 import { Image, Link, User } from '@nextui-org/react';
 import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
@@ -8,7 +8,7 @@ import { ROUTE_CONSTANTS } from '../../shared/config/routes';
 const NewsPost = () => {
   const params = useParams();
   const newsId = params.newsId;
-  const post = posts[newsId - 1];
+  const post = news[newsId - 1];
 
   return (
     <div className="w-full lg:px-16 my-10">

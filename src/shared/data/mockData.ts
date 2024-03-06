@@ -1,14 +1,10 @@
-const userReports = [
-  {
-    id: 1,
-    name: 'Расчет погрешностей',
-    conference: { id: 1, name: '77-я студенческая конференция' },
-    author: { id: 1, name: 'Юрий Полозков' },
-    faculty: 'ПОИСиТ',
-    status: 'pending',
-    date: '2022-08-12T20:17:46.384Z',
-  },
-];
+const profile = {
+  description: 'profile description',
+  name: 'Ivanov Ivan',
+  date: '2022-08-12T20:17:46.384Z',
+  email: 'test@test.com',
+  avatar: 'https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg',
+};
 
 const users = [
   {
@@ -213,40 +209,10 @@ const users = [
   },
 ];
 
-const posts = [
-  {
-    title: 'Introducing v2.2.0 🚀',
-    description:
-      'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
-    date: '2022-08-12T20:17:46.384Z',
-    author: 'Test',
-    image: 'https://nextui.org/blog/v2.2.0.jpg',
-    url: '/news/1',
-  },
-  {
-    title: 'Introducing v2.2.1 🚀',
-    description:
-      'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
-    date: '2022-08-12T20:17:46.384Z',
-    author: 'Test',
-    image: 'https://nextui.org/blog/v2.2.0.jpg',
-    url: '/news/2',
-  },
-  {
-    title: 'Introducing v2.2.2 🚀',
-    description:
-      'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
-    date: '2022-08-12T20:17:46.384Z',
-    author: 'Test',
-    image: 'https://nextui.org/blog/v2.2.0.jpg',
-    url: '/news/3',
-  },
-];
-
 const conferences = [
   {
     id: 1,
-    title: 'Introducing v2.2.0 🚀',
+    title: 'Конференция v2.2.0 🚀',
     description:
       'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
     date: '2022-08-12T20:17:46.384Z',
@@ -254,11 +220,12 @@ const conferences = [
     administrator: { id: 1, name: 'Юрий Полозков' },
     image: 'https://nextui.org/blog/v2.2.0.jpg',
     url: '/conference/1',
-    status: 'Active',
+    status: 'completed',
+    faculty: 'ФИТР',
   },
   {
     id: 2,
-    title: 'Introducing v2.2.1 🚀',
+    title: 'Конференция v2.2.1 🚀',
     description:
       'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
     date: '2022-08-12T20:17:46.384Z',
@@ -266,11 +233,25 @@ const conferences = [
     administrator: { id: 1, name: 'Юрий Полозков' },
     image: 'https://nextui.org/blog/v2.2.0.jpg',
     url: '/conference/2',
-    status: 'Active',
+    status: 'registrationClosed',
+    faculty: 'ФИТР',
   },
   {
     id: 3,
-    title: 'Introducing v2.2.2 🚀',
+    title: 'Конференция v2.2.2 🚀',
+    description:
+      'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
+    date: '2022-08-12T20:17:46.384Z',
+    tags: ['Test'],
+    administrator: { id: 1, name: 'Юрий Полозков' },
+    faculty: 'ФИТР',
+    image: 'https://nextui.org/blog/v2.2.0.jpg',
+    url: '/conference/3',
+    status: 'registrationOpen',
+  },
+  {
+    id: 4,
+    title: 'Конференция v2.2.3 🚀',
     description:
       'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
     date: '2022-08-12T20:17:46.384Z',
@@ -278,7 +259,20 @@ const conferences = [
     administrator: { id: 1, name: 'Юрий Полозков' },
     image: 'https://nextui.org/blog/v2.2.0.jpg',
     url: '/conference/3',
-    status: 'Active',
+    status: 'declined',
+    faculty: 'ФИТР',
+  },
+];
+
+const userReports = [
+  {
+    id: 1,
+    name: 'Расчет погрешностей',
+    conference: { id: 1, name: '77-я студенческая конференция' },
+    author: { id: 1, name: 'Юрий Полозков' },
+    faculty: 'ПОИСиТ',
+    status: 'pending',
+    date: '2022-08-12T20:17:46.384Z',
   },
 ];
 
@@ -287,18 +281,43 @@ const faculties = [
   { label: 'ФММП', value: 'fmmp' },
 ];
 
-const profile = {
-  description: 'profile description',
-  name: 'Ivanov Ivan',
-  date: '2022-08-12T20:17:46.384Z',
-  email: 'test@test.com',
-  avatar: 'https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg',
-};
-
-const conferenceStatus = [
-  { label: 'Запись открыта', value: 'registration' },
-  { label: 'Проводится', value: 'active' },
-  { label: 'Завершена', value: 'complete' },
+const news = [
+  {
+    title: 'Новость v2.2.0 🚀',
+    description:
+      'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
+    date: '2022-08-12T20:17:46.384Z',
+    author: 'Test',
+    tags: ['ФММП'],
+    image: 'https://nextui.org/blog/v2.2.0.jpg',
+    url: '/news/1',
+  },
+  {
+    title: 'Новость v2.2.1 🚀',
+    description:
+      'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
+    date: '2022-08-12T20:17:46.384Z',
+    author: 'Test',
+    tags: ['Test'],
+    image: 'https://nextui.org/blog/v2.2.0.jpg',
+    url: '/news/2',
+  },
+  {
+    chip: 'Конференция',
+    title: 'Новость v2.2.2 🚀',
+    description:
+      'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
+    date: '2022-08-12T20:17:46.384Z',
+    author: 'Test',
+    image: 'https://nextui.org/blog/v2.2.0.jpg',
+    url: '/news/3',
+    tags: ['ФИТР'],
+  },
 ];
 
-export { userReports, conferences, users, posts, faculties, profile, conferenceStatus };
+const newsStatus = [
+  { label: 'Конференция', value: 'conference' },
+  { label: 'Уведомление', value: 'notification' },
+];
+
+export { userReports, conferences, users, news, faculties, profile, newsStatus };

@@ -162,9 +162,7 @@ export default function TableData({
                 selectionMode="multiple"
                 onSelectionChange={setVisibleColumns}>
                 {tableColumns.map((column) => (
-                  <DropdownItem key={column.uid} className="capitalize">
-                    {capitalize(column.name)}
-                  </DropdownItem>
+                  <DropdownItem key={column.uid}>{column.name}</DropdownItem>
                 ))}
               </DropdownMenu>
             </Dropdown>

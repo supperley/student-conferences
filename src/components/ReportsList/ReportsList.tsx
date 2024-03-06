@@ -110,7 +110,7 @@ export default function ReportsList() {
                   }}
                   className="text-danger"
                   color="danger">
-                  Отменить
+                  Удалить заявку
                 </DropdownItem>
                 <DropdownItem href={'/report/' + report.id + '/accept'} className="text-success">
                   Принять
@@ -144,7 +144,7 @@ export default function ReportsList() {
             <>
               <ModalHeader className="flex flex-col gap-1">Подтвердите действие</ModalHeader>
               <ModalBody>
-                <p>Вы действительно хотите удалить научную работу?</p>
+                <p>Вы действительно хотите удалить данную заявку?</p>
                 <p>Это действие нельзя отменить.</p>
               </ModalBody>
               <ModalFooter>

@@ -22,22 +22,24 @@ import { conferences } from '../../shared/data/mockData';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
 
 const statusColorMap: Record<string, ChipProps['color']> = {
-  accepted: 'success',
+  completed: 'default',
+  registrationOpen: 'success',
+  registrationClosed: 'warning',
   declined: 'danger',
-  pending: 'warning',
 };
 
 export const conferencesStatusOptions = [
-  { name: 'Активен', uid: 'accepted' },
-  { name: 'Отклонен', uid: 'declined' },
-  { name: 'На рассмотрении', uid: 'pending' },
+  { name: 'Проведена', uid: 'completed' },
+  { name: 'Отменена', uid: 'declined' },
+  { name: 'Регистрация открыта', uid: 'registrationOpen' },
+  { name: 'Регистрация закрыта', uid: 'registrationClosed' },
 ];
 
 export const conferencesTableColumns = [
   { name: 'ID', uid: 'id', sortable: true },
   { name: 'Название конференции', uid: 'title', sortable: true },
   { name: 'Администратор', uid: 'administrator', sortable: true },
-  { name: 'Факультет', uid: 'faculty' },
+  { name: 'Факультет', uid: 'faculty', sortable: true },
   { name: 'Дата', uid: 'date', sortable: true },
   { name: 'Состояние', uid: 'status', sortable: true },
   { name: 'Действия', uid: 'actions' },
@@ -56,14 +58,14 @@ const searchInObjectArrayByUid = (arr, what) => arr.find((element) => element.ui
 
 export default function ConferencesList() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [modalReportId, setModalReportId] = useState(undefined);
+  const [modalConferenceId, setModalConferenceId] = useState(undefined);
   const renderCell = React.useCallback((conference, columnKey: React.Key) => {
     const cellValue = conference[columnKey];
 
     switch (columnKey) {
       case 'title':
         return (
-          <Link href={'/conferences/' + conference.id} className="text-sm font-medium">
+          <Link href={'/conference/' + conference.id} className="text-sm font-medium">
             {cellValue}
           </Link>
         );
@@ -73,17 +75,6 @@ export default function ConferencesList() {
             {cellValue.name}
           </Link>
         );
-      // case 'conference':
-      //   return (
-      //     <div className="flex flex-col">
-      //       <Link href={'/conference/' + conference.id}>
-      //         <p className="text-bold text-small">{cellValue.name}</p>
-      //       </Link>
-      //       <Link href={'/conferences/?faculty=' + conference.faculty}>
-      //         <p className="text-bold text-tiny text-default-400">{conference.faculty}</p>
-      //       </Link>
-      //     </div>
-      //   );
       case 'faculty':
         return (
           <Link href={'/conferences/?faculty=' + conference.id} className="text-sm">
@@ -108,25 +99,25 @@ export default function ConferencesList() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem href={'/conferences/' + conference.id}>Подробнее</DropdownItem>
+                <DropdownItem href={'/conference/' + conference.id}>Подробнее</DropdownItem>
+                <DropdownItem href={'/conference/' + conference.id}>Редактировать</DropdownItem>
+                <DropdownItem href={'/conference/' + conference.id + '/download'}>
+                  Сформировать сборник
+                </DropdownItem>
+                <DropdownItem
+                  href={'/conference/' + conference.id + '/accept'}
+                  className="text-warning"
+                  color="warning">
+                  Закрыть регистрацию
+                </DropdownItem>
                 <DropdownItem
                   onPress={() => {
-                    setModalReportId(conference?.id);
+                    setModalConferenceId(conference?.id);
                     onOpen();
                   }}
                   className="text-danger"
                   color="danger">
-                  Отменить
-                </DropdownItem>
-                <DropdownItem
-                  href={'/conferences/' + conference.id + '/accept'}
-                  className="text-success">
-                  Принять
-                </DropdownItem>
-                <DropdownItem
-                  href={'/conferences/' + conference.id + '/decline'}
-                  className="text-danger">
-                  Отклонить
+                  Отменить проведение
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -154,19 +145,18 @@ export default function ConferencesList() {
             <>
               <ModalHeader className="flex flex-col gap-1">Подтвердите действие</ModalHeader>
               <ModalBody>
-                <p>Вы действительно хотите удалить научную работу?</p>
-                <p>Это действие нельзя отменить.</p>
+                <p>Вы действительно хотите отменить проведение конференции?</p>
               </ModalBody>
               <ModalFooter>
                 <Button variant="light" onPress={onClose}>
-                  Отменить
+                  Назад
                 </Button>
                 <Button
                   color="danger"
                   as={Link}
-                  href={'/conferences/' + modalReportId + '/delete'}
+                  href={'/conference/' + modalConferenceId + '/decline'}
                   onPress={onClose}>
-                  Удалить
+                  Отменить
                 </Button>
               </ModalFooter>
             </>
