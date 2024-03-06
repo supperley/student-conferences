@@ -20,7 +20,7 @@ const ApplyForm = ({ isOpen, onOpen, onOpenChange }) => {
           <>
             <ModalHeader className="flex flex-col gap-1">Подать заявку</ModalHeader>
             <ModalBody>
-              <Input autoFocus label="Тема научной работы" variant="bordered" required />
+              <Input label="Тема научной работы" variant="bordered" required />
               <Input label="Дополнительная информация" variant="bordered" />
               {/* <Input type="file" label="Файл научной работы (.pdf)" variant="bordered" /> */}
               <Button color="primary" startContent={<UploadIcon />}>

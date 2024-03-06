@@ -1,4 +1,4 @@
-const userConferences = [
+const userReports = [
   {
     id: 1,
     name: 'Расчет погрешностей',
@@ -245,34 +245,37 @@ const posts = [
 
 const conferences = [
   {
+    id: 1,
     title: 'Introducing v2.2.0 🚀',
     description:
       'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
     date: '2022-08-12T20:17:46.384Z',
     tags: ['ФИТР'],
-    author: 'Test',
+    administrator: { id: 1, name: 'Юрий Полозков' },
     image: 'https://nextui.org/blog/v2.2.0.jpg',
     url: '/conference/1',
     status: 'Active',
   },
   {
+    id: 2,
     title: 'Introducing v2.2.1 🚀',
     description:
       'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
     date: '2022-08-12T20:17:46.384Z',
     tags: ['ФММП'],
-    author: 'Test',
+    administrator: { id: 1, name: 'Юрий Полозков' },
     image: 'https://nextui.org/blog/v2.2.0.jpg',
     url: '/conference/2',
     status: 'Active',
   },
   {
+    id: 3,
     title: 'Introducing v2.2.2 🚀',
     description:
       'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
     date: '2022-08-12T20:17:46.384Z',
     tags: ['Test'],
-    author: 'Test',
+    administrator: { id: 1, name: 'Юрий Полозков' },
     image: 'https://nextui.org/blog/v2.2.0.jpg',
     url: '/conference/3',
     status: 'Active',
@@ -298,4 +301,4 @@ const conferenceStatus = [
   { label: 'Завершена', value: 'complete' },
 ];
 
-export { userConferences, conferences, users, posts, faculties, profile, conferenceStatus };
+export { userReports, conferences, users, posts, faculties, profile, conferenceStatus };

@@ -29,6 +29,7 @@ const Header = () => {
     { label: 'Главная', link: ROUTE_CONSTANTS.HOME },
     { label: 'Новости', link: ROUTE_CONSTANTS.NEWS },
     { label: 'Конференции', link: ROUTE_CONSTANTS.CONFERENCES },
+    { label: 'Конференции (Администрирование)', link: ROUTE_CONSTANTS.CONFERENCES_ADMIN },
     { label: 'Научные работы', link: ROUTE_CONSTANTS.REPORTS },
     { label: 'Пользователи', link: ROUTE_CONSTANTS.USERS },
     { label: 'Дашборд', link: ROUTE_CONSTANTS.DASHBOARD },
@@ -67,7 +68,7 @@ const Header = () => {
       </NavbarContent>
       <NavbarMenu>
         {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
+          <NavbarMenuItem key={`${item}-${index}`} onClick={() => setIsMenuOpen(false)}>
             <NavLink
               className={({ isActive }) => {
                 if (isActive) {

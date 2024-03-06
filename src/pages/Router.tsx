@@ -17,6 +17,7 @@ import Help from './Help/Help';
 import Profile from './Profile/Profile';
 import Conference from './Conference/Conference';
 import User from './User/User';
+import ConferencesAdmin from './ConferencesAdmin/ConferencesAdmin';
 
 const Router: FC = () => {
   return (
@@ -33,6 +34,7 @@ const Router: FC = () => {
         <Route path={ROUTE_CONSTANTS.PROFILE} element={<Profile />} />
         <Route path={ROUTE_CONSTANTS.SETTINGS} element={<Settings />} />
         <Route path={ROUTE_CONSTANTS.CONFERENCES} element={<Conferences />} />
+        <Route path={ROUTE_CONSTANTS.CONFERENCES_ADMIN} element={<ConferencesAdmin />} />
         <Route path={ROUTE_CONSTANTS.CONFERENCE} element={<Conference />} />
         <Route path={ROUTE_CONSTANTS.NOT_FOUND} element={<NotFound />} />
         <Route path={ROUTE_CONSTANTS.LOGIN} element={<Auth preSelected="login" />} />

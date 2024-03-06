@@ -18,7 +18,7 @@ import {
 } from '@nextui-org/react';
 import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import TableData from '../TableData/TableData';
-import { userReports } from '../../shared/data/mockData';
+import { conferences } from '../../shared/data/mockData';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
 
 const statusColorMap: Record<string, ChipProps['color']> = {
@@ -27,60 +27,66 @@ const statusColorMap: Record<string, ChipProps['color']> = {
   pending: 'warning',
 };
 
-export const reportStatusOptions = [
+export const conferencesStatusOptions = [
   { name: 'Активен', uid: 'accepted' },
   { name: 'Отклонен', uid: 'declined' },
   { name: 'На рассмотрении', uid: 'pending' },
 ];
 
-export const reportTableColumns = [
+export const conferencesTableColumns = [
   { name: 'ID', uid: 'id', sortable: true },
-  { name: 'Название', uid: 'name', sortable: true },
-  { name: 'Автор', uid: 'author', sortable: true },
-  { name: 'Конференция', uid: 'conference', sortable: true },
+  { name: 'Название конференции', uid: 'title', sortable: true },
+  { name: 'Администратор', uid: 'administrator', sortable: true },
   { name: 'Факультет', uid: 'faculty' },
   { name: 'Дата', uid: 'date', sortable: true },
   { name: 'Состояние', uid: 'status', sortable: true },
   { name: 'Действия', uid: 'actions' },
 ];
 
-const INITIAL_VISIBLE_COLUMNS = ['name', 'author', 'conference', 'date', 'status', 'actions'];
+const INITIAL_VISIBLE_COLUMNS = [
+  'title',
+  'administrator',
+  'conference',
+  'date',
+  'status',
+  'actions',
+];
 
 const searchInObjectArrayByUid = (arr, what) => arr.find((element) => element.uid === what);
 
-export default function ReportsList() {
+export default function ConferencesList() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [modalReportId, setModalReportId] = useState(undefined);
-  const renderCell = React.useCallback((report: User, columnKey: React.Key) => {
-    const cellValue = report[columnKey as keyof User];
+  const renderCell = React.useCallback((conference, columnKey: React.Key) => {
+    const cellValue = conference[columnKey];
 
     switch (columnKey) {
-      case 'name':
+      case 'title':
         return (
-          <Link href={'/report/' + report.id} className="text-sm font-medium">
+          <Link href={'/conferences/' + conference.id} className="text-sm font-medium">
             {cellValue}
           </Link>
         );
-      case 'author':
+      case 'administrator':
         return (
-          <Link href={'/user/' + report.author.id} className="text-sm">
+          <Link href={'/user/' + conference.administrator.id} className="text-sm">
             {cellValue.name}
           </Link>
         );
-      case 'conference':
-        return (
-          <div className="flex flex-col">
-            <Link href={'/conference/' + report.conference.id}>
-              <p className="text-bold text-small">{cellValue.name}</p>
-            </Link>
-            <Link href={'/conferences/?faculty=' + report.faculty}>
-              <p className="text-bold text-tiny text-default-400">{report.faculty}</p>
-            </Link>
-          </div>
-        );
+      // case 'conference':
+      //   return (
+      //     <div className="flex flex-col">
+      //       <Link href={'/conference/' + conference.id}>
+      //         <p className="text-bold text-small">{cellValue.name}</p>
+      //       </Link>
+      //       <Link href={'/conferences/?faculty=' + conference.faculty}>
+      //         <p className="text-bold text-tiny text-default-400">{conference.faculty}</p>
+      //       </Link>
+      //     </div>
+      //   );
       case 'faculty':
         return (
-          <Link href={'/conferences/?faculty=' + report.id} className="text-sm">
+          <Link href={'/conferences/?faculty=' + conference.id} className="text-sm">
             {cellValue}
           </Link>
         );
@@ -88,8 +94,8 @@ export default function ReportsList() {
         return formatToClientDate(cellValue);
       case 'status':
         return (
-          <Chip color={statusColorMap[report.status]} size="sm" variant="flat">
-            {searchInObjectArrayByUid(reportStatusOptions, cellValue)?.name || cellValue}
+          <Chip color={statusColorMap[conference.status]} size="sm" variant="flat">
+            {searchInObjectArrayByUid(conferencesStatusOptions, cellValue)?.name || cellValue}
           </Chip>
         );
       case 'actions':
@@ -102,20 +108,24 @@ export default function ReportsList() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem href={'/report/' + report.id}>Подробнее</DropdownItem>
+                <DropdownItem href={'/conferences/' + conference.id}>Подробнее</DropdownItem>
                 <DropdownItem
                   onPress={() => {
-                    setModalReportId(report?.id);
+                    setModalReportId(conference?.id);
                     onOpen();
                   }}
                   className="text-danger"
                   color="danger">
                   Отменить
                 </DropdownItem>
-                <DropdownItem href={'/report/' + report.id + '/accept'} className="text-success">
+                <DropdownItem
+                  href={'/conferences/' + conference.id + '/accept'}
+                  className="text-success">
                   Принять
                 </DropdownItem>
-                <DropdownItem href={'/report/' + report.id + '/decline'} className="text-danger">
+                <DropdownItem
+                  href={'/conferences/' + conference.id + '/decline'}
+                  className="text-danger">
                   Отклонить
                 </DropdownItem>
               </DropdownMenu>
@@ -132,10 +142,10 @@ export default function ReportsList() {
     <>
       <TableData
         renderCell={renderCell}
-        statusOptions={reportStatusOptions}
-        tableColumns={reportTableColumns}
+        statusOptions={conferencesStatusOptions}
+        tableColumns={conferencesTableColumns}
         initialVisibleColumns={INITIAL_VISIBLE_COLUMNS}
-        data={userReports}
+        data={conferences}
         isAddButton
       />
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -154,7 +164,7 @@ export default function ReportsList() {
                 <Button
                   color="danger"
                   as={Link}
-                  href={'/report/' + modalReportId + '/delete'}
+                  href={'/conferences/' + modalReportId + '/delete'}
                   onPress={onClose}>
                   Удалить
                 </Button>

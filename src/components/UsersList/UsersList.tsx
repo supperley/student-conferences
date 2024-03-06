@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   DropdownTrigger,
@@ -9,6 +9,12 @@ import {
   User,
   ChipProps,
   Link,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
 } from '@nextui-org/react';
 import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import TableData from '../TableData/TableData';
@@ -44,6 +50,8 @@ const searchInObjectArrayByUid = (arr, what) => arr.find((element) => element.ui
 type User = (typeof users)[0];
 
 export default function UsersList() {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [modalUserId, setModalUserId] = useState(undefined);
   const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof User];
 
@@ -82,13 +90,16 @@ export default function UsersList() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem href={'/user/' + user.id}>Подробнее</DropdownItem>
-                <DropdownItem href={'/user/' + user.id + '/edit'}>Редактировать</DropdownItem>
+                <DropdownItem href={'/user/' + user?.id}>Подробнее</DropdownItem>
+                <DropdownItem href={'/user/' + user?.id + '/edit'}>Редактировать</DropdownItem>
                 <DropdownItem
-                  href={'/user/' + user.id + '/delete'}
+                  onPress={() => {
+                    setModalUserId(user?.id);
+                    onOpen();
+                  }}
                   className="text-danger"
                   color="danger">
-                  Удалить
+                  Заблокировать
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -100,12 +111,38 @@ export default function UsersList() {
   }, []);
 
   return (
-    <TableData
-      data={users}
-      renderCell={renderCell}
-      statusOptions={userStatusOptions}
-      tableColumns={userTableColumns}
-      initialVisibleColumns={INITIAL_VISIBLE_COLUMNS}
-    />
+    <>
+      <TableData
+        data={users}
+        renderCell={renderCell}
+        statusOptions={userStatusOptions}
+        tableColumns={userTableColumns}
+        initialVisibleColumns={INITIAL_VISIBLE_COLUMNS}
+      />
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Подтвердите действие</ModalHeader>
+              <ModalBody>
+                <p>Вы действительно хотите заблокировать пользователя?</p>
+              </ModalBody>
+              <ModalFooter>
+                <Button variant="light" onPress={onClose}>
+                  Отменить
+                </Button>
+                <Button
+                  color="danger"
+                  as={Link}
+                  href={'/user/' + modalUserId + '/block'}
+                  onPress={onClose}>
+                  Заблокировать
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    </>
   );
 }
