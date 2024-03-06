@@ -3,6 +3,10 @@ import { CardList } from '../../components/CardList/CardList';
 import { Input, Select, SelectItem } from '@nextui-org/react';
 import { SearchIcon } from '../../shared/assets/icons/SearchIcon';
 
+export const chipDataMap = {
+  conference: { name: 'Конференция', color: 'success' },
+};
+
 const News = () => {
   return (
     <div className="w-full lg:px-16 my-10">
@@ -40,7 +44,7 @@ const News = () => {
           ))}
         </Select>
       </div>
-      <CardList list={news} />
+      <CardList list={news} chipDataMap={chipDataMap} />
     </div>
   );
 };

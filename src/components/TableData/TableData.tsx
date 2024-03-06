@@ -143,8 +143,8 @@ export default function TableData({
                 selectedKeys={statusFilter}
                 selectionMode="multiple"
                 onSelectionChange={setStatusFilter}>
-                {statusOptions.map((status) => (
-                  <DropdownItem key={status.uid}>{status.name}</DropdownItem>
+                {Object.keys(statusOptions).map((uid) => (
+                  <DropdownItem key={uid}>{statusOptions[uid].name}</DropdownItem>
                 ))}
               </DropdownMenu>
             </Dropdown>

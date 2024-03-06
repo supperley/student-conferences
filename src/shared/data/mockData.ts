@@ -303,7 +303,7 @@ const news = [
     url: '/news/2',
   },
   {
-    chip: 'Конференция',
+    chip: 'conference',
     title: 'Новость v2.2.2 🚀',
     description:
       'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
