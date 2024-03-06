@@ -103,6 +103,7 @@ export default function ReportsList() {
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem href={'/report/' + report.id}>Подробнее</DropdownItem>
+                <DropdownItem href={'/report/' + report.id + '/edit'}>Редактировать</DropdownItem>
                 <DropdownItem
                   onPress={() => {
                     setModalReportId(report?.id);

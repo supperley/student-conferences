@@ -12,7 +12,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { CustomCardSkeleton } from './CustomCardSkeleton';
 import { format, parseISO } from 'date-fns';
 
-export const CustomCard = (data) => {
+export const CustomCard = ({ data, chipDataMap }) => {
   const isLoaded = true;
 
   const handlePress = () => {
@@ -49,7 +49,12 @@ export const CustomCard = (data) => {
                   onPress={handlePress}>
                   {data.title}
                 </Link>
-                {data?.chip && <Chip color="success">{data?.chip}</Chip>}
+                {console.log(data)}
+                {data?.chip && (
+                  <Chip color={chipDataMap[data.chip]?.color}>
+                    {chipDataMap[data.chip]?.name || data.chip}
+                  </Chip>
+                )}
               </CardHeader>
               <CardBody className="pt-0 px-2 pb-1">
                 <Image src={data.image} />
