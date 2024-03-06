@@ -67,7 +67,7 @@ const Header = () => {
       </NavbarContent>
       <NavbarMenu>
         {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
+          <NavbarMenuItem key={`${item}-${index}`} onClick={() => setIsMenuOpen(false)}>
             <NavLink
               className={({ isActive }) => {
                 if (isActive) {

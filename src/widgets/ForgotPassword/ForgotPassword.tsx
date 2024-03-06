@@ -45,7 +45,7 @@ const ForgotPasswordCard = () => {
         required="Обязательное поле"
       />
       <ErrorMessage error={error} />
-      <Button size="lg" type="submit" color="primary" className="font-bold">
+      <Button size="lg" type="submit" color="primary" className="font-bold" variant="shadow">
         Восстановить пароль
       </Button>
       <Link className="justify-center my-2" href="/login">

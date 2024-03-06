@@ -12,11 +12,11 @@ import Reports from './Reports/Reports';
 import Auth from './Auth/Auth';
 import ForgotPassword from './ForgotPassword/ForgotPassword';
 import NewsPost from './NewsPost/NewsPost';
-import Conferences from './Conferences/Conferences';
 import Help from './Help/Help';
 import Profile from './Profile/Profile';
 import Conference from './Conference/Conference';
 import User from './User/User';
+import Conferences from './Conferences/Conferences';
 
 const Router: FC = () => {
   return (

@@ -1,5 +1,5 @@
 import { CardList } from '../../components/CardList/CardList';
-import { posts } from '../../shared/data/mockData';
+import { news } from '../../shared/data/mockData';
 
 const Help = () => {
   return (
@@ -10,7 +10,7 @@ const Help = () => {
           Инструкции для проведения студенческих научно-технических конференций БНТУ
         </h5>
       </div>
-      <CardList list={posts} />
+      <CardList list={news} />
     </div>
   );
 };
