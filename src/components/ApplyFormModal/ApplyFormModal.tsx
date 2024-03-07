@@ -9,8 +9,11 @@ import {
   Checkbox,
   Input,
   Link,
+  Select,
+  SelectItem,
 } from '@nextui-org/react';
 import { UploadIcon } from '../../shared/assets/icons/UploadIcon';
+import { users } from '../../shared/data/mockData';
 
 const ApplyFormModal = ({ isOpen, onOpen, onOpenChange }) => {
   return (
@@ -21,6 +24,13 @@ const ApplyFormModal = ({ isOpen, onOpen, onOpenChange }) => {
             <ModalHeader className="flex flex-col gap-1">Подать заявку</ModalHeader>
             <ModalBody>
               <Input label="Тема научной работы" variant="bordered" required />
+              <Select label="Научный руководитель" variant="bordered">
+                {users.map((user) => (
+                  <SelectItem key={user.id} value={user.id}>
+                    {user.name}
+                  </SelectItem>
+                ))}
+              </Select>
               <Input label="Дополнительная информация" variant="bordered" />
               {/* <Input type="file" label="Файл научной работы (.pdf)" variant="bordered" /> */}
               <Button color="primary" startContent={<UploadIcon />}>

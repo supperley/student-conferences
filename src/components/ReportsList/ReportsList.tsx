@@ -29,7 +29,7 @@ export const reportStatusMap = {
 
 export const reportTableColumns = [
   { name: 'ID', uid: 'id', sortable: true },
-  { name: 'Название', uid: 'name', sortable: true },
+  { name: 'Название', uid: 'title', sortable: true },
   { name: 'Автор', uid: 'author', sortable: true },
   { name: 'Конференция', uid: 'conference', sortable: true },
   { name: 'Факультет', uid: 'faculty' },
@@ -38,7 +38,7 @@ export const reportTableColumns = [
   { name: 'Действия', uid: 'actions' },
 ];
 
-const INITIAL_VISIBLE_COLUMNS = ['name', 'author', 'conference', 'date', 'status', 'actions'];
+const INITIAL_VISIBLE_COLUMNS = ['title', 'author', 'conference', 'date', 'status', 'actions'];
 
 export default function ReportsList() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -47,7 +47,7 @@ export default function ReportsList() {
     const cellValue = report[columnKey as keyof User];
 
     switch (columnKey) {
-      case 'name':
+      case 'title':
         return (
           <Link href={'/report/' + report.id} className="text-sm font-medium">
             {cellValue}

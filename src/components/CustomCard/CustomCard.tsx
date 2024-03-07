@@ -49,7 +49,6 @@ export const CustomCard = ({ data, chipDataMap }) => {
                   onPress={handlePress}>
                   {data.title}
                 </Link>
-                {console.log(data)}
                 {data?.chip && (
                   <Chip color={chipDataMap[data.chip]?.color}>
                     {chipDataMap[data.chip]?.name || data.chip}

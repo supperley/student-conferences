@@ -222,6 +222,7 @@ const conferences = [
     url: '/conference/1',
     status: 'completed',
     faculty: 'ФИТР',
+    link: 'https://meet.google.com',
   },
   {
     id: 2,
@@ -267,12 +268,15 @@ const conferences = [
 const userReports = [
   {
     id: 1,
-    name: 'Расчет погрешностей',
+    title: 'Расчет погрешностей',
+    description: 'test',
     conference: { id: 1, name: '77-я студенческая конференция' },
     author: { id: 1, name: 'Юрий Полозков' },
     faculty: 'ПОИСиТ',
     status: 'pending',
     date: '2022-08-12T20:17:46.384Z',
+    link: 'https://google.com',
+    thumb: 'https://nextui.org/blog/v2.2.0.jpg',
   },
 ];
 

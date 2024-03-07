@@ -1,14 +1,15 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { conferences } from '../../shared/data/mockData';
+import { userReports } from '../../shared/data/mockData';
 import { Link } from '@nextui-org/react';
 import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
 import { ConferenceCard } from '../../components/ConferenceCard/ConferenceCard';
+import { ReportCard } from '../../components/ReportCard/ReportCard';
 
-const Conference = () => {
+const Report = () => {
   const navigate = useNavigate();
   const params = useParams();
-  const conferenceId = params.conferenceId;
-  const conferenceData = conferences[conferenceId - 1];
+  const reportId = params.reportId;
+  const reportData = userReports[reportId - 1];
 
   return (
     <div className="w-full lg:px-16 my-10">
@@ -22,11 +23,11 @@ const Conference = () => {
           Вернуться назад
         </Link>
       </div>
-      <h1 className="mb-10 font-bold text-4xl">{conferenceData.title}</h1>
-      <ConferenceCard conferenceData={conferenceData} />
-      <div>{conferenceData.description}</div>
+      <h1 className="mb-10 font-bold text-4xl">{reportData.title}</h1>
+      <ReportCard reportData={reportData} />
+      <div>{reportData.description}</div>
     </div>
   );
 };
 
-export default Conference;
+export default Report;

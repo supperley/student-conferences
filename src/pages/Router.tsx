@@ -17,6 +17,7 @@ import Profile from './Profile/Profile';
 import Conference from './Conference/Conference';
 import User from './User/User';
 import Conferences from './Conferences/Conferences';
+import Report from './Report/Report';
 
 const Router: FC = () => {
   return (
@@ -39,6 +40,7 @@ const Router: FC = () => {
         <Route path={ROUTE_CONSTANTS.REGISTER} element={<Auth preSelected="sign-up" />} />
         <Route path={ROUTE_CONSTANTS.FORGOT_PASSWORD} element={<ForgotPassword />} />
         <Route path={ROUTE_CONSTANTS.REPORTS} element={<Reports />} />
+        <Route path={ROUTE_CONSTANTS.REPORT} element={<Report />} />
       </Route>
     </Routes>
   );
