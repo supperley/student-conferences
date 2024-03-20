@@ -15,7 +15,7 @@ import {
 import { UploadIcon } from '../../shared/assets/icons/UploadIcon';
 import { users } from '../../shared/data/mockData';
 
-const ApplyFormModal = ({ isOpen, onOpen, onOpenChange }) => {
+const ApplyReportModal = ({ isOpen, onOpen, onOpenChange }) => {
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center">
       <ModalContent>
@@ -64,4 +64,4 @@ const ApplyFormModal = ({ isOpen, onOpen, onOpenChange }) => {
   );
 };
 
-export default ApplyFormModal;
+export default ApplyReportModal;

@@ -55,12 +55,14 @@ export default function TableData({
     let filteredData = [...data];
 
     if (hasSearchFilter) {
-      filteredData = filteredData.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase()),
-      );
+      filteredData = filteredData.filter((item) => {
+        const searchColumn = tableColumns[1].uid;
+        return item[searchColumn].toLowerCase().includes(filterValue.toLowerCase());
+      });
     }
+
     if (statusFilter !== 'all' && Array.from(statusFilter).length !== statusOptions.length) {
-      filteredData = filteredData.filter((user) => Array.from(statusFilter).includes(user.status));
+      filteredData = filteredData.filter((item) => Array.from(statusFilter).includes(item.status));
     }
 
     return filteredData;

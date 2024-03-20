@@ -1,6 +1,6 @@
 import { Card, Link, Image, Button, useDisclosure, Chip, User } from '@nextui-org/react';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
-import ApplyFormModal from '../ApplyFormModal/ApplyFormModal';
+import ApplyReportModal from '../ApplyReportModal/ApplyReportModal';
 
 export const ReportCard = ({ reportData }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -13,8 +13,15 @@ export const ReportCard = ({ reportData }) => {
       <div className="flex flex-col justify-around gap-5">
         <div className="flex flex-col gap-4 min-w-[200px] md:min-w-[300px]">
           <div className="flex flex-col md:flex-row md:items-center gap-2">
-            <span className="w-[110px]">Факультет</span>
-            <div className="text-default-500 text-small">ФИТР</div>
+            <span className="w-[110px]">Конференция</span>
+            {/* <div className="text-default-500 text-small">ФИТР</div> */}
+            <Link
+              isBlock
+              href="/conference/1"
+              color="foreground"
+              className="text-default-500 text-small -ml-2">
+              77-я студенческая конференция
+            </Link>
           </div>
           <div className="flex flex-col md:flex-row md:items-center gap-2">
             <span className="w-[110px]">Состояние</span>
@@ -28,6 +35,22 @@ export const ReportCard = ({ reportData }) => {
           </div>
           <div className="flex flex-col md:flex-row md:items-center gap-2">
             <span className="w-[110px]">Автор</span>
+            <Link
+              isBlock
+              href="/news"
+              color="foreground"
+              className="text-default-500 text-small -ml-2">
+              <User
+                name={reportData.author.name}
+                description="Product Designer"
+                avatarProps={{
+                  src: 'https://i.pravatar.cc/150?u=a04258114e29026702d',
+                }}
+              />
+            </Link>
+          </div>
+          <div className="flex flex-col md:flex-row md:items-center gap-2">
+            <span className="w-[110px]">Научный руководитель</span>
             <Link
               isBlock
               href="/news"
@@ -58,7 +81,7 @@ export const ReportCard = ({ reportData }) => {
             </Button>
           )}
 
-          <ApplyFormModal isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} />
+          <ApplyReportModal isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} />
         </div>
       </div>
     </Card>

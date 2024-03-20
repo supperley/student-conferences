@@ -317,6 +317,39 @@ const news = [
     url: '/news/3',
     tags: ['ФИТР'],
   },
+  {
+    chip: 'conference',
+    title: 'Новость v2.2.2 🚀',
+    description:
+      'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
+    date: '2022-08-12T20:17:46.384Z',
+    author: 'Test',
+    image: 'https://nextui.org/blog/v2.2.0.jpg',
+    url: '/news/3',
+    tags: ['ФИТР'],
+  },
+  {
+    chip: 'conference',
+    title: 'Новость v2.2.2 🚀',
+    description:
+      'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
+    date: '2022-08-12T20:17:46.384Z',
+    author: 'Test',
+    image: 'https://nextui.org/blog/v2.2.0.jpg',
+    url: '/news/3',
+    tags: ['ФИТР'],
+  },
+  {
+    chip: 'conference',
+    title: 'Новость v2.2.2 🚀',
+    description:
+      'NextUI v2.2.0 is here! Dive into client-side router support, discover 3 new components including the Autocomplete, and more.',
+    date: '2022-08-12T20:17:46.384Z',
+    author: 'Test',
+    image: 'https://nextui.org/blog/v2.2.0.jpg',
+    url: '/news/3',
+    tags: ['ФИТР'],
+  },
 ];
 
 const newsStatus = [

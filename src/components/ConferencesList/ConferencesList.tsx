@@ -110,11 +110,11 @@ export default function ConferencesList() {
                 >
                   Редактировать
                 </DropdownItem>
-                <DropdownItem href={'/conference/' + conference.id + '/download'}>
+                <DropdownItem href={'/conference/' + conference.id + '/generatePDF'}>
                   Сформировать сборник
                 </DropdownItem>
                 <DropdownItem
-                  href={'/conference/' + conference.id + '/accept'}
+                  href={'/api/conference/' + conference.id + '/accept'}
                   className="text-warning"
                   color="warning">
                   Закрыть регистрацию
@@ -163,7 +163,7 @@ export default function ConferencesList() {
                 <Button
                   color="danger"
                   as={Link}
-                  href={'/conference/' + modalConferenceId + '/decline'}
+                  href={'/api/conference/' + modalConferenceId + '/decline'}
                   onPress={onClose}>
                   Отменить
                 </Button>

@@ -1,6 +1,6 @@
 import { Card, Link, Image, Button, useDisclosure, Chip, User } from '@nextui-org/react';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
-import ApplyFormModal from '../ApplyFormModal/ApplyFormModal';
+import ApplyReportModal from '../ApplyReportModal/ApplyReportModal';
 
 export const ConferenceCard = ({ conferenceData }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -15,6 +15,10 @@ export const ConferenceCard = ({ conferenceData }) => {
           <div className="flex flex-col md:flex-row md:items-center gap-2">
             <span className="w-[110px]">Факультет</span>
             <div className="text-default-500 text-small">ФИТР</div>
+          </div>
+          <div className="flex flex-col md:flex-row md:items-center gap-2">
+            <span className="w-[110px]">Кафедра</span>
+            <div className="text-default-500 text-small">ПОИСиТ</div>
           </div>
           <div className="flex flex-col md:flex-row md:items-center gap-2">
             <span className="w-[110px]">Состояние</span>
@@ -60,7 +64,7 @@ export const ConferenceCard = ({ conferenceData }) => {
             </Button>
           )}
 
-          <ApplyFormModal isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} />
+          <ApplyReportModal isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} />
         </div>
       </div>
     </Card>
