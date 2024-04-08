@@ -20,7 +20,7 @@ import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import TableData from '../TableData/TableData';
 import { userReports } from '../../shared/data/mockData';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
-import EditReportModal from '../EditReportModal/EditReportModal';
+import EditReportModal from '../modal/EditReportModal/EditReportModal';
 
 export const reportStatusMap = {
   accepted: { name: 'Активен', color: 'success' },

@@ -12,8 +12,8 @@ import {
   Select,
   SelectItem,
 } from '@nextui-org/react';
-import { UploadIcon } from '../../shared/assets/icons/UploadIcon';
-import { faculties, users } from '../../shared/data/mockData';
+import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
+import { faculties, users } from '../../../shared/data/mockData';
 
 const EditConferenceModal = ({ isOpen, onOpen, onOpenChange }) => {
   return (

@@ -1,6 +1,6 @@
 import { Card, Link, Image, Button, useDisclosure, Chip, User } from '@nextui-org/react';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
-import EditReportModal from '../EditReportModal/EditReportModal';
+import EditReportModal from '../modal/EditReportModal/EditReportModal';
 
 export const ReportCard = ({ reportData }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();

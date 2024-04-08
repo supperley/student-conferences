@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Textarea } from '@nextui-org/react';
 import Comment from '../Comment/Comment';
 
-export const Comments = () => {
+export const CommentsList = () => {
   const [isTextareaActive, setIsTextareaActive] = useState(false);
   const [newComment, setNewComment] = useState('');
 

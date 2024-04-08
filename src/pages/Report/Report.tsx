@@ -2,8 +2,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { userReports } from '../../shared/data/mockData';
 import { Button, Link } from '@nextui-org/react';
 import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
-import { Comments } from '../../components/Comments/Comments';
 import { ReportCard } from '../../components/ReportCard/ReportCard';
+import { CommentsList } from '../../components/CommentsList/CommentsList';
 
 const Report = () => {
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ const Report = () => {
       </div>
       <ReportCard reportData={reportData} />
       <div className="mb-5">{reportData.description}</div>
-      <Comments />
+      <CommentsList />
     </div>
   );
 };

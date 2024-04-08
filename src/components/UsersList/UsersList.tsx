@@ -19,7 +19,7 @@ import {
 import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import TableData from '../TableData/TableData';
 import { users } from '../../shared/data/mockData';
-import EditUserModal from '../EditUserModal/EditUserModal';
+import EditUserModal from '../modal/EditUserModal/EditUserModal';
 
 export const userStatusMap = {
   active: { name: 'Активен', color: 'success' },

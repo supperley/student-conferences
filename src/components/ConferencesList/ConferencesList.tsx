@@ -20,7 +20,7 @@ import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import TableData from '../TableData/TableData';
 import { conferences } from '../../shared/data/mockData';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
-import EditConferenceModal from '../EditConferenceModal/EditConferenceModal';
+import EditConferenceModal from '../modal/EditConferenceModal/EditConferenceModal';
 
 export const conferenceStatusMap = {
   registrationOpen: { name: 'Регистрация открыта', color: 'success' },
@@ -147,6 +147,9 @@ export default function ConferencesList() {
         initialVisibleColumns={INITIAL_VISIBLE_COLUMNS}
         data={conferences}
         isAddButton
+        onAddModal={() => {
+          onOpenModalEdit();
+        }}
       />
       <Modal isOpen={isOpenModalDialog} onOpenChange={onOpenChangeModalDialog}>
         <ModalContent>

@@ -27,6 +27,7 @@ export default function TableData({
   tableColumns,
   initialVisibleColumns,
   isAddButton = false,
+  onAddModal = () => {},
   data,
 }) {
   const [filterValue, setFilterValue] = React.useState('');
@@ -169,7 +170,12 @@ export default function TableData({
               </DropdownMenu>
             </Dropdown>
             {isAddButton && (
-              <Button color="primary" endContent={<PlusIcon />}>
+              <Button
+                color="primary"
+                endContent={<PlusIcon />}
+                onClick={() => {
+                  onAddModal();
+                }}>
                 Добавить
               </Button>
             )}

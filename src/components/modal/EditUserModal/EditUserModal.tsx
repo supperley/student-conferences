@@ -12,8 +12,6 @@ import {
   Select,
   SelectItem,
 } from '@nextui-org/react';
-import { UploadIcon } from '../../shared/assets/icons/UploadIcon';
-import { users } from '../../shared/data/mockData';
 
 const EditUserModal = ({ isOpen, onOpen, onOpenChange }) => {
   return (

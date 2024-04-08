@@ -1,8 +1,21 @@
 import { newsStatus, faculties, news } from '../../shared/data/mockData';
 import { CardList } from '../../components/CardList/CardList';
-import { Button, Input, Pagination, Select, SelectItem, Selection } from '@nextui-org/react';
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Input,
+  Pagination,
+  Select,
+  SelectItem,
+  Selection,
+} from '@nextui-org/react';
 import { SearchIcon } from '../../shared/assets/icons/SearchIcon';
 import React from 'react';
+import { PlusIcon } from '../../shared/assets/icons/PlusIcon';
+import { ChevronDownIcon } from '../../shared/assets/icons/ChevronDownIcon';
 
 export const chipDataMap = {
   conference: { name: 'Конференция', color: 'success' },
@@ -87,43 +100,59 @@ const News = () => {
           Все новости студенческих научно-технических конференций БНТУ
         </h5>
       </div>
-      <div className="mt-6 flex flex-col gap-5 justify-between items-center sm:flex-row w-full">
+      <div className="flex flex-col sm:flex-row mt-6 justify-between gap-3 items-center">
         <Input
-          classNames={{
-            base: 'h-14 max-w-sm',
-            mainWrapper: 'h-full',
-            inputWrapper: 'h-full',
-          }}
-          placeholder="Введите для поиска..."
-          size="sm"
           isClearable
+          className="w-full sm:max-w-[44%]"
+          placeholder="Введите для поиска..."
           startContent={<SearchIcon />}
           value={filterValue}
           onClear={() => onClear()}
           onValueChange={onSearchChange}
         />
-        <Select
-          label="Факультет"
-          selectionMode="multiple"
-          className="max-w-sm"
-          onSelectionChange={setFacultiesFilter}>
-          {faculties.map((faculty) => (
-            <SelectItem key={faculty.label} value={faculty.label}>
-              {faculty.label}
-            </SelectItem>
-          ))}
-        </Select>
-        <Select
-          label="Тип"
-          selectionMode="multiple"
-          className="max-w-sm"
-          onSelectionChange={setTypeFilter}>
-          {newsStatus.map((type) => (
-            <SelectItem key={type.value} value={type.value}>
-              {type.label}
-            </SelectItem>
-          ))}
-        </Select>
+        <div className="flex flex-col gap-3 sm:flex-row w-full sm:w-auto">
+          <Dropdown>
+            <DropdownTrigger className="flex">
+              <Button endContent={<ChevronDownIcon className="text-small" />} variant="flat">
+                Факультет
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              aria-label="Table Columns"
+              closeOnSelect={false}
+              // selectedKeys={statusFilter}
+              selectionMode="multiple"
+              onSelectionChange={setFacultiesFilter}>
+              {faculties.map((faculty) => (
+                <DropdownItem key={faculty.label} value={faculty.label}>
+                  {faculty.label}
+                </DropdownItem>
+              ))}
+            </DropdownMenu>
+          </Dropdown>
+          <Dropdown>
+            <DropdownTrigger className="flex">
+              <Button endContent={<ChevronDownIcon className="text-small" />} variant="flat">
+                Тип
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              aria-label="Table Columns"
+              closeOnSelect={false}
+              // selectedKeys={visibleColumns}
+              selectionMode="multiple"
+              onSelectionChange={setTypeFilter}>
+              {newsStatus.map((type) => (
+                <SelectItem key={type.value} value={type.value}>
+                  {type.label}
+                </SelectItem>
+              ))}
+            </DropdownMenu>
+          </Dropdown>
+          <Button color="primary" endContent={<PlusIcon />}>
+            Добавить
+          </Button>
+        </div>
       </div>
       <CardList list={items} chipDataMap={chipDataMap} />
       <div className="mt-6 py-2 px-2 flex justify-between items-center">
