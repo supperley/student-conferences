@@ -1,6 +1,6 @@
 import { Card, Link, Image, Button, useDisclosure, Chip, User } from '@nextui-org/react';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
-import ApplyReportModal from '../ApplyReportModal/ApplyReportModal';
+import EditReportModal from '../EditReportModal/EditReportModal';
 
 export const ReportCard = ({ reportData }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -71,17 +71,11 @@ export const ReportCard = ({ reportData }) => {
             Редактировать
           </Button>
           {reportData?.link && (
-            <Button
-              as={Link}
-              href={reportData.link}
-              color="secondary"
-              variant="solid"
-              className="md:w-full">
+            <Button as={Link} href={reportData.link} variant="solid" className="md:w-full">
               Скачать
             </Button>
           )}
-
-          <ApplyReportModal isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} />
+          <EditReportModal isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} />
         </div>
       </div>
     </Card>

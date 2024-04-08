@@ -20,6 +20,7 @@ import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import TableData from '../TableData/TableData';
 import { userReports } from '../../shared/data/mockData';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
+import EditReportModal from '../EditReportModal/EditReportModal';
 
 export const reportStatusMap = {
   accepted: { name: 'Активен', color: 'success' },
@@ -41,7 +42,16 @@ export const reportTableColumns = [
 const INITIAL_VISIBLE_COLUMNS = ['title', 'author', 'conference', 'date', 'status', 'actions'];
 
 export default function ReportsList() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isOpenModalDialog,
+    onOpen: onOpenModalDialog,
+    onOpenChange: onOpenChangeModalDialog,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenModalEdit,
+    onOpen: onOpenModalEdit,
+    onOpenChange: onOpenChangeModalEdit,
+  } = useDisclosure();
   const [modalReportId, setModalReportId] = useState(undefined);
   const renderCell = React.useCallback((report: User, columnKey: React.Key) => {
     const cellValue = report[columnKey as keyof User];
@@ -95,15 +105,21 @@ export default function ReportsList() {
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem href={'/report/' + report.id}>Подробнее</DropdownItem>
-                <DropdownItem href={'/report/' + report.id + '/edit'}>Редактировать</DropdownItem>
                 <DropdownItem
                   onPress={() => {
                     setModalReportId(report?.id);
-                    onOpen();
+                    onOpenChangeModalEdit();
+                  }}>
+                  Редактировать
+                </DropdownItem>
+                <DropdownItem
+                  onPress={() => {
+                    setModalReportId(report?.id);
+                    onOpenModalDialog();
                   }}
                   className="text-danger"
                   color="danger">
-                  Удалить заявку
+                  Отменить заявку
                 </DropdownItem>
                 <DropdownItem href={'/report/' + report.id + '/accept'} className="text-success">
                   Принять
@@ -129,9 +145,8 @@ export default function ReportsList() {
         tableColumns={reportTableColumns}
         initialVisibleColumns={INITIAL_VISIBLE_COLUMNS}
         data={userReports}
-        isAddButton
       />
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal isOpen={isOpenModalDialog} onOpenChange={onOpenChangeModalDialog}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -156,6 +171,11 @@ export default function ReportsList() {
           )}
         </ModalContent>
       </Modal>
+      <EditReportModal
+        isOpen={isOpenModalEdit}
+        onOpen={onOpenModalEdit}
+        onOpenChange={onOpenChangeModalEdit}
+      />
     </>
   );
 }

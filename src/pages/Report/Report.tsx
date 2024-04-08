@@ -1,8 +1,8 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { userReports } from '../../shared/data/mockData';
-import { Link } from '@nextui-org/react';
+import { Button, Link } from '@nextui-org/react';
 import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
-import { ConferenceCard } from '../../components/ConferenceCard/ConferenceCard';
+import { Comments } from '../../components/Comments/Comments';
 import { ReportCard } from '../../components/ReportCard/ReportCard';
 
 const Report = () => {
@@ -23,9 +23,23 @@ const Report = () => {
           Вернуться назад
         </Link>
       </div>
-      <h1 className="mb-10 font-bold text-4xl">{reportData.title}</h1>
+      <div className="flex justify-between">
+        <h1 className="font-bold text-4xl">{reportData.title}</h1>
+        <div className="flex gap-3">
+          <Button className="hover:text-success" variant="solid">
+            Принять
+          </Button>
+          <Button className="hover:text-danger" variant="solid">
+            Отклонить
+          </Button>
+          <Button className="hover:text-danger" variant="solid">
+            Отменить заявку
+          </Button>
+        </div>
+      </div>
       <ReportCard reportData={reportData} />
-      <div>{reportData.description}</div>
+      <div className="mb-5">{reportData.description}</div>
+      <Comments />
     </div>
   );
 };

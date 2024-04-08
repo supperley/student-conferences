@@ -269,7 +269,8 @@ const userReports = [
   {
     id: 1,
     title: 'Расчет погрешностей',
-    description: 'test',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Non fuga sit reprehenderit corporis atque asperiores, quidem suscipit repudiandae tenetur debitis quod libero labore aliquam sed ad odit, qui cupiditate eligendi?',
     conference: { id: 1, name: '77-я студенческая конференция' },
     author: { id: 1, name: 'Юрий Полозков' },
     faculty: 'ПОИСиТ',

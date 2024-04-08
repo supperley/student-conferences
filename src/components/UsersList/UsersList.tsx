@@ -19,6 +19,7 @@ import {
 import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import TableData from '../TableData/TableData';
 import { users } from '../../shared/data/mockData';
+import EditUserModal from '../EditUserModal/EditUserModal';
 
 export const userStatusMap = {
   active: { name: 'Активен', color: 'success' },
@@ -30,7 +31,7 @@ export const userTableColumns = [
   { name: 'ID', uid: 'id', sortable: true },
   { name: 'Имя', uid: 'name', sortable: true },
   { name: 'Возраст', uid: 'age', sortable: true },
-  { name: 'Роль', uid: 'role', sortable: true },
+  { name: 'Должность', uid: 'role', sortable: true },
   { name: 'Факультет', uid: 'faculty' },
   { name: 'Email', uid: 'email' },
   { name: 'Состояние', uid: 'status', sortable: true },
@@ -43,6 +44,11 @@ type User = (typeof users)[0];
 
 export default function UsersList() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isOpenModalEdit,
+    onOpen: onOpenModalEdit,
+    onOpenChange: onOpenChangeModalEdit,
+  } = useDisclosure();
   const [modalUserId, setModalUserId] = useState(undefined);
   const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof User];
@@ -87,7 +93,25 @@ export default function UsersList() {
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem href={'/user/' + user?.id}>Подробнее</DropdownItem>
-                <DropdownItem href={'/user/' + user?.id + '/edit'}>Редактировать</DropdownItem>
+                <DropdownItem
+                  onPress={() => {
+                    setModalUserId(user?.id);
+                    onOpenChangeModalEdit();
+                  }}>
+                  Редактировать
+                </DropdownItem>
+                <DropdownItem
+                  href={'api/user/' + user?.id + '/unblock'}
+                  className="text-success"
+                  color="success">
+                  Разблокировать
+                </DropdownItem>
+                <DropdownItem
+                  href={'api/user/' + user?.id + '/freeze'}
+                  className="text-warning"
+                  color="warning">
+                  Заморозить
+                </DropdownItem>
                 <DropdownItem
                   onPress={() => {
                     setModalUserId(user?.id);
@@ -130,7 +154,7 @@ export default function UsersList() {
                 <Button
                   color="danger"
                   as={Link}
-                  href={'/user/' + modalUserId + '/block'}
+                  href={'/api/user/' + modalUserId + '/block'}
                   onPress={onClose}>
                   Заблокировать
                 </Button>
@@ -139,6 +163,11 @@ export default function UsersList() {
           )}
         </ModalContent>
       </Modal>
+      <EditUserModal
+        isOpen={isOpenModalEdit}
+        onOpen={onOpenModalEdit}
+        onOpenChange={onOpenChangeModalEdit}
+      />
     </>
   );
 }

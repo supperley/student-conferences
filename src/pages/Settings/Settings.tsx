@@ -54,6 +54,20 @@ const Settings = () => {
               defaultValue="junior@nextui.org"
               className="max-w-[300px]"
             />
+            <Input
+              type="position"
+              label="Должность"
+              variant="bordered"
+              defaultValue="Ivanovich"
+              className="max-w-[300px]"
+            />
+            <Input
+              type="faculty"
+              label="Факультет"
+              variant="bordered"
+              defaultValue="Ivanovich"
+              className="max-w-[300px]"
+            />
             <Button color="primary" className="w-full max-w-[300px]">
               Сохранить
             </Button>
