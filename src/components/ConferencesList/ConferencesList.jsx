@@ -1,0 +1,172 @@
+import React, { useState } from 'react';
+import {
+  Button,
+  DropdownTrigger,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
+  Chip,
+  Link,
+  useDisclosure,
+} from '@nextui-org/react';
+import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
+import TableData from '../TableData/TableData';
+import { conferences } from '../../shared/data/mockData';
+import { formatToClientDate } from '../../shared/utils/formatToClientDate';
+import EditConferenceModal from '../modal/EditConferenceModal/EditConferenceModal';
+import AddConferenceModal from '../modal/AddConferenceModal/AddConferenceModal';
+import CancelConferenceModal from '../modal/CancelConferenceModal/CancelConferenceModal';
+
+export const conferenceStatusMap = {
+  registrationOpen: { name: 'Регистрация открыта', color: 'success' },
+  registrationClosed: { name: 'Регистрация закрыта', color: 'warning' },
+  declined: { name: 'Отменена', color: 'danger' },
+  completed: { name: 'Проведена', color: 'default' },
+};
+
+export const conferencesTableColumns = [
+  { name: 'ID', uid: 'id', sortable: true },
+  { name: 'Название конференции', uid: 'title', sortable: true },
+  { name: 'Администратор', uid: 'administrator', sortable: true },
+  { name: 'Факультет', uid: 'faculty', sortable: true },
+  { name: 'Дата', uid: 'date', sortable: true },
+  { name: 'Состояние', uid: 'status', sortable: true },
+  { name: 'Действия', uid: 'actions' },
+];
+
+const INITIAL_VISIBLE_COLUMNS = [
+  'title',
+  'administrator',
+  'conference',
+  'date',
+  'status',
+  'actions',
+];
+
+export default function ConferencesList() {
+  const {
+    isOpen: isOpenModalCancel,
+    onOpen: onOpenModalCancel,
+    onOpenChange: onOpenChangeModalCancel,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenModalEdit,
+    onOpen: onOpenModalEdit,
+    onOpenChange: onOpenChangeModalEdit,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenModalAdd,
+    onOpen: onOpenModalAdd,
+    onOpenChange: onOpenChangeModalAdd,
+  } = useDisclosure();
+  const [modalConferenceId, setModalConferenceId] = useState(undefined);
+  const renderCell = React.useCallback((conference, columnKey) => {
+    const cellValue = conference[columnKey];
+
+    switch (columnKey) {
+      case 'title':
+        return (
+          <Link href={'/conference/' + conference.id} className="text-sm font-medium">
+            {cellValue}
+          </Link>
+        );
+      case 'administrator':
+        return (
+          <Link href={'/user/' + conference.administrator.id} className="text-sm">
+            {cellValue.name}
+          </Link>
+        );
+      case 'faculty':
+        return (
+          <Link href={'/conferences/?faculty=' + conference.id} className="text-sm">
+            {cellValue}
+          </Link>
+        );
+      case 'date':
+        return formatToClientDate(cellValue);
+      case 'status':
+        return (
+          <Chip color={conferenceStatusMap[conference.status].color} size="sm" variant="flat">
+            {conferenceStatusMap[conference.status].name || cellValue}
+          </Chip>
+        );
+      case 'actions':
+        return (
+          <div className="relative flex justify-end items-center gap-2">
+            <Dropdown>
+              <DropdownTrigger>
+                <Button isIconOnly size="sm" variant="light">
+                  <VerticalDotsIcon className="text-default-300" />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu>
+                <DropdownItem href={'/conference/' + conference.id}>Подробнее</DropdownItem>
+                <DropdownItem
+                  onPress={() => {
+                    setModalConferenceId(conference?.id);
+                    onOpenModalEdit();
+                  }}
+                  // href={'/conference/' + conference.id}
+                >
+                  Редактировать
+                </DropdownItem>
+                <DropdownItem href={'/conference/' + conference.id + '/generatePDF'}>
+                  Сформировать сборник
+                </DropdownItem>
+                <DropdownItem
+                  href={'/api/conference/' + conference.id + '/accept'}
+                  className="text-warning"
+                  color="warning">
+                  Закрыть регистрацию
+                </DropdownItem>
+                <DropdownItem
+                  onPress={() => {
+                    setModalConferenceId(conference?.id);
+                    onOpenModalCancel();
+                  }}
+                  className="text-danger"
+                  color="danger">
+                  Отменить проведение
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+        );
+
+      default:
+        return cellValue;
+    }
+  }, []);
+
+  return (
+    <>
+      <TableData
+        renderCell={renderCell}
+        statusOptions={conferenceStatusMap}
+        tableColumns={conferencesTableColumns}
+        initialVisibleColumns={INITIAL_VISIBLE_COLUMNS}
+        data={conferences}
+        isAddButton
+        onAddModal={() => {
+          onOpenModalAdd();
+        }}
+      />
+      <CancelConferenceModal
+        isOpen={isOpenModalCancel}
+        onOpen={onOpenModalCancel}
+        onOpenChange={onOpenChangeModalCancel}
+        conferenceId={modalConferenceId}
+      />
+      <AddConferenceModal
+        isOpen={isOpenModalAdd}
+        onOpen={onOpenModalAdd}
+        onOpenChange={onOpenChangeModalAdd}
+      />
+      <EditConferenceModal
+        isOpen={isOpenModalEdit}
+        onOpen={onOpenModalEdit}
+        onOpenChange={onOpenChangeModalEdit}
+      />
+    </>
+  );
+}
