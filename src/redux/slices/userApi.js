@@ -1,6 +1,6 @@
-import { apiSlice } from './apiSlice';
+import { api } from './apiSlice';
 
-export const userApi = apiSlice.injectEndpoints({
+export const userApi = api.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (userData) => ({

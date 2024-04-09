@@ -1,9 +1,9 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 import { userApi } from '../slices/userApi';
 
-export const listenerMiddleware = createListenerMiddleware();
+export const listenerAuthMiddleware = createListenerMiddleware();
 
-listenerMiddleware.startListening({
+listenerAuthMiddleware.startListening({
   matcher: userApi.endpoints.login.matchFulfilled,
   effect: async (action, listenerApi) => {
     listenerApi.cancelActiveListeners();

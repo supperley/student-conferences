@@ -14,12 +14,14 @@ import { SearchIcon } from '../../shared/assets/icons/SearchIcon';
 import React from 'react';
 import { PlusIcon } from '../../shared/assets/icons/PlusIcon';
 import { ChevronDownIcon } from '../../shared/assets/icons/ChevronDownIcon';
+import { useGetAllNewsQuery } from '../../redux/slices/newsApi';
 
 export const chipDataMap = {
   conference: { name: 'Конференция', color: 'success' },
 };
 
 const News = () => {
+  const { data } = useGetAllNewsQuery();
   const [filterValue, setFilterValue] = React.useState('');
   const hasSearchFilter = Boolean(filterValue);
   const [facultiesFilter, setFacultiesFilter] = React.useState('all');
@@ -43,6 +45,7 @@ const News = () => {
   }, []);
 
   const filteredItems = React.useMemo(() => {
+    // let filteredData = [...data];
     let filteredData = [...news];
 
     if (hasSearchFilter) {

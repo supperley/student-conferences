@@ -15,15 +15,24 @@ import {
   NavbarMenuItem,
 } from '@nextui-org/react';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppLogo } from '../../shared/components/AppLogo';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { ROUTE_CONSTANTS } from '../../shared/config/routes';
-import { SwitchTheme } from '../../features/theme/switchTheme/ui/SwitchTheme';
+import { SwitchTheme } from '../SwitchTheme/SwitchTheme';
+import { logout, selectIsAuthenticated } from '../../redux/slices/userSlice';
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAuth, setIsAuth] = useState(true);
   const navigate = useNavigate();
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const dispatch = useDispatch();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    localStorage.removeItem('token');
+    navigate('/auth');
+  };
 
   const menuItems = [
     { label: 'Главная', link: ROUTE_CONSTANTS.HOME },
@@ -83,7 +92,7 @@ const Header = () => {
       </NavbarMenu>
       <NavbarContent as="div" className="items-center" justify="end">
         <SwitchTheme />
-        {isAuth ? (
+        {isAuthenticated ? (
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
               <Avatar
@@ -109,10 +118,7 @@ const Header = () => {
               <DropdownItem key="help_and_feedback" onPress={() => navigate(ROUTE_CONSTANTS.HELP)}>
                 Поддержка (Помощь)
               </DropdownItem>
-              <DropdownItem
-                key="logout"
-                color="danger"
-                onPress={() => navigate(ROUTE_CONSTANTS.LOGOUT)}>
+              <DropdownItem key="logout" color="danger" onPress={() => handleLogout()}>
                 Выйти
               </DropdownItem>
             </DropdownMenu>

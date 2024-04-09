@@ -15,7 +15,7 @@ const baseQuery = fetchBaseQuery({
 
 const baseQueryWithRetry = retry(baseQuery, { maxRetries: 0 });
 
-export const apiSlice = createApi({
+export const api = createApi({
   reducerPath: 'splitApi',
   baseQuery: baseQueryWithRetry,
   refetchOnMountOrArgChange: true,
