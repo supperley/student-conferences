@@ -14,7 +14,7 @@ import { SearchIcon } from '../../shared/assets/icons/SearchIcon';
 import React from 'react';
 import { PlusIcon } from '../../shared/assets/icons/PlusIcon';
 import { ChevronDownIcon } from '../../shared/assets/icons/ChevronDownIcon';
-import { useGetAllNewsQuery } from '../../redux/slices/newsApi';
+import { useGetAllNewsQuery } from '../../redux/api/newsApi';
 
 export const chipDataMap = {
   conference: { name: 'Конференция', color: 'success' },

@@ -6,7 +6,7 @@ export const ReportCard = ({ reportData }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
-    <Card className="my-10 p-5 sm:p-10 flex md:flex-row md:justify-around gap-5 md:gap-10">
+    <Card className="my-6 md:my-10 p-5 sm:p-10 flex md:flex-row md:justify-around gap-5 md:gap-10">
       <div className="max-w-xl self-center">
         <Image alt="NextUI hero Image" src={reportData.thumb} />
       </div>

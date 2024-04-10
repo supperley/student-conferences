@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { Button } from '@nextui-org/react';
-import { useRegisterMutation } from '../../redux/slices/userApi';
+import { useRegisterMutation } from '../../redux/api/userApi';
 import { useState } from 'react';
 import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
 import { hasErrorField } from '../../shared/utils/hasErrorField';

@@ -1,6 +1,6 @@
 import { Button, Link } from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
-import { useLazyCurrentQuery, useLoginMutation } from '../../redux/slices/userApi';
+import { useLazyCurrentQuery, useLoginMutation } from '../../redux/api/userApi';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { hasErrorField } from '../../shared/utils/hasErrorField';
