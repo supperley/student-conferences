@@ -126,12 +126,14 @@ const Header = () => {
         ) : (
           <>
             <NavbarItem className="flex">
-              <Link href={ROUTE_CONSTANTS.LOGIN}>Войти</Link>
-            </NavbarItem>
-            <NavbarItem>
-              <Button as={Link} color="primary" href={ROUTE_CONSTANTS.REGISTER} variant="flat">
-                Зарегистрироваться
+              <Button as={Link} color="primary" href={ROUTE_CONSTANTS.LOGIN} variant="flat">
+                Войти
               </Button>
+            </NavbarItem>
+            <NavbarItem className="hidden sm:flex lg:hidden xl:flex">
+              <Link href={ROUTE_CONSTANTS.REGISTER} className="text-sm">
+                Зарегистрироваться
+              </Link>
             </NavbarItem>
           </>
         )}

@@ -23,9 +23,9 @@ const Report = () => {
           Вернуться назад
         </Link>
       </div>
-      <div className="flex justify-between">
+      <div className="flex flex-col sm:flex-row justify-between gap-5">
         <h1 className="font-bold text-4xl">{reportData.title}</h1>
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <Button className="hover:text-success" variant="solid">
             Принять
           </Button>

@@ -117,7 +117,7 @@ export default function TableData({
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
-        <div className="flex pt-4 justify-between gap-3 items-center">
+        <div className="flex flex-col sm:flex-row pt-4 justify-between gap-3 items-center">
           <Input
             isClearable
             className="w-full sm:max-w-[44%]"
@@ -127,7 +127,7 @@ export default function TableData({
             onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-3">
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button endContent={<ChevronDownIcon className="text-small" />} variant="flat">
