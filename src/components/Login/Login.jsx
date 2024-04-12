@@ -1,7 +1,7 @@
 import { Button, Link } from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
 import { Input } from '../../components/Input/Input';
-import { useLazyCurrentQuery, useLoginMutation } from '../../redux/api/userApi';
+import { useLazyCurrentQuery, useLoginMutation } from '../../redux/api/authApi';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { hasErrorField } from '../../shared/utils/hasErrorField';
@@ -12,7 +12,7 @@ const Login = () => {
     mode: 'onChange',
     reValidateMode: 'onBlur',
     defaultValues: {
-      login: '',
+      email: '',
       password: '',
     },
   });
@@ -28,8 +28,9 @@ const Login = () => {
       await triggerCurrentQuery();
       navigate('/');
     } catch (err) {
+      console.log(err);
       if (hasErrorField(err)) {
-        setError(err.data.error);
+        setError(err.data.message);
       }
     }
   };
@@ -38,8 +39,8 @@ const Login = () => {
     <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
       <Input
         control={control}
-        name="login"
-        label="Имя пользователя"
+        name="email"
+        label="Электронная почта"
         variant="bordered"
         required="Обязательное поле"
       />

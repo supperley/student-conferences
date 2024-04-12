@@ -2,26 +2,6 @@ import { api } from '../slices/apiSlice';
 
 export const userApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation({
-      query: (userData) => ({
-        url: '/login',
-        method: 'POST',
-        body: userData,
-      }),
-    }),
-    register: builder.mutation({
-      query: (userData) => ({
-        url: '/register',
-        method: 'POST',
-        body: userData,
-      }),
-    }),
-    current: builder.query({
-      query: () => ({
-        url: '/current',
-        method: 'GET',
-      }),
-    }),
     getUserById: builder.query({
       query: (id) => ({
         url: `/users/${id}`,
@@ -38,16 +18,8 @@ export const userApi = api.injectEndpoints({
   }),
 });
 
-export const {
-  useRegisterMutation,
-  useLoginMutation,
-  useCurrentQuery,
-  useLazyCurrentQuery,
-  useGetUserByIdQuery,
-  useLazyGetUserByIdQuery,
-  useUpdateUserMutation,
-} = userApi;
+export const { useGetUserByIdQuery, useLazyGetUserByIdQuery, useUpdateUserMutation } = userApi;
 
 export const {
-  endpoints: { login, register, current, getUserById, updateUser },
+  endpoints: { getUserById, updateUser },
 } = userApi;
