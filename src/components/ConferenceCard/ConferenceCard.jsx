@@ -22,7 +22,7 @@ export const ConferenceCard = ({ conferenceData }) => {
           </div>
           <div className="flex flex-col md:flex-row md:items-center gap-2">
             <span className="w-[110px]">Состояние</span>
-            <Chip color="success" className="-ml-1">
+            <Chip color="success" variant="flat" className="-ml-1">
               Проводится
             </Chip>
           </div>
@@ -50,7 +50,7 @@ export const ConferenceCard = ({ conferenceData }) => {
           </div>
         </div>
         <div className="flex flex-col gap-3 md:items-center">
-          <Button onPress={onOpen} color="primary" variant="solid" className="md:w-full">
+          <Button onPress={onOpen} color="primary" className="md:w-full">
             Подать заявку
           </Button>
           {conferenceData?.link && (
@@ -58,7 +58,7 @@ export const ConferenceCard = ({ conferenceData }) => {
               as={Link}
               href={conferenceData.link}
               color="secondary"
-              variant="solid"
+              variant="flat"
               className="md:w-full">
               Присоединится к трансляции
             </Button>

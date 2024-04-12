@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { Button } from '@nextui-org/react';
-import { useRegisterMutation } from '../../redux/api/userApi';
+import { useRegisterMutation } from '../../redux/api/authApi';
 import { useState } from 'react';
 import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
 import { hasErrorField } from '../../shared/utils/hasErrorField';
@@ -29,8 +29,9 @@ const Register = ({ setSelected }) => {
       await register(data).unwrap();
       setSelected('login');
     } catch (err) {
+      console.log(err);
       if (hasErrorField(err)) {
-        setError(err.data.error);
+        setError(err.data.message);
       }
     }
   };

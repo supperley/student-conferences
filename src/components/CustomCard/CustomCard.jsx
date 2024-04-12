@@ -43,14 +43,14 @@ export const CustomCard = ({ data, chipDataMap }) => {
                 <Link
                   // as={NextLink}
                   className="font-semibold "
-                  href={data.url}
+                  href={data?.url}
                   size="lg"
                   underline="hover"
                   onPress={handlePress}>
                   {data.title}
                 </Link>
                 {data?.chip && (
-                  <Chip color={chipDataMap[data.chip]?.color}>
+                  <Chip color={chipDataMap[data.chip]?.color} variant="flat">
                     {chipDataMap[data.chip]?.name || data.chip}
                   </Chip>
                 )}

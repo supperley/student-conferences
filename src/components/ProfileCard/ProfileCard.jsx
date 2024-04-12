@@ -41,7 +41,7 @@ export const ProfileCard = ({ user, isPersonal = false }) => {
                 href={'mailto:' + user.email}
                 as={Link}
                 color="primary"
-                variant="solid"
+                variant="flat"
                 className="min-w-[250px] md:min-w-[200px] md:w-40"
                 endContent={<MailIcon />}>
                 Написать письмо

@@ -5,6 +5,6 @@ export function hasErrorField(err) {
     'data' in err &&
     typeof err.data === 'object' &&
     err.data !== null &&
-    'error' in err.data
+    'message' in err.data
   );
 }

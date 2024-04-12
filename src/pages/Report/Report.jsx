@@ -23,16 +23,16 @@ const Report = () => {
           Вернуться назад
         </Link>
       </div>
-      <div className="flex flex-col sm:flex-row justify-between gap-5">
+      <div className="flex flex-col lg:flex-row justify-between gap-5">
         <h1 className="font-bold text-4xl">{reportData.title}</h1>
         <div className="flex flex-col sm:flex-row gap-3">
-          <Button className="hover:text-success" variant="solid">
+          <Button color="success" variant="flat">
             Принять
           </Button>
-          <Button className="hover:text-danger" variant="solid">
+          <Button color="danger" variant="flat">
             Отклонить
           </Button>
-          <Button className="hover:text-danger" variant="solid">
+          <Button color="danger" variant="flat">
             Отменить заявку
           </Button>
         </div>

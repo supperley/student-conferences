@@ -25,7 +25,7 @@ export const ReportCard = ({ reportData }) => {
           </div>
           <div className="flex flex-col md:flex-row md:items-center gap-2">
             <span className="w-[110px]">Состояние</span>
-            <Chip color="success" className="-ml-1">
+            <Chip color="success" variant="flat" className="-ml-1">
               Принят
             </Chip>
           </div>
