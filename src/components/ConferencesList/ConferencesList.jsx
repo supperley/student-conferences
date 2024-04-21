@@ -66,13 +66,13 @@ export default function ConferencesList() {
     switch (columnKey) {
       case 'title':
         return (
-          <Link href={'/conference/' + conference.id} className="text-sm font-medium">
+          <Link href={'/conferences/' + conference.id} className="text-sm font-medium">
             {cellValue}
           </Link>
         );
       case 'administrator':
         return (
-          <Link href={'/user/' + conference.administrator.id} className="text-sm">
+          <Link href={'/users/' + conference.administrator.id} className="text-sm">
             {cellValue.name}
           </Link>
         );
@@ -100,21 +100,21 @@ export default function ConferencesList() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem href={'/conference/' + conference.id}>Подробнее</DropdownItem>
+                <DropdownItem href={'/conferences/' + conference.id}>Подробнее</DropdownItem>
                 <DropdownItem
                   onPress={() => {
                     setModalConferenceId(conference?.id);
                     onOpenModalEdit();
                   }}
-                  // href={'/conference/' + conference.id}
+                  // href={'/conferences/' + conference.id}
                 >
                   Редактировать
                 </DropdownItem>
-                <DropdownItem href={'/conference/' + conference.id + '/generatePDF'}>
+                <DropdownItem href={'/conferences/' + conference.id + '/generatePDF'}>
                   Сформировать сборник
                 </DropdownItem>
                 <DropdownItem
-                  href={'/api/conference/' + conference.id + '/accept'}
+                  href={'/api/conferences/' + conference.id + '/accept'}
                   className="text-warning"
                   color="warning">
                   Закрыть регистрацию

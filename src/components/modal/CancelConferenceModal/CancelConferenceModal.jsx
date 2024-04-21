@@ -26,7 +26,7 @@ const CancelConferenceModal = ({ isOpen, onOpen, onOpenChange, conferenceId }) =
               <Button
                 color="danger"
                 as={Link}
-                href={'/api/conference/' + conferenceId + '/decline'}
+                href={'/api/conferences/' + conferenceId + '/decline'}
                 onPress={onClose}>
                 Отменить
               </Button>

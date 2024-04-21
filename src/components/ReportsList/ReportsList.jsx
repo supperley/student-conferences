@@ -57,20 +57,20 @@ export default function ReportsList() {
     switch (columnKey) {
       case 'title':
         return (
-          <Link href={'/report/' + report.id} className="text-sm font-medium">
+          <Link href={'/reports/' + report.id} className="text-sm font-medium">
             {cellValue}
           </Link>
         );
       case 'author':
         return (
-          <Link href={'/user/' + report.author.id} className="text-sm">
+          <Link href={'/users/' + report.author.id} className="text-sm">
             {cellValue.name}
           </Link>
         );
       case 'conference':
         return (
           <div className="flex flex-col">
-            <Link href={'/conference/' + report.conference.id}>
+            <Link href={'/conferences/' + report.conference.id}>
               <p className="text-bold text-small">{cellValue.name}</p>
             </Link>
             <Link href={'/conferences/?faculty=' + report.faculty}>
