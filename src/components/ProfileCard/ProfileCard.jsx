@@ -2,6 +2,7 @@ import { Card, CardBody, Link, Image, Divider, Button } from '@nextui-org/react'
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
 import { ChevronDownIcon } from '../../shared/assets/icons/ChevronDownIcon';
 import { MailIcon } from '../../shared/assets/icons/MailIcon';
+import { BASE_URL } from '../../shared/config/constants';
 
 export const ProfileCard = ({ user, isPersonal = false }) => {
   return (
@@ -13,19 +14,20 @@ export const ProfileCard = ({ user, isPersonal = false }) => {
             height={250}
             shadow="sm"
             alt="Avatar"
-            src={user.avatar}
+            src={BASE_URL + user?.avatarUrl}
             className="aspect-square object-cover"
           />
         </div>
         <div className="w-full flex flex-col">
           <div className="flex justify-between items-center flex-col gap-5 md:flex-row">
             <div>
-              <h1 className="inline mb-5 font-bold text-3xl">{user.name}</h1>
-              <p className="font-normal w-full text-default-600">{user.description}</p>
-              <p className="font-normal w-full text-default-600">{user.email}</p>
-              <time className="block text-small text-default-500" dateTime={user.date}>
-                Дата регистрации: {formatToClientDate(user.date)}
+              <h1 className="inline mb-5 font-bold text-3xl">{user?.name}</h1>
+              <p className="font-normal w-full text-default-600">{user?.description}</p>
+              <p className="font-normal w-full text-default-600">{user?.email}</p>
+              <time className="block text-small text-default-500" dateTime={user?.date}>
+                Дата регистрации: {formatToClientDate(user?.createdAt)}
               </time>
+              <p className="text-small text-default-500">Роль: {user?.role}</p>
             </div>
             {isPersonal ? (
               <Button

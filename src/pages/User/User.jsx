@@ -3,10 +3,12 @@ import { ProfileCard } from '../../components/ProfileCard/ProfileCard';
 import { users } from '../../shared/data/mockData';
 import { Link } from '@nextui-org/react';
 import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
+import { useGetUserByIdQuery } from '../../redux/services/userApi';
 
 const User = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
+  const user = useGetUserByIdQuery(userId);
 
   return (
     <div className="my-10">
@@ -19,7 +21,7 @@ const User = () => {
         Вернуться назад
       </Link>
       <div>
-        <ProfileCard user={users[userId - 1]} />
+        <ProfileCard user={user} />
       </div>
     </div>
   );

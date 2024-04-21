@@ -17,29 +17,30 @@ import {
 } from '@nextui-org/react';
 import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import TableData from '../TableData/TableData';
-import { users } from '../../shared/data/mockData';
+// import { users } from '../../shared/data/mockData';
 import EditUserModal from '../modal/EditUserModal/EditUserModal';
+import { BASE_URL } from '../../shared/config/constants';
 
 export const userStatusMap = {
   active: { name: 'Активен', color: 'success' },
   paused: { name: 'Заморожен', color: 'warning' },
-  vacation: { name: 'Заблокирован', color: 'danger' },
+  blocked: { name: 'Заблокирован', color: 'danger' },
 };
 
 export const userTableColumns = [
-  { name: 'ID', uid: 'id', sortable: true },
+  { name: 'ID', uid: '_id', sortable: true },
   { name: 'Имя', uid: 'name', sortable: true },
-  { name: 'Возраст', uid: 'age', sortable: true },
-  { name: 'Должность', uid: 'role', sortable: true },
+  { name: 'Статус', uid: 'role', sortable: true },
+  { name: 'Кафедра', uid: 'department' },
   { name: 'Факультет', uid: 'faculty' },
   { name: 'Email', uid: 'email' },
   { name: 'Состояние', uid: 'status', sortable: true },
   { name: 'Действия', uid: 'actions' },
 ];
 
-const INITIAL_VISIBLE_COLUMNS = ['name', 'role', 'status', 'actions'];
+const INITIAL_VISIBLE_COLUMNS = ['name', 'department', 'faculty', 'status', 'actions'];
 
-export default function UsersList() {
+export default function UsersList({ users }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
     isOpen: isOpenModalEdit,
@@ -53,9 +54,9 @@ export default function UsersList() {
     switch (columnKey) {
       case 'name':
         return (
-          <Link href={'/user/' + user.id}>
+          <Link href={'/users/' + user._id}>
             <User
-              avatarProps={{ radius: 'lg', src: user.avatar }}
+              avatarProps={{ radius: 'lg', src: BASE_URL + user?.avatarUrl }}
               description={user.email}
               name={cellValue}>
               {user.email}
@@ -89,29 +90,29 @@ export default function UsersList() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem href={'/user/' + user?.id}>Подробнее</DropdownItem>
+                <DropdownItem href={'/users/' + user?._id}>Подробнее</DropdownItem>
                 <DropdownItem
                   onPress={() => {
-                    setModalUserId(user?.id);
+                    setModalUserId(user?._id);
                     onOpenChangeModalEdit();
                   }}>
                   Редактировать
                 </DropdownItem>
                 <DropdownItem
-                  href={'api/user/' + user?.id + '/unblock'}
+                  href={'api/users/' + user?._id + '/unblock'}
                   className="text-success"
                   color="success">
                   Разблокировать
                 </DropdownItem>
                 <DropdownItem
-                  href={'api/user/' + user?.id + '/freeze'}
+                  href={'api/users/' + user?._id + '/freeze'}
                   className="text-warning"
                   color="warning">
                   Заморозить
                 </DropdownItem>
                 <DropdownItem
                   onPress={() => {
-                    setModalUserId(user?.id);
+                    setModalUserId(user?._id);
                     onOpen();
                   }}
                   className="text-danger"
@@ -151,7 +152,7 @@ export default function UsersList() {
                 <Button
                   color="danger"
                   as={Link}
-                  href={'/api/user/' + modalUserId + '/block'}
+                  href={'/api/users/' + modalUserId + '/block'}
                   onPress={onClose}>
                   Заблокировать
                 </Button>

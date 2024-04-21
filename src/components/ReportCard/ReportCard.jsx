@@ -17,7 +17,7 @@ export const ReportCard = ({ reportData }) => {
             {/* <div className="text-default-500 text-small">ФИТР</div> */}
             <Link
               isBlock
-              href="/conference/1"
+              href="/conferences/1"
               color="foreground"
               className="text-default-500 text-small -ml-2">
               77-я студенческая конференция

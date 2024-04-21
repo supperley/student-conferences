@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { ROUTE_CONSTANTS } from '../shared/config/routes';
 import Home from './Home/Home';
@@ -18,6 +17,7 @@ import Conference from './Conference/Conference';
 import User from './User/User';
 import Conferences from './Conferences/Conferences';
 import Report from './Report/Report';
+import { ProtectedRoute } from '../components/ProtectedRoute/ProtectedRoute';
 
 const Router = () => {
   return (
@@ -25,22 +25,24 @@ const Router = () => {
       <Route element={<PageLayout />}>
         <Route path="*" element={<NotFound />} />
         <Route path={ROUTE_CONSTANTS.HOME} element={<Home />} />
-        <Route path={ROUTE_CONSTANTS.DASHBOARD} element={<Dashboard />} />
-        <Route path={ROUTE_CONSTANTS.USERS} element={<Users />} />
-        <Route path={ROUTE_CONSTANTS.USER} element={<User />} />
-        <Route path={ROUTE_CONSTANTS.NEWS} element={<News />} />
-        <Route path={ROUTE_CONSTANTS.NEWS_POST} element={<NewsPost />} />
-        <Route path={ROUTE_CONSTANTS.HELP} element={<Help />} />
-        <Route path={ROUTE_CONSTANTS.PROFILE} element={<Profile />} />
-        <Route path={ROUTE_CONSTANTS.SETTINGS} element={<Settings />} />
-        <Route path={ROUTE_CONSTANTS.CONFERENCES} element={<Conferences />} />
-        <Route path={ROUTE_CONSTANTS.CONFERENCE} element={<Conference />} />
-        <Route path={ROUTE_CONSTANTS.NOT_FOUND} element={<NotFound />} />
         <Route path={ROUTE_CONSTANTS.LOGIN} element={<Auth preSelected="login" />} />
         <Route path={ROUTE_CONSTANTS.REGISTER} element={<Auth preSelected="sign-up" />} />
         <Route path={ROUTE_CONSTANTS.FORGOT_PASSWORD} element={<ForgotPassword />} />
-        <Route path={ROUTE_CONSTANTS.REPORTS} element={<Reports />} />
-        <Route path={ROUTE_CONSTANTS.REPORT} element={<Report />} />
+        <Route path={ROUTE_CONSTANTS.NEWS} element={<News />} />
+        <Route path={ROUTE_CONSTANTS.NEWS_POST} element={<NewsPost />} />
+        <Route path={ROUTE_CONSTANTS.NOT_FOUND} element={<NotFound />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path={ROUTE_CONSTANTS.DASHBOARD} element={<Dashboard />} />
+          <Route path={ROUTE_CONSTANTS.USERS} element={<Users />} />
+          <Route path={ROUTE_CONSTANTS.USER} element={<User />} />
+          <Route path={ROUTE_CONSTANTS.HELP} element={<Help />} />
+          <Route path={ROUTE_CONSTANTS.PROFILE} element={<Profile />} />
+          <Route path={ROUTE_CONSTANTS.SETTINGS} element={<Settings />} />
+          <Route path={ROUTE_CONSTANTS.CONFERENCES} element={<Conferences />} />
+          <Route path={ROUTE_CONSTANTS.CONFERENCE} element={<Conference />} />
+          <Route path={ROUTE_CONSTANTS.REPORTS} element={<Reports />} />
+          <Route path={ROUTE_CONSTANTS.REPORT} element={<Report />} />
+        </Route>
       </Route>
     </Routes>
   );
