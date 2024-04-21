@@ -4,7 +4,7 @@ import { authApi } from '../services/authApi';
 const initialState = {
   user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
   isAuthenticated:
-    localStorage.getItem('user') || process.env.VERCEL_ENV === 'preview' ? true : false,
+    localStorage.getItem('user') || import.meta.env.VITE_VERCEL_ENV === 'preview' ? true : false,
 };
 
 const slice = createSlice({
