@@ -7,7 +7,7 @@ const Comment = () => {
       <CardHeader className="flex gap-3">
         <Link href="/news" color="foreground" className="text-default-500 text-small">
           <User
-            name={'Юрий Полозков'}
+            name={'Test'}
             description="Product Designer"
             avatarProps={{
               src: 'https://i.pravatar.cc/150?u=a042581f4e29026024d',

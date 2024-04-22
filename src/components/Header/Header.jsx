@@ -15,32 +15,34 @@ import {
   NavbarMenuItem,
 } from '@nextui-org/react';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { AppLogo } from '../../shared/components/AppLogo';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { ROUTE_CONSTANTS } from '../../shared/config/routes';
 import { SwitchTheme } from '../SwitchTheme/SwitchTheme';
-import { logout, selectIsAuthenticated } from '../../redux/slices/userSlice';
+import { selectIsAuthenticated, selectUser } from '../../redux/slices/authSlice';
+import { S3_URL } from '../../shared/config/constants';
+import { useLogoutMutation } from '../../redux/services/authApi';
 
 const Header = () => {
   const navigate = useNavigate();
   const isAuthenticated = useSelector(selectIsAuthenticated);
-  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [logout] = useLogoutMutation();
 
-  const handleLogout = () => {
-    dispatch(logout());
-    localStorage.removeItem('token');
-    navigate('/auth');
+  const handleLogout = async () => {
+    await logout();
+    navigate('/');
   };
 
   const menuItems = [
     { label: 'Главная', link: ROUTE_CONSTANTS.HOME },
     { label: 'Новости', link: ROUTE_CONSTANTS.NEWS },
-    { label: 'Конференции', link: ROUTE_CONSTANTS.CONFERENCES },
-    { label: 'Научные работы', link: ROUTE_CONSTANTS.REPORTS },
-    { label: 'Пользователи', link: ROUTE_CONSTANTS.USERS },
-    { label: 'Дашборд', link: ROUTE_CONSTANTS.DASHBOARD },
+    { label: 'Конференции', link: ROUTE_CONSTANTS.CONFERENCES, protected: true },
+    { label: 'Научные работы', link: ROUTE_CONSTANTS.REPORTS, protected: true },
+    { label: 'Пользователи', link: ROUTE_CONSTANTS.USERS, protected: true },
+    { label: 'Дашборд', link: ROUTE_CONSTANTS.DASHBOARD, protected: true },
   ];
 
   return (
@@ -59,36 +61,44 @@ const Header = () => {
       </NavbarContent>
 
       <NavbarContent className="hidden lg:flex gap-4" justify="center">
-        {menuItems.map((item, index) => (
-          <NavbarItem key={item.label}>
-            <NavLink
-              to={item.link}
-              className={({ isActive }) => {
-                if (isActive) {
-                  return 'text-center block font-bold text-primary p-2';
-                }
-                return 'text-center block hover:text-gray-500 p-2';
-              }}>
-              {item.label}
-            </NavLink>
-          </NavbarItem>
-        ))}
+        {menuItems.map((item, index) => {
+          if (!item.protected || (item.protected && isAuthenticated)) {
+            return (
+              <NavbarItem key={item.label}>
+                <NavLink
+                  to={item.link}
+                  className={({ isActive }) => {
+                    if (isActive) {
+                      return 'text-center block font-bold text-primary p-2';
+                    }
+                    return 'text-center block hover:text-gray-500 p-2';
+                  }}>
+                  {item.label}
+                </NavLink>
+              </NavbarItem>
+            );
+          }
+        })}
       </NavbarContent>
       <NavbarMenu>
-        {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`} onClick={() => setIsMenuOpen(false)}>
-            <NavLink
-              className={({ isActive }) => {
-                if (isActive) {
-                  return 'w-full block font-bold text-primary p-2';
-                }
-                return 'w-full block hover:text-gray-500 p-2';
-              }}
-              to={item.link}>
-              {item.label}
-            </NavLink>
-          </NavbarMenuItem>
-        ))}
+        {menuItems.map((item, index) => {
+          if (!item.protected || (item.protected && isAuthenticated)) {
+            return (
+              <NavbarMenuItem key={`${item}-${index}`} onClick={() => setIsMenuOpen(false)}>
+                <NavLink
+                  className={({ isActive }) => {
+                    if (isActive) {
+                      return 'w-full block font-bold text-primary p-2';
+                    }
+                    return 'w-full block hover:text-gray-500 p-2';
+                  }}
+                  to={item.link}>
+                  {item.label}
+                </NavLink>
+              </NavbarMenuItem>
+            );
+          }
+        })}
       </NavbarMenu>
       <NavbarContent as="div" className="items-center" justify="end">
         <SwitchTheme />
@@ -99,9 +109,9 @@ const Header = () => {
                 as="button"
                 className="transition-transform"
                 color="default"
-                name="Jason Hughes"
+                name={user?.login}
                 size="sm"
-                src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                src={S3_URL + user?.avatarUrl}
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
@@ -110,7 +120,7 @@ const Header = () => {
                 className="h-14 gap-2"
                 onPress={() => navigate(ROUTE_CONSTANTS.PROFILE)}>
                 <p className="font-semibold">Вход выполнен как</p>
-                <p className="font-semibold">admin@example.com</p>
+                <p className="font-semibold">{user?.email}</p>
               </DropdownItem>
               <DropdownItem key="settings" onPress={() => navigate(ROUTE_CONSTANTS.SETTINGS)}>
                 Настройки

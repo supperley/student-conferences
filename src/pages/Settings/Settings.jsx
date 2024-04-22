@@ -1,7 +1,11 @@
 import { Button, Card, CardBody, CardHeader, Image, Input } from '@nextui-org/react';
 import { CameraIcon } from '../../shared/assets/icons/CameraIcon';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../redux/slices/authSlice';
 
 const Settings = () => {
+  const user = useSelector(selectUser);
+
   return (
     <div className="my-10">
       <Card className="px-5 py-3">
@@ -30,42 +34,42 @@ const Settings = () => {
               type="name"
               label="Фамилия"
               variant="bordered"
-              defaultValue="Ivanov"
+              defaultValue={user?.last_name}
               className="max-w-[300px]"
             />
             <Input
               type="name"
               label="Имя"
               variant="bordered"
-              defaultValue="Ivan"
+              defaultValue={user?.first_name}
               className="max-w-[300px]"
             />
             <Input
               type="name"
               label="Отчество"
               variant="bordered"
-              defaultValue="Ivanovich"
+              defaultValue={user?.patronymic}
               className="max-w-[300px]"
             />
             <Input
               type="email"
               label="Email"
               variant="bordered"
-              defaultValue="junior@nextui.org"
+              defaultValue={user?.email}
               className="max-w-[300px]"
             />
             <Input
-              type="position"
+              type="department"
               label="Должность"
               variant="bordered"
-              defaultValue="Ivanovich"
+              defaultValue={user?.department}
               className="max-w-[300px]"
             />
             <Input
               type="faculty"
               label="Факультет"
               variant="bordered"
-              defaultValue="Ivanovich"
+              defaultValue={user?.faculty}
               className="max-w-[300px]"
             />
             <Button color="primary" className="w-full max-w-[300px]">

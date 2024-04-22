@@ -2,6 +2,12 @@ import { api } from '../slices/apiSlice';
 
 export const userApi = api.injectEndpoints({
   endpoints: (builder) => ({
+    getAllUsers: builder.query({
+      query: () => ({
+        url: `/users`,
+        method: 'GET',
+      }),
+    }),
     getUserById: builder.query({
       query: (id) => ({
         url: `/users/${id}`,
@@ -18,7 +24,12 @@ export const userApi = api.injectEndpoints({
   }),
 });
 
-export const { useGetUserByIdQuery, useLazyGetUserByIdQuery, useUpdateUserMutation } = userApi;
+export const {
+  useGetAllUsersQuery,
+  useGetUserByIdQuery,
+  useLazyGetUserByIdQuery,
+  useUpdateUserMutation,
+} = userApi;
 
 export const {
   endpoints: { getUserById, updateUser },

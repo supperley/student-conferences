@@ -2,13 +2,21 @@ import { Card, CardBody, Tab, Tabs } from '@nextui-org/react';
 import Login from '../../components/Login/Login';
 import { useEffect, useState } from 'react';
 import Register from '../../components/Register/Register';
+import { selectIsAuthenticated } from '../../redux/slices/authSlice';
+import { useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 
 const Auth = ({ preSelected = 'login' }) => {
   const [selected, setSelected] = useState(preSelected);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
 
   useEffect(() => {
     setSelected(preSelected);
   }, [preSelected]);
+
+  if (isAuthenticated) {
+    return <Navigate to={'/'} replace />;
+  }
 
   return (
     <>

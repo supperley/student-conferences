@@ -8,10 +8,11 @@ const Home = () => {
         <h1 className="text-slate-900 font-extrabold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-center dark:text-white">
           Студенческие конференции БНТУ
         </h1>
-        <p className="mt-6 text-lg text-slate-600 text-center max-w-3xl mx-auto dark:text-slate-400">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Non fuga sit reprehenderit
-          corporis atque asperiores, quidem suscipit repudiandae tenetur debitis quod libero labore
-          aliquam sed ad odit, qui cupiditate eligendi?
+        <p className="mt-8 text-lg text-slate-600 text-center max-w-4xl mx-auto dark:text-slate-400">
+          Добро пожаловать на сайт студенческих конференций Белорусского национального технического
+          университета (БНТУ)! Здесь вы найдете информацию о наших мероприятиях, где студенты
+          делятся своими исследованиями, обсуждают актуальные темы и вдохновляют друг друга на новые
+          достижения. Присоединяйтесь к нам в этом захватывающем путешествии открытий и знаний!
         </p>
         <div className="mt-4 sm:mt-6 flex justify-center space-x-6 text-sm">
           <Button href="/login" as={Link} color="primary" className="w-40 h-12 font-bold mt-3">

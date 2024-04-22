@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { Button } from '@nextui-org/react';
-import { useRegisterMutation } from '../../redux/api/authApi';
+import { useRegisterMutation } from '../../redux/services/authApi';
 import { useState } from 'react';
 import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
 import { hasErrorField } from '../../shared/utils/hasErrorField';
@@ -15,9 +15,11 @@ const Register = ({ setSelected }) => {
     mode: 'onChange',
     reValidateMode: 'onBlur',
     defaultValues: {
+      login: '',
       email: '',
       password: '',
-      name: '',
+      first_name: '',
+      last_name: '',
     },
   });
 
@@ -41,8 +43,8 @@ const Register = ({ setSelected }) => {
       <Input
         control={control}
         required="Обязательное поле"
-        label="Имя пользователя"
-        name="name"
+        label="Логин"
+        name="login"
         variant="bordered"
       />
       <Input
@@ -58,6 +60,20 @@ const Register = ({ setSelected }) => {
         name="password"
         label="Пароль"
         type="password"
+        required="Обязательное поле"
+        variant="bordered"
+      />
+      <Input
+        control={control}
+        name="last_name"
+        label="Фамилия"
+        required="Обязательное поле"
+        variant="bordered"
+      />
+      <Input
+        control={control}
+        name="first_name"
+        label="Имя"
         required="Обязательное поле"
         variant="bordered"
       />
