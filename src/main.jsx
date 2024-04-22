@@ -4,7 +4,7 @@ import './main.css';
 import { BrowserRouter } from 'react-router-dom';
 
 async function enableMocking() {
-  if (import.meta.env.VITE_VERCEL_ENV !== 'preview') {
+  if (!import.meta.env.VITE_VERCEL_ENV) {
     return;
   }
 

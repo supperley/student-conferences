@@ -21,7 +21,9 @@ export const ProfileCard = ({ user, isPersonal = false }) => {
         <div className="w-full flex flex-col">
           <div className="flex justify-between items-center flex-col gap-5 md:flex-row">
             <div>
-              <h1 className="inline mb-5 font-bold text-3xl">{user?.name}</h1>
+              <h1 className="inline mb-5 font-bold text-3xl">
+                {user?.first_name + ' ' + user?.last_name}
+              </h1>
               <p className="font-normal w-full text-default-600">{user?.description}</p>
               <p className="font-normal w-full text-default-600">{user?.email}</p>
               <time className="block text-small text-default-500" dateTime={user?.date}>

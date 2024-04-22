@@ -58,7 +58,7 @@ export default function UsersList({ users }) {
             <User
               avatarProps={{ radius: 'lg', src: S3_URL + user?.avatarUrl }}
               description={user.email}
-              name={cellValue}>
+              name={user?.first_name + ' ' + user?.last_name}>
               {user.email}
             </User>
           </Link>

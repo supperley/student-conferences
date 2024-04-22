@@ -66,19 +66,19 @@ export default function ConferencesList() {
     switch (columnKey) {
       case 'title':
         return (
-          <Link href={'/conferences/' + conference.id} className="text-sm font-medium">
+          <Link href={'/conferences/' + conference._id} className="text-sm font-medium">
             {cellValue}
           </Link>
         );
       case 'administrator':
         return (
-          <Link href={'/users/' + conference.administrator.id} className="text-sm">
+          <Link href={'/users/' + conference.administrator._id} className="text-sm">
             {cellValue.name}
           </Link>
         );
       case 'faculty':
         return (
-          <Link href={'/conferences/?faculty=' + conference.id} className="text-sm">
+          <Link href={'/conferences/?faculty=' + conference._id} className="text-sm">
             {cellValue}
           </Link>
         );
@@ -100,28 +100,28 @@ export default function ConferencesList() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem href={'/conferences/' + conference.id}>Подробнее</DropdownItem>
+                <DropdownItem href={'/conferences/' + conference._id}>Подробнее</DropdownItem>
                 <DropdownItem
                   onPress={() => {
-                    setModalConferenceId(conference?.id);
+                    setModalConferenceId(conference?._id);
                     onOpenModalEdit();
                   }}
-                  // href={'/conferences/' + conference.id}
+                  // href={'/conferences/' + conference._id}
                 >
                   Редактировать
                 </DropdownItem>
-                <DropdownItem href={'/conferences/' + conference.id + '/generatePDF'}>
+                <DropdownItem href={'/conferences/' + conference._id + '/generatePDF'}>
                   Сформировать сборник
                 </DropdownItem>
                 <DropdownItem
-                  href={'/api/conferences/' + conference.id + '/accept'}
+                  href={'/api/conferences/' + conference._id + '/accept'}
                   className="text-warning"
                   color="warning">
                   Закрыть регистрацию
                 </DropdownItem>
                 <DropdownItem
                   onPress={() => {
-                    setModalConferenceId(conference?.id);
+                    setModalConferenceId(conference?._id);
                     onOpenModalCancel();
                   }}
                   className="text-danger"

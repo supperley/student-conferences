@@ -57,20 +57,20 @@ export default function ReportsList() {
     switch (columnKey) {
       case 'title':
         return (
-          <Link href={'/reports/' + report.id} className="text-sm font-medium">
+          <Link href={'/reports/' + report._id} className="text-sm font-medium">
             {cellValue}
           </Link>
         );
       case 'author':
         return (
-          <Link href={'/users/' + report.author.id} className="text-sm">
+          <Link href={'/users/' + report.author._id} className="text-sm">
             {cellValue.name}
           </Link>
         );
       case 'conference':
         return (
           <div className="flex flex-col">
-            <Link href={'/conferences/' + report.conference.id}>
+            <Link href={'/conferences/' + report.conference._id}>
               <p className="text-bold text-small">{cellValue.name}</p>
             </Link>
             <Link href={'/conferences/?faculty=' + report.faculty}>
@@ -80,7 +80,7 @@ export default function ReportsList() {
         );
       case 'faculty':
         return (
-          <Link href={'/conferences/?faculty=' + report.id} className="text-sm">
+          <Link href={'/conferences/?faculty=' + report._id} className="text-sm">
             {cellValue}
           </Link>
         );
@@ -102,27 +102,27 @@ export default function ReportsList() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem href={'/report/' + report.id}>Подробнее</DropdownItem>
+                <DropdownItem href={'/report/' + report._id}>Подробнее</DropdownItem>
                 <DropdownItem
                   onPress={() => {
-                    setModalReportId(report?.id);
+                    setModalReportId(report?._id);
                     onOpenChangeModalEdit();
                   }}>
                   Редактировать
                 </DropdownItem>
                 <DropdownItem
                   onPress={() => {
-                    setModalReportId(report?.id);
+                    setModalReportId(report?._id);
                     onOpenModalDialog();
                   }}
                   className="text-danger"
                   color="danger">
                   Отменить заявку
                 </DropdownItem>
-                <DropdownItem href={'/report/' + report.id + '/accept'} className="text-success">
+                <DropdownItem href={'/report/' + report._id + '/accept'} className="text-success">
                   Принять
                 </DropdownItem>
-                <DropdownItem href={'/report/' + report.id + '/decline'} className="text-danger">
+                <DropdownItem href={'/report/' + report._id + '/decline'} className="text-danger">
                   Отклонить
                 </DropdownItem>
               </DropdownMenu>

@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import { ProfileCard } from '../../components/ProfileCard/ProfileCard';
-import { profile } from '../../shared/data/mockData';
 import { selectUser } from '../../redux/slices/authSlice';
 
 const Profile = () => {
