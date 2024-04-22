@@ -2,7 +2,7 @@ import { Card, CardBody, Link, Image, Divider, Button } from '@nextui-org/react'
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
 import { ChevronDownIcon } from '../../shared/assets/icons/ChevronDownIcon';
 import { MailIcon } from '../../shared/assets/icons/MailIcon';
-import { BASE_URL } from '../../shared/config/constants';
+import { S3_URL } from '../../shared/config/constants';
 
 export const ProfileCard = ({ user, isPersonal = false }) => {
   return (
@@ -14,7 +14,7 @@ export const ProfileCard = ({ user, isPersonal = false }) => {
             height={250}
             shadow="sm"
             alt="Avatar"
-            src={BASE_URL + user?.avatarUrl}
+            src={S3_URL + user?.avatarUrl}
             className="aspect-square object-cover"
           />
         </div>

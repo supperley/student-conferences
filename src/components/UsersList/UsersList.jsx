@@ -19,7 +19,7 @@ import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import TableData from '../TableData/TableData';
 // import { users } from '../../shared/data/mockData';
 import EditUserModal from '../modal/EditUserModal/EditUserModal';
-import { BASE_URL } from '../../shared/config/constants';
+import { S3_URL } from '../../shared/config/constants';
 
 export const userStatusMap = {
   active: { name: 'Активен', color: 'success' },
@@ -56,7 +56,7 @@ export default function UsersList({ users }) {
         return (
           <Link href={'/users/' + user._id}>
             <User
-              avatarProps={{ radius: 'lg', src: BASE_URL + user?.avatarUrl }}
+              avatarProps={{ radius: 'lg', src: S3_URL + user?.avatarUrl }}
               description={user.email}
               name={cellValue}>
               {user.email}

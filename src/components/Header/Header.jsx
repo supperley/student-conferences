@@ -21,7 +21,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { ROUTE_CONSTANTS } from '../../shared/config/routes';
 import { SwitchTheme } from '../SwitchTheme/SwitchTheme';
 import { selectIsAuthenticated, selectUser } from '../../redux/slices/authSlice';
-import { BASE_URL } from '../../shared/config/constants';
+import { S3_URL } from '../../shared/config/constants';
 import { useLogoutMutation } from '../../redux/services/authApi';
 
 const Header = () => {
@@ -111,7 +111,7 @@ const Header = () => {
                 color="default"
                 name={user?.login}
                 size="sm"
-                src={BASE_URL + user?.avatarUrl}
+                src={S3_URL + user?.avatarUrl}
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">

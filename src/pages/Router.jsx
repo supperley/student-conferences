@@ -20,8 +20,6 @@ import Report from './Report/Report';
 import { ProtectedRoute } from '../components/ProtectedRoute/ProtectedRoute';
 
 const Router = () => {
-  console.log(import.meta.env.VITE_VERCEL_ENV);
-
   return (
     <Routes>
       <Route element={<PageLayout />}>
