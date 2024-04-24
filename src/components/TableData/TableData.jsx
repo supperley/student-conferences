@@ -26,6 +26,7 @@ export default function TableData({
   isAddButton = false,
   onAddModal = () => {},
   data,
+  emptyText = 'Список пуст',
 }) {
   const [filterValue, setFilterValue] = React.useState('');
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
@@ -256,7 +257,7 @@ export default function TableData({
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'Список пуст'} items={sortedItems}>
+      <TableBody emptyContent={emptyText} items={sortedItems}>
         {(item) => (
           <TableRow key={item._id}>
             {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
