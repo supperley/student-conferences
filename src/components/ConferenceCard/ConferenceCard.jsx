@@ -1,6 +1,8 @@
 import { Card, Link, Image, Button, useDisclosure, Chip, User } from '@nextui-org/react';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
 import AddReportModal from '../modal/AddReportModal/AddReportModal';
+import { S3_URL } from '../../shared/config/constants';
+import { conferenceStatusMap } from '../../shared/data/dataMap';
 
 export const ConferenceCard = ({ conferenceData }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -8,28 +10,31 @@ export const ConferenceCard = ({ conferenceData }) => {
   return (
     <Card className="my-10 p-5 sm:p-10 flex md:flex-row md:justify-around gap-5 md:gap-10">
       <div className="max-w-xl self-center">
-        <Image alt="NextUI hero Image" src={conferenceData.image} />
+        <Image alt="NextUI hero Image" src={conferenceData?.imageUrl} />
       </div>
       <div className="flex flex-col justify-around gap-5">
         <div className="flex flex-col gap-4 min-w-[200px] md:min-w-[300px]">
           <div className="flex flex-col md:flex-row md:items-center gap-2">
             <span className="w-[110px]">Факультет</span>
-            <div className="text-default-500 text-small">ФИТР</div>
+            <div className="text-default-500 text-small">{conferenceData?.faculty}</div>
           </div>
-          <div className="flex flex-col md:flex-row md:items-center gap-2">
+          {/* <div className="flex flex-col md:flex-row md:items-center gap-2">
             <span className="w-[110px]">Кафедра</span>
-            <div className="text-default-500 text-small">ПОИСиТ</div>
-          </div>
+            <div className="text-default-500 text-small">{conferenceData?.department}</div>
+          </div> */}
           <div className="flex flex-col md:flex-row md:items-center gap-2">
             <span className="w-[110px]">Состояние</span>
-            <Chip color="success" variant="flat" className="-ml-1">
-              Проводится
+            <Chip
+              color={conferenceStatusMap[conferenceData?.status]?.color}
+              className="-ml-1"
+              variant="flat">
+              {conferenceStatusMap[conferenceData?.status]?.name || cellValue}
             </Chip>
           </div>
           <div className="flex flex-col md:flex-row md:items-center gap-2">
             <span className="w-[110px]">Дата</span>
             <div className="text-default-500 text-small">
-              {formatToClientDate(conferenceData.date)}
+              {formatToClientDate(conferenceData?.date)}
             </div>
           </div>
           <div className="flex flex-col md:flex-row md:items-center gap-2">
@@ -40,10 +45,14 @@ export const ConferenceCard = ({ conferenceData }) => {
               color="foreground"
               className="text-default-500 text-small -ml-2">
               <User
-                name={conferenceData.administrator.name}
+                name={
+                  conferenceData?.administrator?.first_name +
+                  ' ' +
+                  conferenceData?.administrator?.last_name
+                }
                 description="Product Designer"
                 avatarProps={{
-                  src: 'https://i.pravatar.cc/150?u=a04258114e29026702d',
+                  src: S3_URL + conferenceData?.administrator?.avatarUrl,
                 }}
               />
             </Link>
@@ -56,7 +65,7 @@ export const ConferenceCard = ({ conferenceData }) => {
           {conferenceData?.link && (
             <Button
               as={Link}
-              href={conferenceData.link}
+              href={conferenceData?.link}
               color="secondary"
               variant="flat"
               className="md:w-full">
