@@ -40,7 +40,7 @@ export const userTableColumns = [
 
 const INITIAL_VISIBLE_COLUMNS = ['name', 'department', 'faculty', 'status', 'actions'];
 
-export default function UsersList({ users }) {
+export default function UsersList({ users, emptyText }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
     isOpen: isOpenModalEdit,
@@ -136,6 +136,7 @@ export default function UsersList({ users }) {
         statusOptions={userStatusMap}
         tableColumns={userTableColumns}
         initialVisibleColumns={INITIAL_VISIBLE_COLUMNS}
+        emptyText={emptyText}
       />
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>

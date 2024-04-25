@@ -33,7 +33,7 @@ const Register = ({ setSelected }) => {
     } catch (err) {
       console.log(err);
       if (hasErrorField(err)) {
-        setError(err.data.message);
+        setError(err?.data?.message || err?.error);
       }
     }
   };
@@ -65,15 +65,15 @@ const Register = ({ setSelected }) => {
       />
       <Input
         control={control}
-        name="last_name"
-        label="Фамилия"
+        name="first_name"
+        label="Имя"
         required="Обязательное поле"
         variant="bordered"
       />
       <Input
         control={control}
-        name="first_name"
-        label="Имя"
+        name="last_name"
+        label="Фамилия"
         required="Обязательное поле"
         variant="bordered"
       />

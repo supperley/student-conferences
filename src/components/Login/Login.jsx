@@ -30,7 +30,7 @@ const Login = () => {
     } catch (err) {
       console.log(err);
       if (hasErrorField(err)) {
-        setError(err.data.message);
+        setError(err?.data?.message || err?.error);
       }
     }
   };

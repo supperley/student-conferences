@@ -5,12 +5,14 @@ const Users = () => {
   const { data, error, isLoading } = useGetAllUsersQuery();
 
   return error ? (
-    <>Oh no, there was an error</>
+    <UsersList users={[]} emptyText={'Произошла ошибка'} />
   ) : isLoading ? (
-    <>Loading...</>
+    <UsersList users={[]} emptyText={'Загрузка...'} />
   ) : data ? (
     <UsersList users={data} />
-  ) : null;
+  ) : (
+    <UsersList users={[]} />
+  );
 };
 
 export default Users;

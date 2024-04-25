@@ -20,7 +20,7 @@ const slice = createSlice({
       .addMatcher(authApi.endpoints.current.matchFulfilled, (state, action) => {
         state.isAuthenticated = true;
       })
-      .addMatcher(authApi.endpoints.logout.matchFulfilled, (state, action) => {
+      .addMatcher(authApi.endpoints.logout.matchPending, (state, action) => {
         state.user = null;
         state.isAuthenticated = false;
         localStorage.removeItem('user');

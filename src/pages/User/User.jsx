@@ -9,11 +9,7 @@ const User = () => {
   const { userId } = useParams();
   const { data, error, isLoading } = useGetUserByIdQuery(userId);
 
-  return error ? (
-    <>Oh no, there was an error</>
-  ) : isLoading ? (
-    <>Loading...</>
-  ) : data ? (
+  return (
     <div className="my-10">
       <Link
         isBlock
@@ -24,10 +20,16 @@ const User = () => {
         Вернуться назад
       </Link>
       <div>
-        <ProfileCard user={data} />
+        {error ? (
+          <ProfileCard />
+        ) : isLoading ? (
+          <ProfileCard emptyText="Загрузка..." />
+        ) : data ? (
+          <ProfileCard user={data} />
+        ) : null}
       </div>
     </div>
-  ) : null;
+  );
 };
 
 export default User;

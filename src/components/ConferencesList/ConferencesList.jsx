@@ -11,18 +11,11 @@ import {
 } from '@nextui-org/react';
 import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import TableData from '../TableData/TableData';
-import { conferences } from '../../shared/data/mockData';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
 import EditConferenceModal from '../modal/EditConferenceModal/EditConferenceModal';
 import AddConferenceModal from '../modal/AddConferenceModal/AddConferenceModal';
 import CancelConferenceModal from '../modal/CancelConferenceModal/CancelConferenceModal';
-
-export const conferenceStatusMap = {
-  registrationOpen: { name: 'Регистрация открыта', color: 'success' },
-  registrationClosed: { name: 'Регистрация закрыта', color: 'warning' },
-  declined: { name: 'Отменена', color: 'danger' },
-  completed: { name: 'Проведена', color: 'default' },
-};
+import { conferenceStatusMap } from '../../shared/data/dataMap';
 
 export const conferencesTableColumns = [
   { name: 'ID', uid: 'id', sortable: true },
@@ -43,7 +36,7 @@ const INITIAL_VISIBLE_COLUMNS = [
   'actions',
 ];
 
-export default function ConferencesList() {
+export default function ConferencesList({ conferences, emptyText }) {
   const {
     isOpen: isOpenModalCancel,
     onOpen: onOpenModalCancel,
@@ -73,7 +66,7 @@ export default function ConferencesList() {
       case 'administrator':
         return (
           <Link href={'/users/' + conference.administrator._id} className="text-sm">
-            {cellValue.name}
+            {cellValue.first_name + ' ' + cellValue.last_name}
           </Link>
         );
       case 'faculty':
@@ -86,8 +79,8 @@ export default function ConferencesList() {
         return formatToClientDate(cellValue);
       case 'status':
         return (
-          <Chip color={conferenceStatusMap[conference.status].color} size="sm" variant="flat">
-            {conferenceStatusMap[conference.status].name || cellValue}
+          <Chip color={conferenceStatusMap[conference?.status]?.color} size="sm" variant="flat">
+            {conferenceStatusMap[conference?.status]?.name || cellValue}
           </Chip>
         );
       case 'actions':
@@ -150,6 +143,7 @@ export default function ConferencesList() {
         onAddModal={() => {
           onOpenModalAdd();
         }}
+        emptyText={emptyText}
       />
       <CancelConferenceModal
         isOpen={isOpenModalCancel}

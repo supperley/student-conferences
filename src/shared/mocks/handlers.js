@@ -1,6 +1,6 @@
 import { HttpResponse, http } from 'msw';
 import { BASE_URL } from '../config/constants';
-import { user, users } from '../data/mockData';
+import { conferences, user, users } from '../data/mockData';
 
 export const handlers = [
   http.get(`${BASE_URL}/api/users`, () => {
@@ -12,5 +12,8 @@ export const handlers = [
   }),
   http.post(`${BASE_URL}/api/auth/login`, () => {
     return HttpResponse.json(user);
+  }),
+  http.get(`${BASE_URL}/api/conferences`, () => {
+    return HttpResponse.json(conferences);
   }),
 ];
