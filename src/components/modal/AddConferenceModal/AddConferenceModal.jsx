@@ -20,10 +20,12 @@ import { S3_URL } from '../../../shared/config/constants';
 import { useCreateConferenceMutation } from '../../../redux/services/conferenceApi';
 import { hasErrorField } from '../../../shared/utils/hasErrorField';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
 import { useGetAllUsersQuery } from '../../../redux/services/userApi';
 import { DevTool } from '@hookform/devtools';
+import { parseAbsoluteToLocal } from '@internationalized/date';
+import { I18nProvider } from '@react-aria/i18n';
 
 const AddConferenceModal = ({ isOpen, onOpen, onOpenChange }) => {
   const { handleSubmit, register, control } = useForm({
@@ -32,9 +34,9 @@ const AddConferenceModal = ({ isOpen, onOpen, onOpenChange }) => {
     defaultValues: {
       title: '',
       description: '',
-      date: '',
+      date: parseAbsoluteToLocal('2024-05-05T11:00:00Z'),
       administrator: '',
-      faculty: [],
+      faculties: new Set([]),
       link: '',
     },
   });
@@ -50,6 +52,8 @@ const AddConferenceModal = ({ isOpen, onOpen, onOpenChange }) => {
           const onSubmit = async (data) => {
             try {
               console.log(data);
+              data.date = data.date.toDate();
+              data.faculties = Array.from(data.faculties);
               await createConference(data).unwrap();
               onClose();
             } catch (err) {
@@ -124,24 +128,43 @@ const AddConferenceModal = ({ isOpen, onOpen, onOpenChange }) => {
                       </SelectItem>
                     )}
                   </Select>
-                  <Select
-                    name="faculty"
-                    label="Факультеты"
-                    {...register('faculty')}
-                    selectionMode="multiple"
-                    variant="bordered">
-                    {faculties.map((faculty) => (
-                      <SelectItem key={faculty.value} value={faculty.value}>
-                        {faculty.label}
-                      </SelectItem>
-                    ))}
-                  </Select>
-                  <DatePicker
+                  <Controller
+                    control={control}
+                    name="faculties"
+                    render={({
+                      field: { onChange: onChangeFaculties, onBlur, value: facultiesValue, ref },
+                    }) => (
+                      <Select
+                        // name="faculties"
+                        label="Факультеты"
+                        // {...register('faculties')}
+                        selectionMode="multiple"
+                        variant="bordered"
+                        selectedKeys={facultiesValue}
+                        onSelectionChange={onChangeFaculties}>
+                        {faculties.map((faculty) => (
+                          <SelectItem key={faculty.value} value={faculty.value}>
+                            {faculty.label}
+                          </SelectItem>
+                        ))}
+                      </Select>
+                    )}
+                  />
+                  <Controller
+                    control={control}
                     name="date"
-                    label="Дата проведения"
-                    {...register('date')}
-                    variant="bordered"
-                    showMonthAndYearPickers
+                    render={({ field: { onChange, onBlur, value, ref } }) => (
+                      <I18nProvider locale="ru-RU">
+                        <DatePicker
+                          label="Дата проведения"
+                          variant="bordered"
+                          granularity="minute"
+                          onChange={onChange}
+                          value={value}
+                          showMonthAndYearPickers
+                        />
+                      </I18nProvider>
+                    )}
                   />
                   <Input
                     name="link"
@@ -176,7 +199,7 @@ const AddConferenceModal = ({ isOpen, onOpen, onOpenChange }) => {
                   </div>
                 </ModalFooter>
               </form>
-              <DevTool control={control} />
+              {/* <DevTool control={control} /> */}
             </>
           );
         }}
