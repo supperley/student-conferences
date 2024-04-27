@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { conferences } from '../../shared/data/mockData';
-import { Link } from '@nextui-org/react';
+import { Button, Link } from '@nextui-org/react';
 import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
 import { ConferenceCard } from '../../components/ConferenceCard/ConferenceCard';
 import { useGetConferenceByIdQuery } from '../../redux/services/conferenceApi';
@@ -30,7 +30,14 @@ const Conference = () => {
         <div>Загрузка...</div>
       ) : conferenceData ? (
         <>
-          <h1 className="mb-10 font-bold text-4xl">{conferenceData?.title}</h1>
+          <div className="flex flex-col lg:flex-row justify-between gap-5">
+            <h1 className="font-bold text-4xl">{conferenceData?.title}</h1>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button color="primary" variant="flat">
+                Редактировать
+              </Button>
+            </div>
+          </div>
           <ConferenceCard conferenceData={conferenceData} />
           <div>{conferenceData?.description}</div>
         </>

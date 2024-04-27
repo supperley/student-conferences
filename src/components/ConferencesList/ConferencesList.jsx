@@ -16,6 +16,8 @@ import EditConferenceModal from '../modal/EditConferenceModal/EditConferenceModa
 import AddConferenceModal from '../modal/AddConferenceModal/AddConferenceModal';
 import CancelConferenceModal from '../modal/CancelConferenceModal/CancelConferenceModal';
 import { conferenceStatusMap } from '../../shared/data/dataMap';
+import { useUpdateConferenceMutation } from '../../redux/services/conferenceApi';
+import { hasErrorField } from '../../shared/utils/hasErrorField';
 
 export const conferencesTableColumns = [
   { name: 'ID', uid: 'id', sortable: true },
@@ -52,7 +54,21 @@ export default function ConferencesList({ conferences, emptyText }) {
     onOpen: onOpenModalAdd,
     onOpenChange: onOpenChangeModalAdd,
   } = useDisclosure();
-  const [modalConferenceId, setModalConferenceId] = useState(undefined);
+  const [modalConference, setModalConference] = useState(undefined);
+  const [updateConference, { isLoading }] = useUpdateConferenceMutation();
+
+  const onSubmitStatus = async (conference, status) => {
+    try {
+      const data = { id: conference._id, status };
+      await updateConference(data).unwrap();
+    } catch (err) {
+      console.log(err);
+      if (hasErrorField(err)) {
+        setError(err?.data?.message || err?.error);
+      }
+    }
+  };
+
   const renderCell = React.useCallback((conference, columnKey) => {
     const cellValue = conference[columnKey];
 
@@ -96,7 +112,7 @@ export default function ConferencesList({ conferences, emptyText }) {
                 <DropdownItem href={'/conferences/' + conference._id}>Подробнее</DropdownItem>
                 <DropdownItem
                   onPress={() => {
-                    setModalConferenceId(conference?._id);
+                    setModalConference(conference);
                     onOpenModalEdit();
                   }}
                   // href={'/conferences/' + conference._id}
@@ -106,21 +122,37 @@ export default function ConferencesList({ conferences, emptyText }) {
                 <DropdownItem href={'/conferences/' + conference._id + '/generatePDF'}>
                   Сформировать сборник
                 </DropdownItem>
-                <DropdownItem
-                  href={'/api/conferences/' + conference._id + '/accept'}
-                  className="text-warning"
-                  color="warning">
-                  Закрыть регистрацию
-                </DropdownItem>
-                <DropdownItem
-                  onPress={() => {
-                    setModalConferenceId(conference?._id);
-                    onOpenModalCancel();
-                  }}
-                  className="text-danger"
-                  color="danger">
-                  Отменить проведение
-                </DropdownItem>
+                {conference.status !== 'registrationOpen' && (
+                  <DropdownItem
+                    className="text-success"
+                    color="success"
+                    onPress={() => {
+                      onSubmitStatus(conference, 'registrationOpen');
+                    }}>
+                    Открыть регистрацию
+                  </DropdownItem>
+                )}
+                {conference.status == 'registrationOpen' && (
+                  <DropdownItem
+                    className="text-warning"
+                    color="warning"
+                    onPress={() => {
+                      onSubmitStatus(conference, 'registrationClosed');
+                    }}>
+                    Закрыть регистрацию
+                  </DropdownItem>
+                )}
+                {conference.status !== 'declined' && (
+                  <DropdownItem
+                    onPress={() => {
+                      setModalConference(conference);
+                      onOpenModalCancel();
+                    }}
+                    className="text-danger"
+                    color="danger">
+                    Отменить проведение
+                  </DropdownItem>
+                )}
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -149,7 +181,8 @@ export default function ConferencesList({ conferences, emptyText }) {
         isOpen={isOpenModalCancel}
         onOpen={onOpenModalCancel}
         onOpenChange={onOpenChangeModalCancel}
-        conferenceId={modalConferenceId}
+        conference={modalConference}
+        onSubmitStatus={onSubmitStatus}
       />
       <AddConferenceModal
         isOpen={isOpenModalAdd}

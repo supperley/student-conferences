@@ -20,6 +20,7 @@ import TableData from '../TableData/TableData';
 // import { users } from '../../shared/data/mockData';
 import EditUserModal from '../modal/EditUserModal/EditUserModal';
 import { S3_URL } from '../../shared/config/constants';
+import { useUpdateUserMutation } from '../../redux/services/userApi';
 
 export const userStatusMap = {
   active: { name: 'Активен', color: 'success' },
@@ -47,7 +48,21 @@ export default function UsersList({ users, emptyText }) {
     onOpen: onOpenModalEdit,
     onOpenChange: onOpenChangeModalEdit,
   } = useDisclosure();
-  const [modalUserId, setModalUserId] = useState(undefined);
+  const [modalUser, setModalUser] = useState(undefined);
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
+
+  const onSubmit = async (data) => {
+    try {
+      await updateUser(data, data._id).unwrap();
+      // setSelected('login');
+    } catch (err) {
+      console.log(err);
+      if (hasErrorField(err)) {
+        setError(err?.data?.message || err?.error);
+      }
+    }
+  };
+
   const renderCell = React.useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
 
@@ -93,26 +108,27 @@ export default function UsersList({ users, emptyText }) {
                 <DropdownItem href={'/users/' + user?._id}>Подробнее</DropdownItem>
                 <DropdownItem
                   onPress={() => {
-                    setModalUserId(user?._id);
+                    setModalUser(user);
                     onOpenChangeModalEdit();
                   }}>
                   Редактировать
                 </DropdownItem>
                 <DropdownItem
-                  href={'api/users/' + user?._id + '/unblock'}
+                  // href={'api/users/' + user?._id + '/unblock'}
                   className="text-success"
-                  color="success">
+                  color="success"
+                  onPress={onSubmit(user)}>
                   Разблокировать
                 </DropdownItem>
                 <DropdownItem
-                  href={'api/users/' + user?._id + '/freeze'}
+                  // href={'api/users/' + user?._id + '/freeze'}
                   className="text-warning"
                   color="warning">
                   Заморозить
                 </DropdownItem>
                 <DropdownItem
                   onPress={() => {
-                    setModalUserId(user?._id);
+                    setModalUser(user);
                     onOpen();
                   }}
                   className="text-danger"
@@ -153,7 +169,7 @@ export default function UsersList({ users, emptyText }) {
                 <Button
                   color="danger"
                   as={Link}
-                  href={'/api/users/' + modalUserId + '/block'}
+                  href={'/api/users/' + modalUser._id + '/block'}
                   onPress={onClose}>
                   Заблокировать
                 </Button>

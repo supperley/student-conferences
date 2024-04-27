@@ -19,7 +19,7 @@ import { faculties } from '../../../shared/data/mockData';
 import { S3_URL } from '../../../shared/config/constants';
 import { useCreateConferenceMutation } from '../../../redux/services/conferenceApi';
 import { hasErrorField } from '../../../shared/utils/hasErrorField';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
 import { useGetAllUsersQuery } from '../../../redux/services/userApi';
@@ -38,12 +38,20 @@ const AddConferenceModal = ({ isOpen, onOpen, onOpenChange }) => {
       administrator: '',
       faculties: new Set([]),
       link: '',
+      image: '',
     },
   });
 
   const { data: users, error: usersError, isLoading: isUsersLoading } = useGetAllUsersQuery();
   const [createConference, { isLoading }] = useCreateConferenceMutation();
   const [error, setError] = useState('');
+  const uploaderRef = useRef(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const handleImageChange = () => {
+    if (event.target.files !== null) {
+      setSelectedFile(event.target.files[0]);
+    }
+  };
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center" size="2xl">
@@ -51,10 +59,17 @@ const AddConferenceModal = ({ isOpen, onOpen, onOpenChange }) => {
         {(onClose) => {
           const onSubmit = async (data) => {
             try {
-              console.log(data);
-              data.date = data.date.toDate();
-              data.faculties = Array.from(data.faculties);
-              await createConference(data).unwrap();
+              const formData = new FormData();
+              data.title && formData.append('title', data.title);
+              data.description && formData.append('description', data.description);
+              data.date && formData.append('date', data.date.toDate());
+              data.administrator && formData.append('administrator', data.administrator);
+              data.status && formData.append('status', Array.from(data.status));
+              data.faculties && formData.append('faculties', Array.from(data.faculties));
+              data.link && formData.append('link', data.link);
+              selectedFile && formData.append('image', selectedFile);
+
+              await createConference(formData).unwrap();
               onClose();
             } catch (err) {
               console.log(err);
@@ -74,7 +89,8 @@ const AddConferenceModal = ({ isOpen, onOpen, onOpenChange }) => {
                     label="Название конференции"
                     {...register('title')}
                     variant="bordered"
-                    required
+                    isRequired
+                    errorMessage="Обязательное поле"
                   />
                   <Textarea
                     name="description"
@@ -83,12 +99,14 @@ const AddConferenceModal = ({ isOpen, onOpen, onOpenChange }) => {
                     variant="bordered"
                   />
                   <Select
+                    isRequired
+                    errorMessage="Обязательное поле"
                     name="administrator"
                     label="Администратор конференции"
                     variant="bordered"
                     isLoading={isUsersLoading}
                     {...register('administrator')}
-                    items={users}
+                    items={users || []}
                     classNames={{
                       label: 'group-data-[filled=true]:-translate-y-6',
                       trigger: 'min-h-20',
@@ -135,9 +153,7 @@ const AddConferenceModal = ({ isOpen, onOpen, onOpenChange }) => {
                       field: { onChange: onChangeFaculties, onBlur, value: facultiesValue, ref },
                     }) => (
                       <Select
-                        // name="faculties"
                         label="Факультеты"
-                        // {...register('faculties')}
                         selectionMode="multiple"
                         variant="bordered"
                         selectedKeys={facultiesValue}
@@ -168,27 +184,36 @@ const AddConferenceModal = ({ isOpen, onOpen, onOpenChange }) => {
                   />
                   <Input
                     name="link"
+                    type="url"
                     label="Ссылка на трансляцию"
                     {...register('link')}
                     variant="bordered"
                   />
-                  {/* <Input name="imageUrl" type="file" label="Файл научной работы (.pdf)" variant="bordered" /> */}
-                  <Button color="primary" startContent={<UploadIcon />}>
-                    Загрузить изображение
+                  {/* <Input
+                    name="imageUrl"
+                    type="file"
+                    label="Загрузить изображение"
+                    variant="bordered"
+                  /> */}
+                  <input
+                    ref={uploaderRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+                  <Button
+                    startContent={!selectedFile?.name && <UploadIcon />}
+                    onClick={() => uploaderRef.current.click()}
+                    variant="flat">
+                    {selectedFile?.name || 'Загрузить изображение'}
                   </Button>
-                  <Checkbox
-                    required
-                    classNames={{
-                      label: 'text-small',
-                    }}>
-                    Согласен с политикой обработки персональных данных
-                  </Checkbox>
                 </ModalBody>
-                <ModalFooter className="justify-between">
-                  <ErrorMessage error={error} />
+                <ModalFooter className="justify-between items-center">
                   <Link color="primary" href="/help" size="sm">
                     Возникли вопросы?
                   </Link>
+                  <ErrorMessage error={error} />
                   <div className="flex gap-2">
                     <Button variant="flat" onPress={onClose}>
                       Отменить

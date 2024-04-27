@@ -24,7 +24,7 @@ const Report = () => {
         </Link>
       </div>
       <div className="flex flex-col lg:flex-row justify-between gap-5">
-        <h1 className="font-bold text-4xl">{reportData.title}</h1>
+        <h1 className="font-bold text-4xl">{reportData?.title}</h1>
         <div className="flex flex-col sm:flex-row gap-3">
           <Button color="success" variant="flat">
             Принять
