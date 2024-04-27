@@ -5,7 +5,6 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  Checkbox,
   Input,
   Link,
   Select,
@@ -27,7 +26,7 @@ import { DevTool } from '@hookform/devtools';
 import { parseAbsoluteToLocal } from '@internationalized/date';
 import { I18nProvider } from '@react-aria/i18n';
 
-const AddConferenceModal = ({ isOpen, onOpen, onOpenChange }) => {
+const AddConferenceModal = ({ isOpen, onOpenChange }) => {
   const { handleSubmit, register, control } = useForm({
     mode: 'onChange',
     reValidateMode: 'onBlur',
@@ -64,8 +63,11 @@ const AddConferenceModal = ({ isOpen, onOpen, onOpenChange }) => {
               data.description && formData.append('description', data.description);
               data.date && formData.append('date', data.date.toDate());
               data.administrator && formData.append('administrator', data.administrator);
-              data.status && formData.append('status', Array.from(data.status));
-              data.faculties && formData.append('faculties', Array.from(data.faculties));
+              data.status && formData.append('status', data.status);
+              data.faculties &&
+                Array.from(data.faculties).forEach((faculty) => {
+                  formData.append('faculties', faculty);
+                });
               data.link && formData.append('link', data.link);
               selectedFile && formData.append('image', selectedFile);
 
@@ -189,12 +191,6 @@ const AddConferenceModal = ({ isOpen, onOpen, onOpenChange }) => {
                     {...register('link')}
                     variant="bordered"
                   />
-                  {/* <Input
-                    name="imageUrl"
-                    type="file"
-                    label="Загрузить изображение"
-                    variant="bordered"
-                  /> */}
                   <input
                     ref={uploaderRef}
                     type="file"
@@ -218,8 +214,8 @@ const AddConferenceModal = ({ isOpen, onOpen, onOpenChange }) => {
                     <Button variant="flat" onPress={onClose}>
                       Отменить
                     </Button>
-                    <Button color="primary" type="submit">
-                      Сохранить
+                    <Button color="primary" type="submit" isLoading={isLoading}>
+                      Добавить
                     </Button>
                   </div>
                 </ModalFooter>

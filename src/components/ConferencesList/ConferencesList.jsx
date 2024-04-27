@@ -18,6 +18,7 @@ import CancelConferenceModal from '../modal/CancelConferenceModal/CancelConferen
 import { conferenceStatusMap } from '../../shared/data/dataMap';
 import { useUpdateConferenceMutation } from '../../redux/services/conferenceApi';
 import { hasErrorField } from '../../shared/utils/hasErrorField';
+import { useNavigate } from 'react-router-dom';
 
 export const conferencesTableColumns = [
   { name: 'ID', uid: 'id', sortable: true },
@@ -56,6 +57,7 @@ export default function ConferencesList({ conferences, emptyText }) {
   } = useDisclosure();
   const [modalConference, setModalConference] = useState(undefined);
   const [updateConference, { isLoading }] = useUpdateConferenceMutation();
+  const navigate = useNavigate();
 
   const onSubmitStatus = async (conference, status) => {
     try {
@@ -109,14 +111,17 @@ export default function ConferencesList({ conferences, emptyText }) {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem href={'/conferences/' + conference._id}>Подробнее</DropdownItem>
+                <DropdownItem
+                  onPress={() => {
+                    navigate('/conferences/' + conference._id);
+                  }}>
+                  Подробнее
+                </DropdownItem>
                 <DropdownItem
                   onPress={() => {
                     setModalConference(conference);
                     onOpenModalEdit();
-                  }}
-                  // href={'/conferences/' + conference._id}
-                >
+                  }}>
                   Редактировать
                 </DropdownItem>
                 <DropdownItem href={'/conferences/' + conference._id + '/generatePDF'}>

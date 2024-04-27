@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { conferences } from '../../shared/data/mockData';
-import { Button, Link } from '@nextui-org/react';
+import { Button, Link, Skeleton } from '@nextui-org/react';
 import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
 import { ConferenceCard } from '../../components/ConferenceCard/ConferenceCard';
 import { useGetConferenceByIdQuery } from '../../redux/services/conferenceApi';
@@ -26,24 +26,22 @@ const Conference = () => {
       </div>
       {error ? (
         <div>Произошла ошибка</div>
-      ) : isLoading ? (
-        <div>Загрузка...</div>
-      ) : conferenceData ? (
+      ) : (
         <>
           <div className="flex flex-col lg:flex-row justify-between gap-5">
-            <h1 className="font-bold text-4xl">{conferenceData?.title}</h1>
+            <Skeleton isLoaded={!isLoading} className="rounded-lg">
+              <h1 className="font-bold text-4xl">{conferenceData?.title}</h1>
+            </Skeleton>
             <div className="flex flex-col sm:flex-row gap-3">
               <Button color="primary" variant="flat">
                 Редактировать
               </Button>
             </div>
           </div>
-          <ConferenceCard conferenceData={conferenceData} />
-          <div>{conferenceData?.description}</div>
-        </>
-      ) : (
-        <>
-          <div>Произошла ошибка</div>
+          <ConferenceCard conferenceData={!isLoading ? conferenceData : {}} isLoading={isLoading} />
+          <Skeleton isLoaded={!isLoading} className="rounded-lg">
+            <div>{conferenceData?.description}</div>
+          </Skeleton>
         </>
       )}
     </div>
