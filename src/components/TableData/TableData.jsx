@@ -24,7 +24,7 @@ export default function TableData({
   tableColumns,
   initialVisibleColumns,
   isAddButton = false,
-  onAddModal = () => {},
+  onOpenModalAdd = () => {},
   data,
   emptyText = 'Список пуст',
 }) {
@@ -169,8 +169,8 @@ export default function TableData({
               <Button
                 color="primary"
                 endContent={<PlusIcon />}
-                onClick={() => {
-                  onAddModal();
+                onPress={() => {
+                  onOpenModalAdd();
                 }}>
                 Добавить
               </Button>

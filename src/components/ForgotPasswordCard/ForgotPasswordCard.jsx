@@ -22,7 +22,7 @@ const ForgotPasswordCard = () => {
   const [triggerCurrentQuery] = useLazyCurrentQuery();
 
   const onSubmit = async (data) => {
-    console.log(data);
+    // console.log(data);
     try {
       await login(data).unwrap();
       await triggerCurrentQuery();

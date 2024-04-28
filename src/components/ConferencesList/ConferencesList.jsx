@@ -12,10 +12,14 @@ import {
 import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import TableData from '../TableData/TableData';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
-import EditConferenceModal from '../modal/EditConferenceModal/EditConferenceModal';
-import AddConferenceModal from '../modal/AddConferenceModal/AddConferenceModal';
+import ConferenceModal from '../modal/ConferenceModal/ConferenceModal';
 import CancelConferenceModal from '../modal/CancelConferenceModal/CancelConferenceModal';
 import { conferenceStatusMap } from '../../shared/data/dataMap';
+import { useUpdateConferenceMutation } from '../../redux/services/conferenceApi';
+import { hasErrorField } from '../../shared/utils/hasErrorField';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../redux/slices/authSlice';
 
 export const conferencesTableColumns = [
   { name: 'ID', uid: 'id', sortable: true },
@@ -36,7 +40,8 @@ const INITIAL_VISIBLE_COLUMNS = [
   'actions',
 ];
 
-export default function ConferencesList({ conferences, emptyText }) {
+export default function ConferencesList({ conferences, emptyText, isParentLoading }) {
+  // console.log('render ConferencesList');
   const {
     isOpen: isOpenModalCancel,
     onOpen: onOpenModalCancel,
@@ -52,7 +57,24 @@ export default function ConferencesList({ conferences, emptyText }) {
     onOpen: onOpenModalAdd,
     onOpenChange: onOpenChangeModalAdd,
   } = useDisclosure();
-  const [modalConferenceId, setModalConferenceId] = useState(undefined);
+  const [modalConference, setModalConference] = useState(undefined);
+  const [updateConference, { isUpdateLoading }] = useUpdateConferenceMutation();
+  const navigate = useNavigate();
+  const user = useSelector(selectUser);
+
+  const onSubmitStatus = async (conference, status) => {
+    try {
+      const data = { id: conference._id, conferenceData: { status } };
+      // console.log(data);
+      await updateConference(data).unwrap();
+    } catch (err) {
+      console.log(err);
+      if (hasErrorField(err)) {
+        setError(err?.data?.message || err?.error);
+      }
+    }
+  };
+
   const renderCell = React.useCallback((conference, columnKey) => {
     const cellValue = conference[columnKey];
 
@@ -93,34 +115,61 @@ export default function ConferencesList({ conferences, emptyText }) {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem href={'/conferences/' + conference._id}>Подробнее</DropdownItem>
                 <DropdownItem
                   onPress={() => {
-                    setModalConferenceId(conference?._id);
-                    onOpenModalEdit();
-                  }}
-                  // href={'/conferences/' + conference._id}
-                >
-                  Редактировать
+                    navigate('/conferences/' + conference._id);
+                  }}>
+                  Подробнее
                 </DropdownItem>
-                <DropdownItem href={'/conferences/' + conference._id + '/generatePDF'}>
-                  Сформировать сборник
-                </DropdownItem>
-                <DropdownItem
-                  href={'/api/conferences/' + conference._id + '/accept'}
-                  className="text-warning"
-                  color="warning">
-                  Закрыть регистрацию
-                </DropdownItem>
-                <DropdownItem
-                  onPress={() => {
-                    setModalConferenceId(conference?._id);
-                    onOpenModalCancel();
-                  }}
-                  className="text-danger"
-                  color="danger">
-                  Отменить проведение
-                </DropdownItem>
+                {(user?._id === conference?.administrator?._id || user?.role === 'admin') && (
+                  <DropdownItem
+                    onPress={() => {
+                      setModalConference(conference);
+                      onOpenModalEdit();
+                    }}>
+                    Редактировать
+                  </DropdownItem>
+                )}
+                {(user?._id === conference?.administrator?._id || user?.role === 'admin') && (
+                  <DropdownItem href={'/conferences/' + conference._id + '/generatePDF'}>
+                    Сформировать сборник
+                  </DropdownItem>
+                )}
+                {(user?._id === conference?.administrator?._id || user?.role === 'admin') &&
+                  conference.status !== 'registrationOpen' && (
+                    <DropdownItem
+                      className="text-success"
+                      color="success"
+                      onPress={() => {
+                        onSubmitStatus(conference, 'registrationOpen');
+                      }}>
+                      Открыть регистрацию
+                    </DropdownItem>
+                  )}
+
+                {(user?._id === conference?.administrator?._id || user?.role === 'admin') &&
+                  conference.status == 'registrationOpen' && (
+                    <DropdownItem
+                      className="text-warning"
+                      color="warning"
+                      onPress={() => {
+                        onSubmitStatus(conference, 'registrationClosed');
+                      }}>
+                      Закрыть регистрацию
+                    </DropdownItem>
+                  )}
+                {(user?._id === conference?.administrator?._id || user?.role === 'admin') &&
+                  conference.status !== 'declined' && (
+                    <DropdownItem
+                      onPress={() => {
+                        setModalConference(conference);
+                        onOpenModalCancel();
+                      }}
+                      className="text-danger"
+                      color="danger">
+                      Отменить проведение
+                    </DropdownItem>
+                  )}
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -140,26 +189,29 @@ export default function ConferencesList({ conferences, emptyText }) {
         initialVisibleColumns={INITIAL_VISIBLE_COLUMNS}
         data={conferences}
         isAddButton
-        onAddModal={() => {
+        onOpenModalAdd={() => {
           onOpenModalAdd();
         }}
-        emptyText={emptyText}
+        emptyText={isParentLoading ? 'Загрузка...' : emptyText}
       />
       <CancelConferenceModal
         isOpen={isOpenModalCancel}
         onOpen={onOpenModalCancel}
         onOpenChange={onOpenChangeModalCancel}
-        conferenceId={modalConferenceId}
+        conference={modalConference}
+        onSubmitStatus={onSubmitStatus}
       />
-      <AddConferenceModal
+      <ConferenceModal
         isOpen={isOpenModalAdd}
         onOpen={onOpenModalAdd}
         onOpenChange={onOpenChangeModalAdd}
       />
-      <EditConferenceModal
+      <ConferenceModal
         isOpen={isOpenModalEdit}
         onOpen={onOpenModalEdit}
         onOpenChange={onOpenChangeModalEdit}
+        conference={modalConference}
+        mode={'edit'}
       />
     </>
   );

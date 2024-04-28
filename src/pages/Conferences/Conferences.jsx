@@ -2,7 +2,8 @@ import ConferencesList from '../../components/ConferencesList/ConferencesList';
 import { useGetAllConferencesQuery } from '../../redux/services/conferenceApi';
 
 const Conferences = () => {
-  const { data, error, isLoading } = useGetAllConferencesQuery();
+  const allData = useGetAllConferencesQuery();
+  const { data, error, isLoading } = allData;
 
   return (
     <div className="my-5">
@@ -12,14 +13,11 @@ const Conferences = () => {
           Все студенческие научно-технические конференции БНТУ
         </h5>
       </div>
+      {/* {console.log('rerender Conferences', allData)} */}
       {error ? (
         <ConferencesList conferences={[]} emptyText={'Произошла ошибка'} />
-      ) : isLoading ? (
-        <ConferencesList conferences={[]} emptyText={'Загрузка...'} />
-      ) : data ? (
-        <ConferencesList conferences={data} />
       ) : (
-        <ConferencesList conferences={[]} />
+        <ConferencesList conferences={data || []} isParentLoading={isLoading} />
       )}
     </div>
   );

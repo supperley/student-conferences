@@ -19,14 +19,18 @@ export default {
           colors: {
             primary: {
               DEFAULT: '#18181B',
+              // DEFAULT: '#008a5e',
               foreground: '#FFF',
             },
             focus: '#A1A1AA',
           },
         },
         dark: {
-          // ...
-          colors: {},
+          colors: {
+            primary: {
+              DEFAULT: '#008a5e',
+            },
+          },
         },
       },
     }),

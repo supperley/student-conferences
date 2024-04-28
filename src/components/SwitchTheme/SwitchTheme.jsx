@@ -15,7 +15,7 @@ export const SwitchTheme = () => {
   return (
     <div>
       <Switch
-        color="success"
+        color="#008a5e"
         startContent={<SunIcon />}
         endContent={<MoonIcon />}
         isSelected={isSelected}
