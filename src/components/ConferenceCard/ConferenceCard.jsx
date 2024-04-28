@@ -4,23 +4,24 @@ import AddReportModal from '../modal/AddReportModal/AddReportModal';
 import { S3_URL } from '../../shared/config/constants';
 import { conferenceStatusMap } from '../../shared/data/dataMap';
 import { faculties } from '../../shared/data/mockData';
+import defaultConference from '../../shared/assets/images/default-conference.jpg';
 
 export const ConferenceCard = ({ conferenceData, isLoading = false }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
-    <Card className="flex my-10 p-5 sm:p-10 md:flex-row md:justify-around gap-5 md:gap-10">
-      <div className="w-3/5 overflow-hidden flex justify-center items-center">
+    <Card className="flex my-6 md:my-10 p-5 sm:p-10 md:flex-row md:justify-around gap-5 md:gap-10">
+      <div className="lg:w-3/5 overflow-hidden flex justify-center items-center">
         <Skeleton isLoaded={!isLoading} className={`rounded-lg ${isLoading && 'w-80 h-64'}`}>
           <Image
             className="max-h-80"
             alt="NextUI hero Image"
-            src={S3_URL + conferenceData?.imageUrl}
+            src={conferenceData?.imageUrl ? S3_URL + conferenceData?.imageUrl : defaultConference}
           />
         </Skeleton>
       </div>
-      <div className="w-2/5 flex justify-center">
-        <div className="flex flex-col gap-10 justify-around">
+      <div className="flex lg:w-2/5 md:justify-center">
+        <div className="flex flex-col w-full md:w-auto gap-10 justify-around">
           <div className="flex flex-col gap-4 min-w-[200px] md:min-w-[300px]">
             <div className="flex flex-col md:flex-row md:items-center gap-2">
               <span className="w-[130px]">Факультеты</span>
@@ -62,7 +63,7 @@ export const ConferenceCard = ({ conferenceData, isLoading = false }) => {
               <span className="w-[130px]">Администратор</span>
               <Link
                 isBlock
-                href="/news"
+                href={'/users/' + conferenceData?.administrator?._id}
                 color="foreground"
                 className="text-default-500 text-small -ml-2">
                 <Skeleton isLoaded={!isLoading} className="rounded-lg">

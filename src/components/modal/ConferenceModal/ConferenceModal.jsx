@@ -16,36 +16,58 @@ import {
 import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
 import { faculties } from '../../../shared/data/mockData';
 import { S3_URL } from '../../../shared/config/constants';
-import { useCreateConferenceMutation } from '../../../redux/services/conferenceApi';
+import {
+  useCreateConferenceMutation,
+  useUpdateConferenceMutation,
+} from '../../../redux/services/conferenceApi';
 import { hasErrorField } from '../../../shared/utils/hasErrorField';
-import { useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
 import { useGetAllUsersQuery } from '../../../redux/services/userApi';
 import { DevTool } from '@hookform/devtools';
 import { parseAbsoluteToLocal } from '@internationalized/date';
 import { I18nProvider } from '@react-aria/i18n';
+import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
 
-const AddConferenceModal = ({ isOpen, onOpenChange }) => {
-  const { handleSubmit, register, control } = useForm({
+const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }) => {
+  const { handleSubmit, register, control, reset, setValue } = useForm({
     mode: 'onChange',
-    reValidateMode: 'onBlur',
-    defaultValues: {
-      title: '',
-      description: '',
-      date: parseAbsoluteToLocal('2024-05-05T11:00:00Z'),
-      administrator: '',
-      faculties: new Set([]),
-      link: '',
-      image: '',
-    },
+    reValidateMode: 'onChange',
+    defaultValues: useMemo(
+      () => ({
+        title: '',
+        description: '',
+        date: parseAbsoluteToLocal('2024-05-05T11:00:00Z'),
+        administrator: '',
+        faculties: new Set([]),
+        link: '',
+        image: '',
+        imageUrl: '',
+      }),
+      [conference],
+    ),
   });
 
+  // console.log('render ConferenceModal', conference);
+  useEffect(() => {
+    // reset();
+    setValue('_id', conference?._id);
+    setValue('title', conference?.title);
+    setValue('description', conference?.description);
+    setValue('date', parseAbsoluteToLocal(conference?.date || '2024-05-05T11:00:00Z'));
+    setValue('administrator', conference?.administrator?._id);
+    setValue('faculties', conference?.faculties);
+    setValue('link', conference?.link);
+  }, [conference]);
+
   const { data: users, error: usersError, isLoading: isUsersLoading } = useGetAllUsersQuery();
-  const [createConference, { isLoading }] = useCreateConferenceMutation();
+  const [createConference, { isCreateLoading }] = useCreateConferenceMutation();
+  const [updateConference, { isUpdateLoading }] = useUpdateConferenceMutation();
   const [error, setError] = useState('');
   const uploaderRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [isDeleteImage, setIsDeleteImage] = useState(false);
   const handleImageChange = () => {
     if (event.target.files !== null) {
       setSelectedFile(event.target.files[0]);
@@ -69,10 +91,16 @@ const AddConferenceModal = ({ isOpen, onOpenChange }) => {
                   formData.append('faculties', faculty);
                 });
               data.link && formData.append('link', data.link);
+              isDeleteImage && formData.append('image', 'delete');
               selectedFile && formData.append('image', selectedFile);
 
-              await createConference(formData).unwrap();
+              if (mode === 'add') {
+                await createConference(formData).unwrap();
+              } else {
+                await updateConference({ id: data._id, conferenceData: formData }).unwrap();
+              }
               onClose();
+              setSelectedFile(null);
             } catch (err) {
               console.log(err);
               if (hasErrorField(err)) {
@@ -83,16 +111,26 @@ const AddConferenceModal = ({ isOpen, onOpenChange }) => {
 
           return (
             <>
-              <ModalHeader className="flex flex-col gap-1">Добавление конференции</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">
+                {mode === 'add' ? 'Добавление' : 'Редактирование'} конференции
+              </ModalHeader>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <ModalBody>
-                  <Input
+                  <Controller
+                    control={control}
                     name="title"
-                    label="Название конференции"
-                    {...register('title')}
-                    variant="bordered"
-                    isRequired
-                    errorMessage="Обязательное поле"
+                    render={({
+                      field: { onChange: onChangeTitle, onBlur, value: titleValue, ref },
+                    }) => (
+                      <Input
+                        label="Название конференции"
+                        variant="bordered"
+                        isRequired
+                        errorMessage="Обязательное поле"
+                        onChange={onChangeTitle}
+                        value={titleValue}
+                      />
+                    )}
                   />
                   <Textarea
                     name="description"
@@ -115,7 +153,7 @@ const AddConferenceModal = ({ isOpen, onOpenChange }) => {
                     }}
                     renderValue={(items) => {
                       return items.map((item) => (
-                        <div key={item._id} className="flex items-center gap-2">
+                        <div key={item.data._id} className="flex items-center gap-2">
                           <Avatar
                             alt={item.data.first_name + ' ' + item.data.last_name}
                             className="flex-shrink-0"
@@ -184,13 +222,20 @@ const AddConferenceModal = ({ isOpen, onOpenChange }) => {
                       </I18nProvider>
                     )}
                   />
-                  <Input
+                  <Controller
+                    control={control}
                     name="link"
-                    type="url"
-                    label="Ссылка на трансляцию"
-                    {...register('link')}
-                    variant="bordered"
+                    render={({ field: { onChange: onChangeLink, value: linkValue } }) => (
+                      <Input
+                        type="url"
+                        label="Ссылка на трансляцию"
+                        variant="bordered"
+                        onChange={onChangeLink}
+                        value={linkValue}
+                      />
+                    )}
                   />
+
                   <input
                     ref={uploaderRef}
                     type="file"
@@ -198,12 +243,28 @@ const AddConferenceModal = ({ isOpen, onOpenChange }) => {
                     onChange={handleImageChange}
                     className="hidden"
                   />
-                  <Button
-                    startContent={!selectedFile?.name && <UploadIcon />}
-                    onClick={() => uploaderRef.current.click()}
-                    variant="flat">
-                    {selectedFile?.name || 'Загрузить изображение'}
-                  </Button>
+                  <div className="flex gap-5">
+                    {mode === 'edit' && conference?.imageUrl && (
+                      <Button
+                        className="w-1/3"
+                        startContent={isDeleteImage && <CheckIcon />}
+                        onClick={() => {
+                          setIsDeleteImage((prev) => !prev);
+                        }}
+                        variant="flat"
+                        color={isDeleteImage ? 'danger' : 'default'}>
+                        Удалить изображение
+                      </Button>
+                    )}
+                    <Button
+                      className={mode === 'edit' && conference?.imageUrl ? 'w-2/3' : 'w-full'}
+                      startContent={!selectedFile?.name && <UploadIcon />}
+                      onClick={() => uploaderRef.current.click()}
+                      variant="flat">
+                      {selectedFile?.name ||
+                        `${mode === 'add' ? 'Загрузить' : 'Обновить'} изображение`}
+                    </Button>
+                  </div>
                 </ModalBody>
                 <ModalFooter className="justify-between items-center">
                   <Link color="primary" href="/help" size="sm">
@@ -214,8 +275,11 @@ const AddConferenceModal = ({ isOpen, onOpenChange }) => {
                     <Button variant="flat" onPress={onClose}>
                       Отменить
                     </Button>
-                    <Button color="primary" type="submit" isLoading={isLoading}>
-                      Добавить
+                    <Button
+                      color="primary"
+                      type="submit"
+                      isLoading={mode === 'add' ? isCreateLoading : isUpdateLoading}>
+                      {mode === 'add' ? 'Добавить' : 'Обновить'}
                     </Button>
                   </div>
                 </ModalFooter>
@@ -229,4 +293,4 @@ const AddConferenceModal = ({ isOpen, onOpenChange }) => {
   );
 };
 
-export default AddConferenceModal;
+export default ConferenceModal;

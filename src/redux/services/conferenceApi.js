@@ -15,6 +15,7 @@ export const conferenceApi = api.injectEndpoints({
         url: `/conferences/${id}`,
         method: 'GET',
       }),
+      providesTags: ['Conference'],
     }),
     createConference: builder.mutation({
       query: (conferenceData) => ({
@@ -25,7 +26,7 @@ export const conferenceApi = api.injectEndpoints({
       invalidatesTags: ['Conference'],
     }),
     updateConference: builder.mutation({
-      query: ({ id, ...conferenceData }) => ({
+      query: ({ id, conferenceData }) => ({
         url: `/conferences/${id}`,
         method: 'PATCH',
         body: conferenceData,
