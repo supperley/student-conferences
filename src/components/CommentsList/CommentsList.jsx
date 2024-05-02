@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Textarea } from '@nextui-org/react';
 import Comment from '../Comment/Comment';
 
-export const CommentsList = () => {
+export const CommentsList = ({ comments = [] }) => {
   const [isTextareaActive, setIsTextareaActive] = useState(false);
   const [newComment, setNewComment] = useState('');
 
@@ -40,8 +40,14 @@ export const CommentsList = () => {
           </Button>
         </div>
       )}
-      <div>Комментариев пока нет. Будьте первым!</div>
-      <Comment />
+
+      {comments.length ? (
+        comments.map((comment) => {
+          return <Comment data={comment} />;
+        })
+      ) : (
+        <div>Комментариев пока нет. Будьте первым!</div>
+      )}
     </div>
   );
 };

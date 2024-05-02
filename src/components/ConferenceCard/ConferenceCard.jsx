@@ -1,6 +1,6 @@
 import { Card, Link, Image, Button, useDisclosure, Chip, User, Skeleton } from '@nextui-org/react';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
-import AddReportModal from '../modal/AddReportModal/AddReportModal';
+import ReportModal from '../modal/ReportModal/ReportModal';
 import { S3_URL } from '../../shared/config/constants';
 import { conferenceStatusMap } from '../../shared/data/dataMap';
 import { faculties } from '../../shared/data/mockData';
@@ -35,13 +35,8 @@ export const ConferenceCard = ({ conferenceData, isLoading = false }) => {
                 </Skeleton>
               </div>
             </div>
-            {/* <div className="flex flex-col md:flex-row md:items-center gap-2">
-            <span className="w-[130px]">Кафедра</span>
-            <div className="text-default-500 text-small">{conferenceData?.department}</div>
-          </div> */}
             <div className="flex flex-col md:flex-row md:items-center gap-2">
               <span className="w-[130px]">Состояние</span>
-
               <Chip
                 color={conferenceStatusMap[conferenceData?.status]?.color}
                 className="-ml-1"
@@ -83,9 +78,11 @@ export const ConferenceCard = ({ conferenceData, isLoading = false }) => {
             </div>
           </div>
           <div className="flex flex-col gap-3 md:items-center">
-            <Button onPress={onOpen} color="primary" className="md:w-full">
-              Подать заявку
-            </Button>
+            {conferenceData?.status === 'registrationOpen' && (
+              <Button onPress={onOpen} color="primary" className="md:w-full">
+                Подать заявку
+              </Button>
+            )}
             {conferenceData?.status === 'registrationOpen' && conferenceData?.link && (
               <Button
                 as={Link}
@@ -96,8 +93,7 @@ export const ConferenceCard = ({ conferenceData, isLoading = false }) => {
                 Присоединится к трансляции
               </Button>
             )}
-
-            <AddReportModal isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} />
+            <ReportModal isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} />
           </div>
         </div>
       </div>

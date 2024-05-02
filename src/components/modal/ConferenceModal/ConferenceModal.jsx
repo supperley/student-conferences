@@ -31,36 +31,6 @@ import { I18nProvider } from '@react-aria/i18n';
 import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
 
 const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }) => {
-  const { handleSubmit, register, control, reset, setValue } = useForm({
-    mode: 'onChange',
-    reValidateMode: 'onChange',
-    defaultValues: useMemo(
-      () => ({
-        title: '',
-        description: '',
-        date: parseAbsoluteToLocal('2024-05-05T11:00:00Z'),
-        administrator: '',
-        faculties: new Set([]),
-        link: '',
-        image: '',
-        imageUrl: '',
-      }),
-      [conference],
-    ),
-  });
-
-  // console.log('render ConferenceModal', conference);
-  useEffect(() => {
-    // reset();
-    setValue('_id', conference?._id);
-    setValue('title', conference?.title);
-    setValue('description', conference?.description);
-    setValue('date', parseAbsoluteToLocal(conference?.date || '2024-05-05T11:00:00Z'));
-    setValue('administrator', conference?.administrator?._id);
-    setValue('faculties', conference?.faculties);
-    setValue('link', conference?.link);
-  }, [conference]);
-
   const { data: users, error: usersError, isLoading: isUsersLoading } = useGetAllUsersQuery();
   const [createConference, { isCreateLoading }] = useCreateConferenceMutation();
   const [updateConference, { isUpdateLoading }] = useUpdateConferenceMutation();
@@ -73,6 +43,33 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
       setSelectedFile(event.target.files[0]);
     }
   };
+
+  const { handleSubmit, register, control, setValue } = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+    defaultValues: useMemo(
+      () => ({
+        title: '',
+        description: '',
+        date: parseAbsoluteToLocal('2024-05-05T11:00:00Z'),
+        administrator: '',
+        faculties: new Set([]),
+        link: '',
+        image: '',
+      }),
+      [conference],
+    ),
+  });
+
+  useEffect(() => {
+    setValue('_id', conference?._id);
+    setValue('title', conference?.title);
+    setValue('description', conference?.description);
+    setValue('date', parseAbsoluteToLocal(conference?.date || '2024-05-05T11:00:00Z'));
+    setValue('administrator', conference?.administrator?._id);
+    setValue('faculties', conference?.faculties);
+    setValue('link', conference?.link);
+  }, [conference]);
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center" size="2xl">
@@ -99,6 +96,7 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
               } else {
                 await updateConference({ id: data._id, conferenceData: formData }).unwrap();
               }
+
               onClose();
               setSelectedFile(null);
             } catch (err) {
@@ -119,9 +117,7 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
                   <Controller
                     control={control}
                     name="title"
-                    render={({
-                      field: { onChange: onChangeTitle, onBlur, value: titleValue, ref },
-                    }) => (
+                    render={({ field: { onChange: onChangeTitle, value: titleValue } }) => (
                       <Input
                         label="Название конференции"
                         variant="bordered"
@@ -132,16 +128,23 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
                       />
                     )}
                   />
-                  <Textarea
+                  <Controller
+                    control={control}
                     name="description"
-                    label="Дополнительная информация"
-                    {...register('description')}
-                    variant="bordered"
+                    render={({
+                      field: { onChange: onChangeDescription, value: descriptionValue },
+                    }) => (
+                      <Textarea
+                        label="Дополнительная информация"
+                        onChange={onChangeDescription}
+                        value={descriptionValue}
+                        variant="bordered"
+                      />
+                    )}
                   />
                   <Select
                     isRequired
                     errorMessage="Обязательное поле"
-                    name="administrator"
                     label="Администратор конференции"
                     variant="bordered"
                     isLoading={isUsersLoading}
@@ -158,7 +161,7 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
                             alt={item.data.first_name + ' ' + item.data.last_name}
                             className="flex-shrink-0"
                             size="sm"
-                            src={item.data.avatarUrl}
+                            src={S3_URL + item.data.avatarUrl}
                           />
                           <div className="flex flex-col">
                             <span>{item.data.first_name + ' ' + item.data.last_name}</span>
@@ -235,7 +238,6 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
                       />
                     )}
                   />
-
                   <input
                     ref={uploaderRef}
                     type="file"

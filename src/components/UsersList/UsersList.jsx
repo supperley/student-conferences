@@ -21,6 +21,7 @@ import TableData from '../TableData/TableData';
 import EditUserModal from '../modal/EditUserModal/EditUserModal';
 import { S3_URL } from '../../shared/config/constants';
 import { useUpdateUserMutation } from '../../redux/services/userApi';
+import { faculties } from '../../shared/data/mockData';
 
 export const userStatusMap = {
   active: { name: 'Активен', color: 'success' },
@@ -31,15 +32,15 @@ export const userStatusMap = {
 export const userTableColumns = [
   { name: 'ID', uid: '_id', sortable: true },
   { name: 'Имя', uid: 'name', sortable: true },
-  { name: 'Статус', uid: 'role', sortable: true },
-  { name: 'Кафедра', uid: 'department' },
+  { name: 'Права', uid: 'role', sortable: true },
+  { name: 'Должность', uid: 'position' },
   { name: 'Факультет', uid: 'faculty' },
   { name: 'Email', uid: 'email' },
   { name: 'Состояние', uid: 'status', sortable: true },
   { name: 'Действия', uid: 'actions' },
 ];
 
-const INITIAL_VISIBLE_COLUMNS = ['name', 'department', 'faculty', 'status', 'actions'];
+const INITIAL_VISIBLE_COLUMNS = ['name', 'faculty', 'position', 'status', 'actions'];
 
 export default function UsersList({ users, emptyText }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -85,6 +86,8 @@ export default function UsersList({ users, emptyText }) {
             <p className="text-bold text-tiny text-default-400">{user.team}</p>
           </div>
         );
+      case 'faculty':
+        return <span>{faculties.find((o) => o.value === cellValue)?.label}</span>;
       case 'status':
         return (
           <Chip
@@ -117,7 +120,9 @@ export default function UsersList({ users, emptyText }) {
                   // href={'api/users/' + user?._id + '/unblock'}
                   className="text-success"
                   color="success"
-                  onPress={onSubmit(user)}>
+                  onPress={() => {
+                    onSubmit(user);
+                  }}>
                   Разблокировать
                 </DropdownItem>
                 <DropdownItem

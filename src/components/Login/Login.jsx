@@ -20,12 +20,12 @@ const Login = () => {
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
   const [error, setError] = useState('');
-  const [triggerCurrentQuery] = useLazyCurrentQuery();
+  // const [triggerCurrentQuery] = useLazyCurrentQuery();
 
   const onSubmit = async (data) => {
     try {
       await login(data).unwrap();
-      await triggerCurrentQuery();
+      // await triggerCurrentQuery();
       navigate('/');
     } catch (err) {
       console.log(err);

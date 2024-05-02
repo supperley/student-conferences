@@ -1,23 +1,26 @@
 import { Card, CardBody, CardHeader, Divider, Link, User } from '@nextui-org/react';
 import React from 'react';
 
-const Comment = () => {
+const Comment = ({ data }) => {
   return (
     <Card>
       <CardHeader className="flex gap-3">
-        <Link href="/news" color="foreground" className="text-default-500 text-small">
+        <Link
+          href={'/users/' + data?.author?._id}
+          color="foreground"
+          className="text-default-500 text-small">
           <User
-            name={'Test'}
-            description="Product Designer"
+            name={data?.author?.first_name + ' ' + data?.author?.last_name}
+            description={data?.author?.position}
             avatarProps={{
-              src: 'https://i.pravatar.cc/150?u=a042581f4e29026024d',
+              src: data?.author?.avatarUrl,
             }}
           />
         </Link>
       </CardHeader>
       <Divider />
       <CardBody>
-        <p>Make beautiful websites regardless of your design experience.</p>
+        <p>{data?.text}</p>
       </CardBody>
     </Card>
   );

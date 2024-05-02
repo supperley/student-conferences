@@ -18,6 +18,7 @@ const slice = createSlice({
         localStorage.setItem('user', JSON.stringify(action.payload));
       })
       .addMatcher(authApi.endpoints.current.matchFulfilled, (state, action) => {
+        state.user = action.payload;
         state.isAuthenticated = true;
       })
       .addMatcher(authApi.endpoints.logout.matchPending, (state, action) => {

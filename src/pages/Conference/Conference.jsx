@@ -39,7 +39,7 @@ const Conference = () => {
             <Skeleton isLoaded={!isLoading} className="rounded-lg">
               <h1 className="font-bold text-4xl">{conferenceData?.title}</h1>
             </Skeleton>
-            {(user?._id === conferenceData?.administrator._id || user?.role === 'admin') && (
+            {(user?._id === conferenceData?.administrator?._id || user?.role === 'admin') && (
               <Button
                 color="primary"
                 variant="flat"

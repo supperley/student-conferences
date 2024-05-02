@@ -20,12 +20,13 @@ import { hasErrorField } from '../../shared/utils/hasErrorField';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/authSlice';
+import { faculties } from '../../shared/data/mockData';
 
 export const conferencesTableColumns = [
   { name: 'ID', uid: 'id', sortable: true },
   { name: 'Название конференции', uid: 'title', sortable: true },
   { name: 'Администратор', uid: 'administrator', sortable: true },
-  { name: 'Факультет', uid: 'faculty', sortable: true },
+  { name: 'Факультеты', uid: 'faculties', sortable: true },
   { name: 'Дата', uid: 'date', sortable: true },
   { name: 'Состояние', uid: 'status', sortable: true },
   { name: 'Действия', uid: 'actions' },
@@ -64,7 +65,7 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
 
   const onSubmitStatus = async (conference, status) => {
     try {
-      const data = { id: conference._id, conferenceData: { status } };
+      const data = { id: conference?._id, conferenceData: { status } };
       // console.log(data);
       await updateConference(data).unwrap();
     } catch (err) {
@@ -79,24 +80,26 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
     const cellValue = conference[columnKey];
 
     switch (columnKey) {
+      case 'id':
+        return conference?._id;
       case 'title':
         return (
-          <Link href={'/conferences/' + conference._id} className="text-sm font-medium">
+          <Link href={'/conferences/' + conference?._id} className="text-sm font-medium">
             {cellValue}
           </Link>
         );
       case 'administrator':
         return (
-          <Link href={'/users/' + conference.administrator._id} className="text-sm">
-            {cellValue.first_name + ' ' + cellValue.last_name}
+          <Link href={'/users/' + conference.administrator?._id} className="text-sm">
+            {cellValue?.first_name + ' ' + cellValue?.last_name}
           </Link>
         );
-      case 'faculty':
-        return (
-          <Link href={'/conferences/?faculty=' + conference._id} className="text-sm">
-            {cellValue}
-          </Link>
-        );
+      case 'faculties':
+        return conference?.faculties
+          ?.map((faculty) => {
+            return faculties.find((o) => o.value === faculty)?.label;
+          })
+          .join(', ');
       case 'date':
         return formatToClientDate(cellValue);
       case 'status':
@@ -117,7 +120,7 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
               <DropdownMenu>
                 <DropdownItem
                   onPress={() => {
-                    navigate('/conferences/' + conference._id);
+                    navigate('/conferences/' + conference?._id);
                   }}>
                   Подробнее
                 </DropdownItem>
@@ -130,8 +133,8 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
                     Редактировать
                   </DropdownItem>
                 )}
-                {(user?._id === conference?.administrator?._id || user?.role === 'admin') && (
-                  <DropdownItem href={'/conferences/' + conference._id + '/generatePDF'}>
+                {user?.role === 'admin' && (
+                  <DropdownItem href={'/conferences/' + conference?._id + '/generatePDF'}>
                     Сформировать сборник
                   </DropdownItem>
                 )}
@@ -146,7 +149,6 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
                       Открыть регистрацию
                     </DropdownItem>
                   )}
-
                 {(user?._id === conference?.administrator?._id || user?.role === 'admin') &&
                   conference.status == 'registrationOpen' && (
                     <DropdownItem
