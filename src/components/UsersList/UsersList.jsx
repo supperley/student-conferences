@@ -8,11 +8,6 @@ import {
   Chip,
   User,
   Link,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   useDisclosure,
 } from '@nextui-org/react';
 import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
@@ -22,6 +17,9 @@ import EditUserModal from '../modal/EditUserModal/EditUserModal';
 import { S3_URL } from '../../shared/config/constants';
 import { useUpdateUserMutation } from '../../redux/services/userApi';
 import { faculties } from '../../shared/data/mockData';
+import BlockUserModal from '../modal/BlockUserModal/BlockUserModal';
+import { hasErrorField } from '../../shared/utils/hasErrorField';
+import { toast } from 'sonner';
 
 export const userStatusMap = {
   active: { name: 'Активен', color: 'success' },
@@ -54,10 +52,25 @@ export default function UsersList({ users, emptyText }) {
 
   const onSubmit = async (data) => {
     try {
-      await updateUser(data, data._id).unwrap();
+      await updateUser(data).unwrap();
       // setSelected('login');
     } catch (err) {
       console.log(err);
+      toast(JSON.stringify(err));
+      if (hasErrorField(err)) {
+        setError(err?.data?.message || err?.error);
+      }
+    }
+  };
+
+  const onSubmitStatus = async (user, status) => {
+    try {
+      const data = { _id: user?._id, status };
+      // console.log(data);
+      await updateUser(data).unwrap();
+    } catch (err) {
+      console.log(err);
+      toast(JSON.stringify(err));
       if (hasErrorField(err)) {
         setError(err?.data?.message || err?.error);
       }
@@ -109,37 +122,41 @@ export default function UsersList({ users, emptyText }) {
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem href={'/users/' + user?._id}>Подробнее</DropdownItem>
-                <DropdownItem
-                  onPress={() => {
-                    setModalUser(user);
-                    onOpenChangeModalEdit();
-                  }}>
-                  Редактировать
-                </DropdownItem>
-                <DropdownItem
-                  // href={'api/users/' + user?._id + '/unblock'}
-                  className="text-success"
-                  color="success"
-                  onPress={() => {
-                    onSubmit(user);
-                  }}>
-                  Разблокировать
-                </DropdownItem>
-                <DropdownItem
-                  // href={'api/users/' + user?._id + '/freeze'}
-                  className="text-warning"
-                  color="warning">
-                  Заморозить
-                </DropdownItem>
-                <DropdownItem
-                  onPress={() => {
-                    setModalUser(user);
-                    onOpen();
-                  }}
-                  className="text-danger"
-                  color="danger">
-                  Заблокировать
-                </DropdownItem>
+                {user?.role === 'admin' && (
+                  <DropdownItem
+                    onPress={() => {
+                      setModalUser(user);
+                      onOpenChangeModalEdit();
+                    }}>
+                    Редактировать
+                  </DropdownItem>
+                )}
+                {user?.role === 'admin' && user.status !== 'active' && (
+                  <DropdownItem
+                    className="text-success"
+                    color="success"
+                    onPress={() => {
+                      onSubmitStatus(user, 'active');
+                    }}>
+                    Разблокировать
+                  </DropdownItem>
+                )}
+                {/* {user?.role === 'admin' && user.status !== 'freezing' && (
+                  <DropdownItem className="text-warning" color="warning">
+                    Заморозить
+                  </DropdownItem>
+                )} */}
+                {user?.role === 'admin' && user.status !== 'blocked' && (
+                  <DropdownItem
+                    onPress={() => {
+                      setModalUser(user);
+                      onOpen();
+                    }}
+                    className="text-danger"
+                    color="danger">
+                    Заблокировать
+                  </DropdownItem>
+                )}
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -159,30 +176,12 @@ export default function UsersList({ users, emptyText }) {
         initialVisibleColumns={INITIAL_VISIBLE_COLUMNS}
         emptyText={emptyText}
       />
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">Подтвердите действие</ModalHeader>
-              <ModalBody>
-                <p>Вы действительно хотите заблокировать пользователя?</p>
-              </ModalBody>
-              <ModalFooter>
-                <Button variant="light" onPress={onClose}>
-                  Отменить
-                </Button>
-                <Button
-                  color="danger"
-                  as={Link}
-                  href={'/api/users/' + modalUser._id + '/block'}
-                  onPress={onClose}>
-                  Заблокировать
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+      <BlockUserModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        modalUser={modalUser}
+        onSubmitStatus={onSubmitStatus}
+      />
       <EditUserModal
         isOpen={isOpenModalEdit}
         onOpen={onOpenModalEdit}

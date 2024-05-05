@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
 import { hasErrorField } from '../../shared/utils/hasErrorField';
 import { Input } from '../../components/Input/Input';
+import { toast } from 'sonner';
 
 const Register = ({ setSelected }) => {
   const {
@@ -32,6 +33,7 @@ const Register = ({ setSelected }) => {
       setSelected('login');
     } catch (err) {
       console.log(err);
+      toast(JSON.stringify(err));
       if (hasErrorField(err)) {
         setError(err?.data?.message || err?.error);
       }

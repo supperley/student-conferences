@@ -7,19 +7,22 @@ export const userApi = api.injectEndpoints({
         url: `/users`,
         method: 'GET',
       }),
+      providesTags: ['User'],
     }),
     getUserById: builder.query({
       query: (id) => ({
         url: `/users/${id}`,
         method: 'GET',
       }),
+      providesTags: ['User'],
     }),
     updateUser: builder.mutation({
-      query: ({ userData, id }) => ({
-        url: `/users/${id}`,
+      query: ({ _id, ...userData }) => ({
+        url: `/users/${_id}`,
         method: 'PATCH',
         body: userData,
       }),
+      invalidatesTags: ['User'],
     }),
   }),
 });

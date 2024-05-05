@@ -1,5 +1,6 @@
 import { Button, Link } from '@nextui-org/react';
 import { NavLink } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const Home = () => {
   return (

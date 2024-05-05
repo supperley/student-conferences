@@ -23,6 +23,7 @@ import { useUpdateReportMutation } from '../../redux/services/reportApi';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 export const reportStatusMap = {
   accepted: { name: 'Принят', color: 'success' },
@@ -40,6 +41,8 @@ export const reportTableColumns = [
   { name: 'Действия', uid: 'actions' },
 ];
 
+const reportSearchColumns = ['title', 'conference.title'];
+
 const INITIAL_VISIBLE_COLUMNS = ['title', 'author', 'conference', 'date', 'status', 'actions'];
 
 export default function ReportsList({ reports, isParentLoading, emptyText }) {
@@ -54,7 +57,7 @@ export default function ReportsList({ reports, isParentLoading, emptyText }) {
     onOpenChange: onOpenChangeModalEdit,
   } = useDisclosure();
   const [modalReport, setModalReport] = useState(undefined);
-  const [updateReport, { isUpdateLoading }] = useUpdateReportMutation();
+  const [updateReport, { isLoading: isUpdateLoading }] = useUpdateReportMutation();
   const navigate = useNavigate();
   const user = useSelector(selectUser);
 
@@ -65,6 +68,7 @@ export default function ReportsList({ reports, isParentLoading, emptyText }) {
       await updateReport(data).unwrap();
     } catch (err) {
       console.log(err);
+      toast(JSON.stringify(err));
       if (hasErrorField(err)) {
         setError(err?.data?.message || err?.error);
       }
@@ -196,9 +200,11 @@ export default function ReportsList({ reports, isParentLoading, emptyText }) {
         renderCell={renderCell}
         statusOptions={reportStatusMap}
         tableColumns={reportTableColumns}
+        searchColumns={reportSearchColumns}
         initialVisibleColumns={INITIAL_VISIBLE_COLUMNS}
         data={reports}
         emptyText={isParentLoading ? 'Загрузка...' : emptyText}
+        inputPlaceholder={'Искать по названию работы или конференции...'}
       />
       <CancelReportModal
         isOpen={isOpenModalCancel}
@@ -206,6 +212,7 @@ export default function ReportsList({ reports, isParentLoading, emptyText }) {
         onOpenChange={onOpenChangeModalCancel}
         report={modalReport}
         onSubmitStatus={onSubmitStatus}
+        isLoading={isUpdateLoading}
       />
       <ReportModal
         isOpen={isOpenModalEdit}

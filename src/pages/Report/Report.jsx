@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/authSlice';
 import CancelReportModal from '../../components/modal/CancelReportModal/CancelReportModal';
+import { toast } from 'sonner';
 
 const Report = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const Report = () => {
   const reportId = params.reportId;
   const { data: reportData, error, isLoading } = useGetReportByIdQuery(reportId);
   const [modalReport, setModalReport] = useState(undefined);
-  const [updateReport, { isUpdateLoading }] = useUpdateReportMutation();
+  const [updateReport, { isLoading: isUpdateLoading }] = useUpdateReportMutation();
   const user = useSelector(selectUser);
   const {
     isOpen: isOpenModalCancel,
@@ -30,6 +31,7 @@ const Report = () => {
       await updateReport(data).unwrap();
     } catch (err) {
       console.log(err);
+      toast(JSON.stringify(err));
       if (hasErrorField(err)) {
         setError(err?.data?.message || err?.error);
       }
@@ -102,10 +104,16 @@ const Report = () => {
               </div>
             </div>
             <ReportCard reportData={!isLoading ? reportData : {}} isLoading={isLoading} />
-            <Skeleton isLoaded={!isLoading} className="rounded-lg">
-              <div className="mb-6">{reportData?.description}</div>
-            </Skeleton>
-            <CommentsList comments={reportData?.comments} />
+            {reportData?.description && (
+              <>
+                <h2 className="font-bold text-3xl">Описание</h2>
+                <Skeleton isLoaded={!isLoading} className="rounded-lg my-6">
+                  <div>{reportData?.description}</div>
+                </Skeleton>
+              </>
+            )}
+
+            <CommentsList reportId={reportId} comments={reportData?.comments} />
           </>
         )}
       </div>

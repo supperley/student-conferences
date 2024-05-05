@@ -16,11 +16,11 @@ import ConferenceModal from '../modal/ConferenceModal/ConferenceModal';
 import CancelConferenceModal from '../modal/CancelConferenceModal/CancelConferenceModal';
 import { conferenceStatusMap } from '../../shared/data/dataMap';
 import { useUpdateConferenceMutation } from '../../redux/services/conferenceApi';
-import { hasErrorField } from '../../shared/utils/hasErrorField';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/authSlice';
 import { faculties } from '../../shared/data/mockData';
+import { toast } from 'sonner';
 
 export const conferencesTableColumns = [
   { name: 'ID', uid: 'id', sortable: true },
@@ -59,20 +59,17 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
     onOpenChange: onOpenChangeModalAdd,
   } = useDisclosure();
   const [modalConference, setModalConference] = useState(undefined);
-  const [updateConference, { isUpdateLoading }] = useUpdateConferenceMutation();
+  const [updateConference, { isLoading: isUpdateLoading }] = useUpdateConferenceMutation();
   const navigate = useNavigate();
   const user = useSelector(selectUser);
 
   const onSubmitStatus = async (conference, status) => {
     try {
       const data = { id: conference?._id, conferenceData: { status } };
-      // console.log(data);
       await updateConference(data).unwrap();
     } catch (err) {
       console.log(err);
-      if (hasErrorField(err)) {
-        setError(err?.data?.message || err?.error);
-      }
+      toast(JSON.stringify(err));
     }
   };
 
@@ -202,6 +199,7 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
         onOpenChange={onOpenChangeModalCancel}
         conference={modalConference}
         onSubmitStatus={onSubmitStatus}
+        isLoading={isUpdateLoading}
       />
       <ConferenceModal
         isOpen={isOpenModalAdd}

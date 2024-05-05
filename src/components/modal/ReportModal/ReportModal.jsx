@@ -26,11 +26,12 @@ import {
 import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
 import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
 import { hasErrorField } from '../../../shared/utils/hasErrorField';
+import { toast } from 'sonner';
 
 const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
   const { data: users, error: usersError, isLoading: isUsersLoading } = useGetAllUsersQuery();
-  const [createReport, { isCreateLoading }] = useCreateReportMutation();
-  const [updateReport, { isUpdateLoading }] = useUpdateReportMutation();
+  const [createReport, { isLoading: isCreateLoading }] = useCreateReportMutation();
+  const [updateReport, { isLoading: isUpdateLoading }] = useUpdateReportMutation();
   const [error, setError] = useState('');
   const uploaderRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -89,6 +90,7 @@ const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
               setSelectedFile(null);
             } catch (err) {
               console.log(err);
+              toast(JSON.stringify(err));
               if (hasErrorField(err)) {
                 setError(err?.data?.message || err?.error);
               }
@@ -178,7 +180,7 @@ const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
                   <input
                     ref={uploaderRef}
                     type="file"
-                    accept="file/*"
+                    accept=".doc, .docx, .pdf"
                     onChange={handleFileChange}
                     className="hidden"
                   />

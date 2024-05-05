@@ -9,7 +9,7 @@ import {
 } from '@nextui-org/react';
 import React from 'react';
 
-const CancelReportModal = ({ isOpen, onOpenChange, report, onSubmitStatus, isLoading }) => {
+const BlockUserModal = ({ isOpen, onOpenChange, modalUser, onSubmitStatus }) => {
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent>
@@ -17,21 +17,19 @@ const CancelReportModal = ({ isOpen, onOpenChange, report, onSubmitStatus, isLoa
           <>
             <ModalHeader className="flex flex-col gap-1">Подтвердите действие</ModalHeader>
             <ModalBody>
-              <p>Вы действительно хотите удалить данную заявку?</p>
-              <p>Это действие нельзя отменить.</p>
+              <p>Вы действительно хотите заблокировать пользователя?</p>
             </ModalBody>
             <ModalFooter>
               <Button variant="light" onPress={onClose}>
                 Отменить
               </Button>
               <Button
-                isLoading={isLoading}
                 color="danger"
-                onPress={async () => {
-                  await onSubmitStatus(report, 'declined');
+                onPress={() => {
+                  onSubmitStatus(modalUser, 'blocked');
                   onClose();
                 }}>
-                Удалить
+                Заблокировать
               </Button>
             </ModalFooter>
           </>
@@ -41,4 +39,4 @@ const CancelReportModal = ({ isOpen, onOpenChange, report, onSubmitStatus, isLoa
   );
 };
 
-export default CancelReportModal;
+export default BlockUserModal;

@@ -29,11 +29,12 @@ import { DevTool } from '@hookform/devtools';
 import { parseAbsoluteToLocal } from '@internationalized/date';
 import { I18nProvider } from '@react-aria/i18n';
 import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
+import { toast } from 'sonner';
 
 const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }) => {
   const { data: users, error: usersError, isLoading: isUsersLoading } = useGetAllUsersQuery();
-  const [createConference, { isCreateLoading }] = useCreateConferenceMutation();
-  const [updateConference, { isUpdateLoading }] = useUpdateConferenceMutation();
+  const [createConference, { isLoading: isCreateLoading }] = useCreateConferenceMutation();
+  const [updateConference, { isLoading: isUpdateLoading }] = useUpdateConferenceMutation();
   const [error, setError] = useState('');
   const uploaderRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -101,6 +102,7 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
               setSelectedFile(null);
             } catch (err) {
               console.log(err);
+              toast(JSON.stringify(err));
               if (hasErrorField(err)) {
                 setError(err?.data?.message || err?.error);
               }

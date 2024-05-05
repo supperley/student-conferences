@@ -18,6 +18,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { hasErrorField } from '../../shared/utils/hasErrorField';
 import { useUpdateUserMutation } from '../../redux/services/userApi';
 import { useCurrentQuery, useLazyCurrentQuery } from '../../redux/services/authApi';
+import { toast } from 'sonner';
 
 const Settings = () => {
   // const user = useSelector(selectUser);
@@ -26,7 +27,7 @@ const Settings = () => {
   const submitRef = useRef(null);
   const uploaderRef = useRef(null);
   const [selectedAvatar, setSelectedAvatar] = useState(null);
-  const [updateUser, { isUpdateLoading }] = useUpdateUserMutation();
+  const [updateUser, { isLoading: isUpdateLoading }] = useUpdateUserMutation();
   const [triggerCurrentQuery] = useLazyCurrentQuery();
   const handleAvatarChange = () => {
     if (event.target.files !== null) {
@@ -76,6 +77,7 @@ const Settings = () => {
       await triggerCurrentQuery();
     } catch (err) {
       console.log(err);
+      toast(JSON.stringify(err));
       if (hasErrorField(err)) {
         setError(err?.data?.message || err?.error);
       }
@@ -99,6 +101,7 @@ const Settings = () => {
       await triggerCurrentQuery();
     } catch (err) {
       console.log(err);
+      toast(JSON.stringify(err));
       if (hasErrorField(err)) {
         setError(err?.data?.message || err?.error);
       }

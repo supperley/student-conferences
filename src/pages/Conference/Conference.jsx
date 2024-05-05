@@ -51,9 +51,14 @@ const Conference = () => {
             )}
           </div>
           <ConferenceCard conferenceData={!isLoading ? conferenceData : {}} isLoading={isLoading} />
-          <Skeleton isLoaded={!isLoading} className="rounded-lg">
-            <div>{conferenceData?.description}</div>
-          </Skeleton>
+          {conferenceData?.description && (
+            <>
+              <h2 className="font-bold text-3xl">Описание</h2>
+              <Skeleton isLoaded={!isLoading} className="rounded-lg my-6">
+                <div>{conferenceData?.description}</div>
+              </Skeleton>
+            </>
+          )}
           <ConferenceModal
             isOpen={isOpenModalEdit}
             onOpen={onOpenModalEdit}

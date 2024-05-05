@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { hasErrorField } from '../../shared/utils/hasErrorField';
 import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
+import { toast } from 'sonner';
 
 const Login = () => {
   const { control, handleSubmit } = useForm({
@@ -29,6 +30,7 @@ const Login = () => {
       navigate('/');
     } catch (err) {
       console.log(err);
+      toast(JSON.stringify(err));
       if (hasErrorField(err)) {
         setError(err?.data?.message || err?.error);
       }

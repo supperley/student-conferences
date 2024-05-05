@@ -1,5 +1,6 @@
 import { Card, CardBody, CardHeader, Divider, Link, User } from '@nextui-org/react';
 import React from 'react';
+import { S3_URL } from '../../shared/config/constants';
 
 const Comment = ({ data }) => {
   return (
@@ -13,7 +14,7 @@ const Comment = ({ data }) => {
             name={data?.author?.first_name + ' ' + data?.author?.last_name}
             description={data?.author?.position}
             avatarProps={{
-              src: data?.author?.avatarUrl,
+              src: S3_URL + data?.author?.avatarUrl,
             }}
           />
         </Link>

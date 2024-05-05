@@ -22,6 +22,8 @@ export default function TableData({
   renderCell,
   statusOptions,
   tableColumns,
+  searchColumns = [tableColumns[1].uid],
+  inputPlaceholder = 'Искать по имени...',
   initialVisibleColumns,
   isAddButton = false,
   onOpenModalAdd = () => {},
@@ -53,8 +55,23 @@ export default function TableData({
 
     if (hasSearchFilter) {
       filteredData = filteredData.filter((item) => {
-        const searchColumn = tableColumns[1].uid;
-        return item[searchColumn].toLowerCase().includes(filterValue.toLowerCase());
+        // const searchColumn = tableColumns[1].uid;
+        // return item[searchColumn].toLowerCase().includes(filterValue.toLowerCase());
+        return searchColumns.some((column) => {
+          const columnParts = column.split('.'); // Разделяем колонку по точке
+          let value = item; // Начинаем с целого объекта
+
+          // Проходим по частям и добираемся до нужного свойства
+          for (const part of columnParts) {
+            if (value === undefined) {
+              break; // Если значение undefined, прерываем, чтобы не вызывать ошибку
+            }
+            value = value[part]; // Переходим к следующей части
+          }
+
+          // Проверяем, есть ли значение и совпадает ли оно с фильтром
+          return value?.toLowerCase().includes(filterValue.toLowerCase());
+        });
       });
     }
 
@@ -122,7 +139,7 @@ export default function TableData({
           <Input
             isClearable
             className="w-full sm:max-w-[44%]"
-            placeholder="Искать по имени..."
+            placeholder={inputPlaceholder}
             startContent={<SearchIcon />}
             value={filterValue}
             onClear={() => onClear()}

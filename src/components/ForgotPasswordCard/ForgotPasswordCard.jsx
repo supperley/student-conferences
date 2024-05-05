@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { hasErrorField } from '../../shared/utils/hasErrorField';
 import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
 import { Input } from '../../components/Input/Input';
+import { toast } from 'sonner';
 
 const ForgotPasswordCard = () => {
   const { control, handleSubmit } = useForm({
@@ -28,6 +29,7 @@ const ForgotPasswordCard = () => {
       await triggerCurrentQuery();
       navigate('/');
     } catch (err) {
+      toast(JSON.stringify(err));
       if (hasErrorField(err)) {
         setError(err?.data?.message || err?.error);
       }

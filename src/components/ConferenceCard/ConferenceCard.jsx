@@ -37,14 +37,14 @@ export const ConferenceCard = ({ conferenceData, isLoading = false }) => {
             </div>
             <div className="flex flex-col md:flex-row md:items-center gap-2">
               <span className="w-[130px]">Состояние</span>
-              <Chip
-                color={conferenceStatusMap[conferenceData?.status]?.color}
-                className="-ml-1"
-                variant="flat">
-                <Skeleton isLoaded={!isLoading} className="rounded-lg">
+              <Skeleton isLoaded={!isLoading} className="rounded-lg">
+                <Chip
+                  color={conferenceStatusMap[conferenceData?.status]?.color}
+                  className="-ml-1"
+                  variant="flat">
                   {conferenceStatusMap[conferenceData?.status]?.name || 'default'}
-                </Skeleton>
-              </Chip>
+                </Chip>
+              </Skeleton>
             </div>
             <div className="flex flex-col md:flex-row md:items-center gap-2">
               <span className="w-[130px]">Дата</span>
