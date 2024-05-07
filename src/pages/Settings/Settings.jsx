@@ -62,7 +62,7 @@ const Settings = () => {
     setValue('first_name', user?.first_name);
     setValue('last_name', user?.last_name);
     setValue('email', user?.email);
-    setValue('faculty', user?.faculty);
+    setValue('faculty', [user?.faculty]);
     setValue('position', user?.position);
   }, [user]);
 
@@ -90,7 +90,7 @@ const Settings = () => {
       data.last_name && formData.append('last_name', data.last_name);
       data.patronymic && formData.append('patronymic', data.patronymic);
       data.email && formData.append('email', data.email);
-      data.faculty && formData.append('faculty', data.faculty);
+      data.faculty && formData.append('faculty', [...data.faculty][0]);
       data.position && formData.append('position', data.position);
       selectedAvatar && formData.append('avatar', selectedAvatar);
 
@@ -98,6 +98,7 @@ const Settings = () => {
       setSelectedAvatar(null);
       uploaderRef.current.value = null;
       await triggerCurrentQuery();
+      toast('Данные обновлены');
     } catch (err) {
       console.log(err);
       toast(JSON.stringify(err));
@@ -218,7 +219,7 @@ const Settings = () => {
                     className="max-w-[300px]"
                     label="Факультет"
                     variant="bordered"
-                    selectedKeys={[facultyValue]}
+                    selectedKeys={facultyValue}
                     onSelectionChange={onChangeFaculty}>
                     {faculties.map((faculty) => (
                       <SelectItem key={faculty.value} value={faculty.value}>

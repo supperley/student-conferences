@@ -69,7 +69,7 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
     getValues('date') ||
       setValue('date', parseAbsoluteToLocal(conference?.date || '2024-05-05T11:00:00Z'));
     getValues('administrator') || setValue('administrator', conference?.administrator?._id);
-    getValues('faculties') || setValue('faculties', conference?.faculties);
+    getValues('faculties')?.length > 0 || setValue('faculties', conference?.faculties);
     getValues('link') || setValue('link', conference?.link);
   }, [conference]);
 

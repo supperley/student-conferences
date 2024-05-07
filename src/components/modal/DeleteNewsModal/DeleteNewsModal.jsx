@@ -9,9 +9,11 @@ import {
 } from '@nextui-org/react';
 import React from 'react';
 import { useDeleteNewsMutation } from '../../../redux/services/newsApi';
+import { useNavigate } from 'react-router-dom';
 
 const DeleteNewsModal = ({ isOpen, onOpenChange, news }) => {
   const [deleteNews, { isLoading: isDeleteLoading }] = useDeleteNewsMutation();
+  const navigate = useNavigate();
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -33,6 +35,7 @@ const DeleteNewsModal = ({ isOpen, onOpenChange, news }) => {
                 onPress={async () => {
                   await deleteNews(news._id);
                   onClose();
+                  navigate('/news');
                 }}>
                 Удалить
               </Button>

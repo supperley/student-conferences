@@ -50,11 +50,12 @@ const NewsModal = ({ isOpen, onOpenChange, mode = 'add', news = {} }) => {
   });
 
   useEffect(() => {
+    console.log(news);
     getValues('_id') || setValue('_id', news?._id);
     getValues('title') || setValue('title', news?.title);
     getValues('description') || setValue('description', news?.description);
-    getValues('faculties') || setValue('faculties', news?.faculties);
-    getValues('chip') || setValue('chip', news?.chip);
+    getValues('faculties')?.length > 0 || setValue('faculties', news?.faculties);
+    getValues('chip')?.length > 0 || setValue('chip', [news?.chip]);
   }, [news]);
 
   return (
@@ -71,10 +72,7 @@ const NewsModal = ({ isOpen, onOpenChange, mode = 'add', news = {} }) => {
                 Array.from(data.faculties).forEach((faculty) => {
                   formData.append('faculties', faculty);
                 });
-              data.chip &&
-                Array.from(data.chip).forEach((chip) => {
-                  formData.append('chip', chip);
-                });
+              data.faculty && formData.append('chip', [...data.chip][0]);
               isDeleteImage && formData.append('image', 'delete');
               selectedFile && formData.append('image', selectedFile);
 
@@ -214,7 +212,7 @@ const NewsModal = ({ isOpen, onOpenChange, mode = 'add', news = {} }) => {
                   </div>
                 </ModalFooter>
               </form>
-              {/* <DevTool control={control} /> */}
+              <DevTool control={control} />
             </>
           );
         }}
