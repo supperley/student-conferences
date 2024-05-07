@@ -41,12 +41,13 @@ export const reportApi = api.injectEndpoints({
       }),
       invalidatesTags: ['Report'],
     }),
-    // deleteReport: builder.mutation({
-    //   query: (id) => ({
-    //     url: `/reports/${id}`,
-    //     method: 'DELETE',
-    //   }),
-    // }),
+    deleteReport: builder.mutation({
+      query: (id) => ({
+        url: `/reports/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Report'],
+    }),
   }),
 });
 
@@ -56,7 +57,7 @@ export const {
   useGetReportByIdQuery,
   useUpdateReportMutation,
   useCreateReportCommentMutation,
-  // useDeleteReportMutation,
+  useDeleteReportMutation,
 } = reportApi;
 
 export const {

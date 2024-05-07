@@ -18,6 +18,8 @@ import User from './User/User';
 import Conferences from './Conferences/Conferences';
 import Report from './Report/Report';
 import { ProtectedRoute } from '../components/ProtectedRoute/ProtectedRoute';
+import Blocked from './Blocked/Blocked';
+import { AdminRoute } from '../components/AdminRoute/AdminRoute';
 
 const Router = () => {
   return (
@@ -31,9 +33,9 @@ const Router = () => {
         <Route path={ROUTE_CONSTANTS.NEWS} element={<News />} />
         <Route path={ROUTE_CONSTANTS.NEWS_POST} element={<NewsPost />} />
         <Route path={ROUTE_CONSTANTS.NOT_FOUND} element={<NotFound />} />
+        <Route path={ROUTE_CONSTANTS.BLOCKED} element={<Blocked />} />
         <Route element={<ProtectedRoute />}>
           <Route path={ROUTE_CONSTANTS.DASHBOARD} element={<Dashboard />} />
-          <Route path={ROUTE_CONSTANTS.USERS} element={<Users />} />
           <Route path={ROUTE_CONSTANTS.USER} element={<User />} />
           <Route path={ROUTE_CONSTANTS.HELP} element={<Help />} />
           <Route path={ROUTE_CONSTANTS.PROFILE} element={<Profile />} />
@@ -42,6 +44,9 @@ const Router = () => {
           <Route path={ROUTE_CONSTANTS.CONFERENCE} element={<Conference />} />
           <Route path={ROUTE_CONSTANTS.REPORTS} element={<Reports />} />
           <Route path={ROUTE_CONSTANTS.REPORT} element={<Report />} />
+          <Route element={<AdminRoute />}>
+            <Route path={ROUTE_CONSTANTS.USERS} element={<Users />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

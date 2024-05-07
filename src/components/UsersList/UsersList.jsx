@@ -12,20 +12,16 @@ import {
 } from '@nextui-org/react';
 import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import TableData from '../TableData/TableData';
-// import { users } from '../../shared/data/mockData';
 import EditUserModal from '../modal/EditUserModal/EditUserModal';
 import { S3_URL } from '../../shared/config/constants';
 import { useUpdateUserMutation } from '../../redux/services/userApi';
-import { faculties } from '../../shared/data/mockData';
+import { faculties } from '../../shared/data/dataMap';
 import BlockUserModal from '../modal/BlockUserModal/BlockUserModal';
 import { hasErrorField } from '../../shared/utils/hasErrorField';
 import { toast } from 'sonner';
-
-export const userStatusMap = {
-  active: { name: 'Активен', color: 'success' },
-  paused: { name: 'Заморожен', color: 'warning' },
-  blocked: { name: 'Заблокирован', color: 'danger' },
-};
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../redux/slices/authSlice';
+import { userStatusMap } from '../../shared/data/dataMap';
 
 export const userTableColumns = [
   { name: 'ID', uid: '_id', sortable: true },
@@ -49,10 +45,11 @@ export default function UsersList({ users, emptyText }) {
   } = useDisclosure();
   const [modalUser, setModalUser] = useState(undefined);
   const [updateUser, { isLoading }] = useUpdateUserMutation();
+  const currentUser = useSelector(selectUser);
 
   const onSubmit = async (data) => {
     try {
-      await updateUser(data).unwrap();
+      await updateUser({ id: data._id, userData: data }).unwrap();
       // setSelected('login');
     } catch (err) {
       console.log(err);
@@ -65,7 +62,7 @@ export default function UsersList({ users, emptyText }) {
 
   const onSubmitStatus = async (user, status) => {
     try {
-      const data = { _id: user?._id, status };
+      const data = { id: user?._id, userData: { status } };
       // console.log(data);
       await updateUser(data).unwrap();
     } catch (err) {
@@ -122,7 +119,7 @@ export default function UsersList({ users, emptyText }) {
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem href={'/users/' + user?._id}>Подробнее</DropdownItem>
-                {user?.role === 'admin' && (
+                {/* {currentUser?.role === 'admin' && (
                   <DropdownItem
                     onPress={() => {
                       setModalUser(user);
@@ -130,33 +127,37 @@ export default function UsersList({ users, emptyText }) {
                     }}>
                     Редактировать
                   </DropdownItem>
-                )}
-                {user?.role === 'admin' && user.status !== 'active' && (
-                  <DropdownItem
-                    className="text-success"
-                    color="success"
-                    onPress={() => {
-                      onSubmitStatus(user, 'active');
-                    }}>
-                    Разблокировать
-                  </DropdownItem>
-                )}
-                {/* {user?.role === 'admin' && user.status !== 'freezing' && (
+                )} */}
+                {currentUser?.role === 'admin' &&
+                  user.status !== 'active' &&
+                  currentUser?._id !== user?._id && (
+                    <DropdownItem
+                      className="text-success"
+                      color="success"
+                      onPress={() => {
+                        onSubmitStatus(user, 'active');
+                      }}>
+                      Разблокировать
+                    </DropdownItem>
+                  )}
+                {/* {currentUser?.role === 'admin' && user.status !== 'freezing' && (
                   <DropdownItem className="text-warning" color="warning">
                     Заморозить
                   </DropdownItem>
                 )} */}
-                {user?.role === 'admin' && user.status !== 'blocked' && (
-                  <DropdownItem
-                    onPress={() => {
-                      setModalUser(user);
-                      onOpen();
-                    }}
-                    className="text-danger"
-                    color="danger">
-                    Заблокировать
-                  </DropdownItem>
-                )}
+                {currentUser?.role === 'admin' &&
+                  user?.status !== 'blocked' &&
+                  currentUser?._id !== user?._id && (
+                    <DropdownItem
+                      onPress={() => {
+                        setModalUser(user);
+                        onOpen();
+                      }}
+                      className="text-danger"
+                      color="danger">
+                      Заблокировать
+                    </DropdownItem>
+                  )}
               </DropdownMenu>
             </Dropdown>
           </div>

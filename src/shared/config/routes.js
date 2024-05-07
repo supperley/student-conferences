@@ -18,4 +18,5 @@ export const ROUTE_CONSTANTS = {
   USER: '/users/:userId',
   SETTINGS: '/settings',
   NOT_FOUND: '/404',
+  BLOCKED: '/blocked',
 };

@@ -6,35 +6,24 @@ import {
   ModalFooter,
   Button,
   Input,
-  Link,
   Select,
   SelectItem,
   Textarea,
-  DatePicker,
-  Avatar,
 } from '@nextui-org/react';
 import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
-import { faculties } from '../../../shared/data/dataMap';
-import { S3_URL } from '../../../shared/config/constants';
-import {
-  useCreateConferenceMutation,
-  useUpdateConferenceMutation,
-} from '../../../redux/services/conferenceApi';
+import { faculties, newsType } from '../../../shared/data/dataMap';
 import { hasErrorField } from '../../../shared/utils/hasErrorField';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
-import { useGetAllUsersQuery } from '../../../redux/services/userApi';
 import { DevTool } from '@hookform/devtools';
-import { parseAbsoluteToLocal } from '@internationalized/date';
-import { I18nProvider } from '@react-aria/i18n';
 import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
 import { toast } from 'sonner';
+import { useCreateNewsMutation, useUpdateNewsMutation } from '../../../redux/services/newsApi';
 
-const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }) => {
-  const { data: users, error: usersError, isLoading: isUsersLoading } = useGetAllUsersQuery();
-  const [createConference, { isLoading: isCreateLoading }] = useCreateConferenceMutation();
-  const [updateConference, { isLoading: isUpdateLoading }] = useUpdateConferenceMutation();
+const NewsModal = ({ isOpen, onOpenChange, mode = 'add', news = {} }) => {
+  const [createNews, { isLoading: isCreateLoading }] = useCreateNewsMutation();
+  const [updateNews, { isLoading: isUpdateLoading }] = useUpdateNewsMutation();
   const [error, setError] = useState('');
   const uploaderRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -45,33 +34,28 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
     }
   };
 
-  const { handleSubmit, register, control, setValue, getValues } = useForm({
+  const { handleSubmit, getValues, control, setValue } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
     defaultValues: useMemo(
       () => ({
         title: '',
         description: '',
-        date: parseAbsoluteToLocal('2024-05-05T11:00:00Z'),
-        administrator: '',
         faculties: new Set([]),
-        link: '',
+        chip: '',
         image: '',
       }),
-      [conference],
+      [news],
     ),
   });
 
   useEffect(() => {
-    getValues('_id') || setValue('_id', conference?._id);
-    getValues('title') || setValue('title', conference?.title);
-    getValues('description') || setValue('description', conference?.description);
-    getValues('date') ||
-      setValue('date', parseAbsoluteToLocal(conference?.date || '2024-05-05T11:00:00Z'));
-    getValues('administrator') || setValue('administrator', conference?.administrator?._id);
-    getValues('faculties') || setValue('faculties', conference?.faculties);
-    getValues('link') || setValue('link', conference?.link);
-  }, [conference]);
+    getValues('_id') || setValue('_id', news?._id);
+    getValues('title') || setValue('title', news?.title);
+    getValues('description') || setValue('description', news?.description);
+    getValues('faculties') || setValue('faculties', news?.faculties);
+    getValues('chip') || setValue('chip', news?.chip);
+  }, [news]);
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center" size="2xl">
@@ -79,24 +63,25 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
         {(onClose) => {
           const onSubmit = async (data) => {
             try {
+              console.log(data);
               const formData = new FormData();
               data.title && formData.append('title', data.title);
               data.description && formData.append('description', data.description);
-              data.date && formData.append('date', data.date.toDate());
-              data.administrator && formData.append('administrator', data.administrator);
-              data.status && formData.append('status', data.status);
               data.faculties &&
                 Array.from(data.faculties).forEach((faculty) => {
                   formData.append('faculties', faculty);
                 });
-              data.link && formData.append('link', data.link);
+              data.chip &&
+                Array.from(data.chip).forEach((chip) => {
+                  formData.append('chip', chip);
+                });
               isDeleteImage && formData.append('image', 'delete');
               selectedFile && formData.append('image', selectedFile);
 
               if (mode === 'add') {
-                await createConference(formData).unwrap();
+                await createNews(formData).unwrap();
               } else {
-                await updateConference({ id: data._id, conferenceData: formData }).unwrap();
+                await updateNews({ id: data._id, newsData: formData }).unwrap();
               }
 
               onClose();
@@ -113,7 +98,7 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
           return (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {mode === 'add' ? 'Добавление' : 'Редактирование'} конференции
+                {mode === 'add' ? 'Добавление' : 'Редактирование'} новости
               </ModalHeader>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <ModalBody>
@@ -122,7 +107,7 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
                     name="title"
                     render={({ field: { onChange: onChangeTitle, value: titleValue } }) => (
                       <Input
-                        label="Название конференции"
+                        label="Заголовок новости"
                         variant="bordered"
                         isRequired
                         errorMessage="Обязательное поле"
@@ -138,60 +123,13 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
                       field: { onChange: onChangeDescription, value: descriptionValue },
                     }) => (
                       <Textarea
-                        label="Дополнительная информация"
+                        label="Основной текст"
                         onChange={onChangeDescription}
                         value={descriptionValue}
                         variant="bordered"
                       />
                     )}
                   />
-                  <Select
-                    isRequired
-                    errorMessage="Обязательное поле"
-                    label="Администратор конференции"
-                    variant="bordered"
-                    isLoading={isUsersLoading}
-                    {...register('administrator')}
-                    items={users || []}
-                    classNames={{
-                      label: 'group-data-[filled=true]:-translate-y-6',
-                      trigger: 'min-h-20',
-                    }}
-                    renderValue={(items) => {
-                      return items.map((item) => (
-                        <div key={item.data._id} className="flex items-center gap-2">
-                          <Avatar
-                            alt={item.data.first_name + ' ' + item.data.last_name}
-                            className="flex-shrink-0"
-                            size="sm"
-                            src={S3_URL + item.data.avatarUrl}
-                          />
-                          <div className="flex flex-col">
-                            <span>{item.data.first_name + ' ' + item.data.last_name}</span>
-                            <span className="text-default-500 text-tiny">({item.data.email})</span>
-                          </div>
-                        </div>
-                      ));
-                    }}>
-                    {(user) => (
-                      <SelectItem key={user._id} textValue={user.last_name}>
-                        <div className="flex gap-2 items-center">
-                          <Avatar
-                            alt={user.first_name + ' ' + user.last_name}
-                            className="flex-shrink-0"
-                            size="sm"
-                            src={S3_URL + user.avatarUrl}
-                          />
-                          <div className="flex flex-col">
-                            <span className="text-small">
-                              {user.first_name + ' ' + user.last_name}
-                            </span>
-                            <span className="text-tiny text-default-400">{user.email}</span>
-                          </div>
-                        </div>
-                      </SelectItem>
-                    )}
-                  </Select>
                   <Controller
                     control={control}
                     name="faculties"
@@ -214,31 +152,21 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
                   />
                   <Controller
                     control={control}
-                    name="date"
-                    render={({ field: { onChange, onBlur, value, ref } }) => (
-                      <I18nProvider locale="ru-RU">
-                        <DatePicker
-                          label="Дата проведения"
-                          variant="bordered"
-                          granularity="minute"
-                          onChange={onChange}
-                          value={value}
-                          showMonthAndYearPickers
-                        />
-                      </I18nProvider>
-                    )}
-                  />
-                  <Controller
-                    control={control}
-                    name="link"
-                    render={({ field: { onChange: onChangeLink, value: linkValue } }) => (
-                      <Input
-                        type="url"
-                        label="Ссылка на трансляцию"
+                    name="chip"
+                    render={({
+                      field: { onChange: onChangeChip, onBlur, value: chipValue, ref },
+                    }) => (
+                      <Select
+                        label="Тип новости"
                         variant="bordered"
-                        onChange={onChangeLink}
-                        value={linkValue}
-                      />
+                        selectedKeys={chipValue}
+                        onSelectionChange={onChangeChip}>
+                        {newsType.map((type) => (
+                          <SelectItem key={type.value} value={type.value}>
+                            {type.label}
+                          </SelectItem>
+                        ))}
+                      </Select>
                     )}
                   />
                   <input
@@ -249,7 +177,7 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
                     className="hidden"
                   />
                   <div className="flex gap-5">
-                    {mode === 'edit' && conference?.imageUrl && (
+                    {mode === 'edit' && news?.imageUrl && (
                       <Button
                         className="w-1/3"
                         startContent={isDeleteImage && <CheckIcon />}
@@ -262,7 +190,7 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
                       </Button>
                     )}
                     <Button
-                      className={mode === 'edit' && conference?.imageUrl ? 'w-2/3' : 'w-full'}
+                      className={mode === 'edit' && news?.imageUrl ? 'w-2/3' : 'w-full'}
                       startContent={!selectedFile?.name && <UploadIcon />}
                       onClick={() => uploaderRef.current.click()}
                       variant="flat">
@@ -271,10 +199,7 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
                     </Button>
                   </div>
                 </ModalBody>
-                <ModalFooter className="justify-between items-center">
-                  <Link color="primary" href="/help" size="sm">
-                    Возникли вопросы?
-                  </Link>
+                <ModalFooter className="justify-end items-center">
                   <ErrorMessage error={error} />
                   <div className="flex gap-2">
                     <Button variant="flat" onPress={onClose}>
@@ -298,4 +223,4 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
   );
 };
 
-export default ConferenceModal;
+export default NewsModal;

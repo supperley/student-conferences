@@ -19,8 +19,9 @@ import { useUpdateConferenceMutation } from '../../redux/services/conferenceApi'
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/authSlice';
-import { faculties } from '../../shared/data/mockData';
+import { faculties } from '../../shared/data/dataMap';
 import { toast } from 'sonner';
+import DeleteConferenceModal from '../modal/DeleteConferenceModal/DeleteConferenceModal';
 
 export const conferencesTableColumns = [
   { name: 'ID', uid: 'id', sortable: true },
@@ -57,6 +58,11 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
     isOpen: isOpenModalAdd,
     onOpen: onOpenModalAdd,
     onOpenChange: onOpenChangeModalAdd,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenModalDelete,
+    onOpen: onOpenModalDelete,
+    onOpenChange: onOpenChangeModalDelete,
   } = useDisclosure();
   const [modalConference, setModalConference] = useState(undefined);
   const [updateConference, { isLoading: isUpdateLoading }] = useUpdateConferenceMutation();
@@ -169,6 +175,17 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
                       Отменить проведение
                     </DropdownItem>
                   )}
+                {(user?._id === conference?.administrator?._id || user?.role === 'admin') && (
+                  <DropdownItem
+                    onPress={() => {
+                      setModalConference(conference);
+                      onOpenModalDelete();
+                    }}
+                    className="text-danger"
+                    color="danger">
+                    Удалить
+                  </DropdownItem>
+                )}
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -200,6 +217,11 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
         conference={modalConference}
         onSubmitStatus={onSubmitStatus}
         isLoading={isUpdateLoading}
+      />
+      <DeleteConferenceModal
+        isOpen={isOpenModalDelete}
+        onOpenChange={onOpenChangeModalDelete}
+        conference={modalConference}
       />
       <ConferenceModal
         isOpen={isOpenModalAdd}

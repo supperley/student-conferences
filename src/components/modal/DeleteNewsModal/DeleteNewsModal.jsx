@@ -8,8 +8,11 @@ import {
   ModalHeader,
 } from '@nextui-org/react';
 import React from 'react';
+import { useDeleteNewsMutation } from '../../../redux/services/newsApi';
 
-const CancelReportModal = ({ isOpen, onOpenChange, report, onSubmitStatus, isLoading }) => {
+const DeleteNewsModal = ({ isOpen, onOpenChange, news }) => {
+  const [deleteNews, { isLoading: isDeleteLoading }] = useDeleteNewsMutation();
+
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent>
@@ -17,7 +20,7 @@ const CancelReportModal = ({ isOpen, onOpenChange, report, onSubmitStatus, isLoa
           <>
             <ModalHeader className="flex flex-col gap-1">Подтвердите действие</ModalHeader>
             <ModalBody>
-              <p>Вы действительно хотите удалить данную заявку?</p>
+              <p>Вы действительно хотите удалить данную новость?</p>
               <p>Это действие нельзя отменить.</p>
             </ModalBody>
             <ModalFooter>
@@ -25,10 +28,10 @@ const CancelReportModal = ({ isOpen, onOpenChange, report, onSubmitStatus, isLoa
                 Отменить
               </Button>
               <Button
-                isLoading={isLoading}
+                isLoading={isDeleteLoading}
                 color="danger"
                 onPress={async () => {
-                  await onSubmitStatus(report, 'declined');
+                  await deleteNews(news._id);
                   onClose();
                 }}>
                 Удалить
@@ -41,4 +44,4 @@ const CancelReportModal = ({ isOpen, onOpenChange, report, onSubmitStatus, isLoa
   );
 };
 
-export default CancelReportModal;
+export default DeleteNewsModal;

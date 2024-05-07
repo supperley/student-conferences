@@ -7,29 +7,19 @@ import {
   DropdownItem,
   Chip,
   Link,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   useDisclosure,
 } from '@nextui-org/react';
 import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import TableData from '../TableData/TableData';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
 import ReportModal from '../modal/ReportModal/ReportModal';
-import CancelReportModal from '../modal/CancelReportModal/CancelReportModal';
-import { useUpdateReportMutation } from '../../redux/services/reportApi';
+import DeleteReportModal from '../modal/DeleteReportModal/DeleteReportModal';
+import { useDeleteReportMutation, useUpdateReportMutation } from '../../redux/services/reportApi';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-
-export const reportStatusMap = {
-  accepted: { name: 'Принят', color: 'success' },
-  pending: { name: 'На рассмотрении', color: 'warning' },
-  declined: { name: 'Отклонен', color: 'danger' },
-};
+import { reportStatusMap } from '../../shared/data/dataMap';
 
 export const reportTableColumns = [
   { name: 'ID', uid: 'id', sortable: true },
@@ -206,7 +196,7 @@ export default function ReportsList({ reports, isParentLoading, emptyText }) {
         emptyText={isParentLoading ? 'Загрузка...' : emptyText}
         inputPlaceholder={'Искать по названию работы или конференции...'}
       />
-      <CancelReportModal
+      <DeleteReportModal
         isOpen={isOpenModalCancel}
         onOpen={onOpenModalCancel}
         onOpenChange={onOpenChangeModalCancel}

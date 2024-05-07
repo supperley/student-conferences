@@ -31,6 +31,7 @@ const Register = ({ setSelected }) => {
     try {
       await register(data).unwrap();
       setSelected('login');
+      toast.success('Вы успешно зарегистрированы!');
     } catch (err) {
       console.log(err);
       toast(JSON.stringify(err));

@@ -9,7 +9,13 @@ const initialState = {
 const slice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state, action) => {
+      state.user = null;
+      state.isAuthenticated = false;
+      localStorage.removeItem('user');
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addMatcher(authApi.endpoints.login.matchFulfilled, (state, action) => {
@@ -31,7 +37,11 @@ const slice = createSlice({
 
 export default slice.reducer;
 
+export const { logout } = slice.actions;
+
 export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
+export const selectIsBlocked = (state) => state.auth.user?.status === 'blocked';
+export const selectIsAdmin = (state) => state.auth.user?.role === 'admin';
 
 export const selectCurrent = (state) => state.auth.current;
 

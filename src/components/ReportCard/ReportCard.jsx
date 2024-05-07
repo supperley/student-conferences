@@ -3,8 +3,8 @@ import { formatToClientDate } from '../../shared/utils/formatToClientDate';
 import ReportModal from '../modal/ReportModal/ReportModal';
 import { S3_URL } from '../../shared/config/constants';
 import { saveAs } from 'file-saver';
-import { reportStatusMap } from '../ReportsList/ReportsList';
 import defaultReport from '../../shared/assets/images/default-report.jpg';
+import { reportStatusMap } from '../../shared/data/dataMap';
 
 export const ReportCard = ({ reportData, isLoading = false }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();

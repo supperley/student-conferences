@@ -2,8 +2,7 @@ import ConferencesList from '../../components/ConferencesList/ConferencesList';
 import { useGetAllConferencesQuery } from '../../redux/services/conferenceApi';
 
 const Conferences = () => {
-  const allData = useGetAllConferencesQuery();
-  const { data, error, isLoading } = allData;
+  const { data, error, isLoading } = useGetAllConferencesQuery();
 
   return (
     <div className="my-5">

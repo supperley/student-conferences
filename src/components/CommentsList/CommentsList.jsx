@@ -27,6 +27,7 @@ export const CommentsList = ({ comments = [], reportId }) => {
   const onSubmit = async (data) => {
     try {
       await createComment({ reportId, commentData: { author: user?._id, ...data } }).unwrap();
+      reset();
     } catch (err) {
       console.log(err);
       toast(JSON.stringify(err));
@@ -81,7 +82,7 @@ export const CommentsList = ({ comments = [], reportId }) => {
       </form>
       {comments.length ? (
         comments.map((comment) => {
-          return <Comment data={comment} />;
+          return <Comment commentData={comment} />;
         })
       ) : (
         <div>Комментариев пока нет. Будьте первым!</div>

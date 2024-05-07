@@ -7,7 +7,7 @@ import { useGetReportByIdQuery, useUpdateReportMutation } from '../../redux/serv
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/authSlice';
-import CancelReportModal from '../../components/modal/CancelReportModal/CancelReportModal';
+import DeleteReportModal from '../../components/modal/DeleteReportModal/DeleteReportModal';
 import { toast } from 'sonner';
 
 const Report = () => {
@@ -117,12 +117,11 @@ const Report = () => {
           </>
         )}
       </div>
-      <CancelReportModal
+      <DeleteReportModal
         isOpen={isOpenModalCancel}
         onOpen={onOpenModalCancel}
         onOpenChange={onOpenChangeModalCancel}
         report={modalReport}
-        onSubmitStatus={onSubmitStatus}
       />
     </>
   );

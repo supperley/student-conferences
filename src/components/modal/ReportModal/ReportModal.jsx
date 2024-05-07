@@ -27,6 +27,7 @@ import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
 import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
 import { hasErrorField } from '../../../shared/utils/hasErrorField';
 import { toast } from 'sonner';
+import { useParams } from 'react-router-dom';
 
 const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
   const { data: users, error: usersError, isLoading: isUsersLoading } = useGetAllUsersQuery();
@@ -38,13 +39,15 @@ const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
   const [isDeleteFile, setIsDeleteFile] = useState(false);
   const [isCheckboxSelected, setIsCheckboxSelected] = useState(false);
   const [isCheckboxInvalid, setIsCheckboxInvalid] = useState(false);
+  const params = useParams();
+  const conferenceId = params.conferenceId;
   const handleFileChange = () => {
     if (event.target.files !== null) {
       setSelectedFile(event.target.files[0]);
     }
   };
 
-  const { handleSubmit, register, control, setValue } = useForm({
+  const { handleSubmit, register, control, setValue, getValues } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
     defaultValues: useMemo(
@@ -52,16 +55,18 @@ const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
         title: '',
         description: '',
         supervisor: '',
+        conference: '',
       }),
       [report],
     ),
   });
 
   useEffect(() => {
-    setValue('_id', report?._id);
-    setValue('title', report?.title);
-    setValue('description', report?.description);
-    setValue('supervisor', report?.supervisor?._id);
+    getValues('_id') || setValue('_id', report?._id);
+    getValues('title') || setValue('title', report?.title);
+    getValues('description') || setValue('description', report?.description);
+    getValues('supervisor') || setValue('supervisor', report?.supervisor?._id);
+    getValues('conference') || setValue('conference', conferenceId);
   }, [report]);
 
   return (
@@ -78,6 +83,7 @@ const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
               data.title && formData.append('title', data.title);
               data.description && formData.append('description', data.description);
               data.supervisor && formData.append('supervisor', data.supervisor);
+              data.conference && formData.append('conference', data.conference);
               selectedFile && formData.append('file', selectedFile);
 
               if (mode === 'add') {
@@ -181,7 +187,7 @@ const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
                     ref={uploaderRef}
                     type="file"
                     accept=".doc, .docx, .pdf"
-                    onChange={handleFileChange}
+                    onChange={() => handleFileChange()}
                     className="hidden"
                   />
                   <div className="flex gap-3 justify-between">

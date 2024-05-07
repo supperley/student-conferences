@@ -3,7 +3,7 @@ import { formatToClientDate } from '../../shared/utils/formatToClientDate';
 import ReportModal from '../modal/ReportModal/ReportModal';
 import { S3_URL } from '../../shared/config/constants';
 import { conferenceStatusMap } from '../../shared/data/dataMap';
-import { faculties } from '../../shared/data/mockData';
+import { faculties } from '../../shared/data/dataMap';
 import defaultConference from '../../shared/assets/images/default-conference.jpg';
 
 export const ConferenceCard = ({ conferenceData, isLoading = false }) => {

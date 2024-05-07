@@ -10,7 +10,7 @@ function App() {
 
   return (
     <>
-      <Toaster />
+      <Toaster richColors />
       <Provider store={store}>
         <NextUIProvider navigate={navigate}>
           <Router />

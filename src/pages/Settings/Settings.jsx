@@ -9,16 +9,14 @@ import {
   SelectItem,
 } from '@nextui-org/react';
 import { CameraIcon } from '../../shared/assets/icons/CameraIcon';
-import { useSelector } from 'react-redux';
-import { selectUser } from '../../redux/slices/authSlice';
 import { S3_URL } from '../../shared/config/constants';
 import { Controller, useForm } from 'react-hook-form';
-import { faculties } from '../../shared/data/mockData';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { hasErrorField } from '../../shared/utils/hasErrorField';
 import { useUpdateUserMutation } from '../../redux/services/userApi';
 import { useCurrentQuery, useLazyCurrentQuery } from '../../redux/services/authApi';
 import { toast } from 'sonner';
+import { faculties } from '../../shared/data/dataMap';
 
 const Settings = () => {
   // const user = useSelector(selectUser);
@@ -46,6 +44,7 @@ const Settings = () => {
     reValidateMode: 'onChange',
     defaultValues: useMemo(
       () => ({
+        _id: '',
         first_name: '',
         last_name: '',
         patronymic: '',
