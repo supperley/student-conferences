@@ -14,7 +14,7 @@ import { format, parseISO } from 'date-fns';
 import { S3_URL } from '../../shared/config/constants';
 import { useNavigate } from 'react-router-dom';
 import defaultReport from '../../shared/assets/images/default-report.jpg';
-import { faculties, facultiesDataMap } from '../../shared/data/dataMap';
+import { facultiesDataMap } from '../../shared/data/dataMap';
 import { chipDataMap } from '../../shared/data/dataMap';
 
 export const CustomCard = ({ data }) => {
@@ -32,7 +32,6 @@ export const CustomCard = ({ data }) => {
           {isLoaded ? (
             <Card
               isBlurred
-              //as={NextLink}
               className="w-full p-2 h-full border-transparent text-start bg-white/5 dark:bg-default-400/10 backdrop-blur-lg backdrop-saturate-[1.8]"
               isPressable
               onPress={() => {
@@ -40,7 +39,6 @@ export const CustomCard = ({ data }) => {
               }}>
               <CardHeader className="flex justify-between">
                 <Link
-                  // as={NextLink}
                   className="font-semibold "
                   href={'/news/' + data?._id}
                   size="lg"
@@ -54,13 +52,19 @@ export const CustomCard = ({ data }) => {
                 )}
               </CardHeader>
               <CardBody className="pt-0 px-2 pb-1 justify-center">
-                <Image src={data?.imageUrl ? S3_URL + data?.imageUrl : defaultReport} />
-                {data?.faculties && data?.faculties[0] && (
-                  <Chip className="mt-4">
-                    {facultiesDataMap[data?.faculties[0]]?.label || data?.faculties[0]}
-                  </Chip>
-                )}
-                {/* <p className="mt-3 font-normal w-full text-default-600">{data.description}</p> */}
+                <div className="self-center">
+                  <Image
+                    src={data?.imageUrl ? S3_URL + data?.imageUrl : defaultReport}
+                    className="max-h-48"
+                  />
+                </div>
+                <div className="flex flex-row gap-2 mt-4">
+                  {data?.faculties &&
+                    data?.faculties
+                      .slice(0, 2)
+                      .map((faculty) => <Chip>{facultiesDataMap[faculty]?.label || faculty}</Chip>)}
+                  {data?.faculties?.length > 2 && 'и более'}
+                </div>
               </CardBody>
               <CardFooter className="flex justify-between items-center">
                 <time className="block text-small text-default-500" dateTime={data?.createdAt}>

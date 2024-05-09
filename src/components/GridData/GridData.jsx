@@ -59,7 +59,7 @@ const GridData = ({ data, onOpenModalAdd }) => {
     }
 
     return filteredData;
-  }, [filterValue, facultiesFilter, typeFilter]);
+  }, [data, filterValue, facultiesFilter, typeFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -82,13 +82,13 @@ const GridData = ({ data, onOpenModalAdd }) => {
     }
   }, [page]);
 
-  // const onRowsPerPageChange = React.useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-  //   setRowsPerPage(Number(e.target.value));
-  //   setPage(1);
-  // }, []);
+  const onRowsPerPageChange = React.useCallback((e) => {
+    setRowsPerPage(Number(e.target.value));
+    setPage(1);
+  }, []);
 
   return (
-    <>
+    <div className="flex flex-col gap-6">
       <div className="flex flex-col sm:flex-row mt-6 justify-between gap-3 items-center">
         <Input
           isClearable
@@ -148,7 +148,20 @@ const GridData = ({ data, onOpenModalAdd }) => {
           </Button>
         </div>
       </div>
-      <div className="mt-10 grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
+      <div className="flex justify-between items-center">
+        <span className="text-default-400 text-small">Всего {data.length} элементов</span>
+        <label className="flex items-center text-default-400 text-small">
+          Элементов на странице:
+          <select
+            className="bg-transparent outline-none text-default-400 text-small"
+            onChange={onRowsPerPageChange}>
+            <option value="3">3</option>
+            <option value="6">6</option>
+            <option value="12">12</option>
+          </select>
+        </label>
+      </div>
+      <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
         {items.map((card, idx) => (
           <CustomCard key={idx} data={card} />
         ))}
@@ -172,7 +185,7 @@ const GridData = ({ data, onOpenModalAdd }) => {
           </Button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

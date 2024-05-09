@@ -49,8 +49,6 @@ export const {
   useGetNewsByIdQuery,
   useUpdateNewsMutation,
   useDeleteNewsMutation,
-  useLazyGetAllNewsQuery,
-  useLazyGetNewsByIdQuery,
 } = newsApi;
 
 export const {

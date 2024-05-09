@@ -94,6 +94,7 @@ const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
 
               onClose();
               setSelectedFile(null);
+              toast.success('Научная работа успешно добавлена');
             } catch (err) {
               console.log(err);
               toast(JSON.stringify(err));

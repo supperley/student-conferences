@@ -31,48 +31,50 @@ const NewsPost = () => {
 
   return (
     <>
-      <div className="w-full lg:px-16 my-10">
+      <div className="w-full lg:px-16 my-10 flex flex-col gap-4">
         <div>
           <Link
             isBlock
             href={ROUTE_CONSTANTS.NEWS}
             color="foreground"
-            className="text-default-500 text-small mb-5 -ml-3">
+            className="text-default-500 text-small -ml-3">
             <ArrowIcon />
             Вернуться назад
           </Link>
         </div>
-        <div className="text-default-500 text-small mb-5">
-          {formatToClientDate(newsData?.date, {
+        <div className="text-default-500 text-small">
+          {formatToClientDate(newsData?.createdAt, {
             weekday: 'long',
             year: 'numeric',
             month: 'long',
             day: 'numeric',
           })}
         </div>
-        <Link
-          isBlock
-          href={'/users/' + newsData?.author._id}
-          color="foreground"
-          className="text-default-500 text-small mb-5">
-          <Skeleton isLoaded={!isLoading} className="rounded-lg">
-            <User
-              name={newsData?.author.first_name + ' ' + newsData?.author.last_name}
-              description={newsData?.author.position}
-              avatarProps={{
-                src: S3_URL + newsData?.author.avatarUrl,
-              }}
-            />
-          </Skeleton>
-        </Link>
+        <div>
+          <Link
+            isBlock
+            href={'/users/' + newsData?.author._id}
+            color="foreground"
+            className="text-default-500 text-small">
+            <Skeleton isLoaded={!isLoading} className="rounded-lg">
+              <User
+                name={newsData?.author.first_name + ' ' + newsData?.author.last_name}
+                description={newsData?.author.position}
+                avatarProps={{
+                  src: S3_URL + newsData?.author.avatarUrl,
+                }}
+              />
+            </Skeleton>
+          </Link>
+        </div>
         <div className="flex flex-col md:flex-row justify-between gap-5">
-          <h1 className="mb-10 font-bold text-4xl">
+          <h1 className="font-bold text-4xl">
             <Skeleton isLoaded={!isLoading} className="rounded-lg">
               {newsData?.title}
             </Skeleton>
           </h1>
           <div className="flex flex-col sm:flex-row gap-3">
-            {(user?._id === newsData?.author?._id || user?.role === 'admin') && (
+            {!isLoading && (user?._id === newsData?.author?._id || user?.role === 'admin') && (
               <Button
                 color="danger"
                 variant="flat"
@@ -82,7 +84,7 @@ const NewsPost = () => {
                 Удалить новость
               </Button>
             )}
-            {(user?._id === newsData?.author?._id || user?.role === 'admin') && (
+            {!isLoading && (user?._id === newsData?.author?._id || user?.role === 'admin') && (
               <Button
                 color="primary"
                 variant="flat"
@@ -94,13 +96,16 @@ const NewsPost = () => {
             )}
           </div>
         </div>
-        <Skeleton isLoaded={!isLoading} className={`rounded-lg ${isLoading}`}>
-          <Image
-            alt="NextUI hero Image"
-            src={newsData?.imageUrl ? S3_URL + newsData?.imageUrl : defaultReport}
-          />
-        </Skeleton>
-        <Skeleton isLoaded={!isLoading} className="rounded-lg my-10">
+        <div className="max-w-[90%] self-center my-5">
+          <Skeleton isLoaded={!isLoading} className={`rounded-lg ${isLoading}`}>
+            <Image
+              className="max-h-[500px]"
+              alt="NextUI hero Image"
+              src={newsData?.imageUrl ? S3_URL + newsData?.imageUrl : defaultReport}
+            />
+          </Skeleton>
+        </div>
+        <Skeleton isLoaded={!isLoading} className="rounded-lg">
           <div>{newsData?.description}</div>
         </Skeleton>
       </div>

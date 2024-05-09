@@ -9,8 +9,10 @@ import {
 } from '@nextui-org/react';
 import React from 'react';
 import { useDeleteReportMutation } from '../../../redux/services/reportApi';
+import { useNavigate } from 'react-router-dom';
 
 const DeleteReportModal = ({ isOpen, onOpenChange, report }) => {
+  const navigate = useNavigate();
   const [deleteReport, { isLoading: isDeleteLoading }] = useDeleteReportMutation();
 
   return (
@@ -33,6 +35,7 @@ const DeleteReportModal = ({ isOpen, onOpenChange, report }) => {
                 onPress={async () => {
                   await deleteReport(report._id);
                   onClose();
+                  navigate('/reports');
                 }}>
                 Удалить
               </Button>

@@ -80,6 +80,16 @@ const Report = () => {
                     Принять
                   </Button>
                 )}
+                {user?.role === 'admin' && reportData?.status !== 'pending' && (
+                  <Button
+                    onPress={() => {
+                      onSubmitStatus(reportData, 'pending');
+                    }}
+                    color="warning"
+                    variant="flat">
+                    На рассмотрение
+                  </Button>
+                )}
                 {user?.role === 'admin' && reportData?.status !== 'declined' && (
                   <Button
                     onPress={() => {
