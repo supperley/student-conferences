@@ -84,6 +84,7 @@ const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
               data.description && formData.append('description', data.description);
               data.supervisor && formData.append('supervisor', data.supervisor);
               data.conference && formData.append('conference', data.conference);
+              isDeleteFile && formData.append('file', 'delete');
               selectedFile && formData.append('file', selectedFile);
 
               if (mode === 'add') {

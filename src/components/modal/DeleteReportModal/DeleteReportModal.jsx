@@ -10,6 +10,7 @@ import {
 import React from 'react';
 import { useDeleteReportMutation } from '../../../redux/services/reportApi';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const DeleteReportModal = ({ isOpen, onOpenChange, report }) => {
   const navigate = useNavigate();
@@ -33,9 +34,13 @@ const DeleteReportModal = ({ isOpen, onOpenChange, report }) => {
                 isLoading={isDeleteLoading}
                 color="danger"
                 onPress={async () => {
-                  await deleteReport(report._id);
-                  onClose();
-                  navigate('/reports');
+                  try {
+                    await deleteReport(report._id).unwrap();
+                    onClose();
+                    navigate('/reports');
+                  } catch (err) {
+                    toast.error(JSON.stringify(err));
+                  }
                 }}>
                 Удалить
               </Button>

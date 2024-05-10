@@ -32,9 +32,6 @@ const Report = () => {
     } catch (err) {
       console.log(err);
       toast(JSON.stringify(err));
-      if (hasErrorField(err)) {
-        setError(err?.data?.message || err?.error);
-      }
     }
   };
 

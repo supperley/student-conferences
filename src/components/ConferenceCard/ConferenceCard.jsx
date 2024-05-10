@@ -23,18 +23,20 @@ export const ConferenceCard = ({ conferenceData, isLoading = false }) => {
       <div className="flex lg:w-2/5 md:justify-center">
         <div className="flex flex-col w-full md:w-auto gap-10 justify-around">
           <div className="flex flex-col gap-4 min-w-[200px] md:min-w-[300px]">
-            <div className="flex flex-col md:flex-row md:items-center gap-2">
-              <span className="w-[130px]">Факультеты</span>
-              <div className="text-default-500 text-small">
-                <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                  {conferenceData?.faculties
-                    ?.map((faculty) => {
-                      return faculties.find((o) => o.value === faculty)?.label;
-                    })
-                    .join(', ')}
-                </Skeleton>
+            {conferenceData?.faculties && conferenceData?.faculties?.length > 0 && (
+              <div className="flex flex-col md:flex-row md:items-center gap-2">
+                <span className="w-[130px]">Факультеты</span>
+                <div className="text-default-500 text-small">
+                  <Skeleton isLoaded={!isLoading} className="rounded-lg">
+                    {conferenceData?.faculties
+                      ?.map((faculty) => {
+                        return faculties.find((o) => o.value === faculty)?.label;
+                      })
+                      .join(', ')}
+                  </Skeleton>
+                </div>
               </div>
-            </div>
+            )}
             <div className="flex flex-col md:flex-row md:items-center gap-2">
               <span className="w-[130px]">Состояние</span>
               <Skeleton isLoaded={!isLoading} className="rounded-lg">

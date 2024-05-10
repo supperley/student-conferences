@@ -153,7 +153,7 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
                     </DropdownItem>
                   )}
                 {(user?._id === conference?.administrator?._id || user?.role === 'admin') &&
-                  conference.status == 'registrationOpen' && (
+                  conference.status !== 'registrationClosed' && (
                     <DropdownItem
                       className="text-warning"
                       color="warning"
