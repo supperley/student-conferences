@@ -56,7 +56,7 @@ const Header = () => {
         <NavLink to={ROUTE_CONSTANTS.HOME}>
           <NavbarBrand>
             <AppLogo />
-            <p className="ml-2 font-bold text-inherit">SNTK BNTU</p>
+            <p className="ml-2 font-bold text-inherit">СНТК БНТУ</p>
           </NavbarBrand>
         </NavLink>
       </NavbarContent>

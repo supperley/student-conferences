@@ -2,22 +2,16 @@ import { api } from '../slices/apiSlice';
 
 export const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation({
+    register: builder.mutation({
       query: (userData) => ({
-        url: '/auth/login',
+        url: '/auth/register',
         method: 'POST',
         body: userData,
       }),
     }),
-    logout: builder.mutation({
-      query: () => ({
-        url: '/auth/logout',
-        method: 'POST',
-      }),
-    }),
-    register: builder.mutation({
+    login: builder.mutation({
       query: (userData) => ({
-        url: '/auth/register',
+        url: '/auth/login',
         method: 'POST',
         body: userData,
       }),
@@ -26,6 +20,33 @@ export const authApi = api.injectEndpoints({
       query: () => ({
         url: '/auth/current',
         method: 'GET',
+      }),
+    }),
+    logout: builder.mutation({
+      query: () => ({
+        url: '/auth/logout',
+        method: 'POST',
+      }),
+    }),
+    changePassword: builder.mutation({
+      query: (userData) => ({
+        url: '/auth/change-password',
+        method: 'POST',
+        body: userData,
+      }),
+    }),
+    forgotPassword: builder.mutation({
+      query: (userData) => ({
+        url: '/auth/forgot-password',
+        method: 'POST',
+        body: userData,
+      }),
+    }),
+    resetPassword: builder.mutation({
+      query: (userData) => ({
+        url: '/auth/reset-password',
+        method: 'POST',
+        body: userData,
       }),
     }),
   }),
@@ -37,6 +58,9 @@ export const {
   useLogoutMutation,
   useCurrentQuery,
   useLazyCurrentQuery,
+  useChangePasswordMutation,
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
 } = authApi;
 
 export const {

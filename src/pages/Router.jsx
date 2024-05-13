@@ -20,6 +20,7 @@ import Report from './Report/Report';
 import { ProtectedRoute } from '../components/ProtectedRoute/ProtectedRoute';
 import Blocked from './Blocked/Blocked';
 import { AdminRoute } from '../components/AdminRoute/AdminRoute';
+import ResetPassword from './ResetPassword/ResetPassword';
 
 const Router = () => {
   return (
@@ -30,6 +31,7 @@ const Router = () => {
         <Route path={ROUTE_CONSTANTS.LOGIN} element={<Auth preSelected="login" />} />
         <Route path={ROUTE_CONSTANTS.REGISTER} element={<Auth preSelected="sign-up" />} />
         <Route path={ROUTE_CONSTANTS.FORGOT_PASSWORD} element={<ForgotPassword />} />
+        <Route path={ROUTE_CONSTANTS.RESET_PASSWORD} element={<ResetPassword />} />
         <Route path={ROUTE_CONSTANTS.NEWS} element={<News />} />
         <Route path={ROUTE_CONSTANTS.NEWS_POST} element={<NewsPost />} />
         <Route path={ROUTE_CONSTANTS.NOT_FOUND} element={<NotFound />} />
