@@ -368,11 +368,6 @@ const userReports = [
   },
 ];
 
-const faculties = [
-  { label: 'ФИТР', value: 'fitr' },
-  { label: 'ФММП', value: 'fmmp' },
-];
-
 const news = [
   {
     title: 'Новость v2.2.0 🚀',
@@ -440,9 +435,4 @@ const news = [
   },
 ];
 
-const newsStatus = [
-  { label: 'Конференция', value: 'conference' },
-  { label: 'Уведомление', value: 'notification' },
-];
-
-export { userReports, conferences, users, news, faculties, user, newsStatus };
+export { userReports, conferences, users, news, user };

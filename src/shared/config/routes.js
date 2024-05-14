@@ -4,6 +4,7 @@ export const ROUTE_CONSTANTS = {
   LOGOUT: '/logout',
   REGISTER: '/register',
   FORGOT_PASSWORD: '/forgot-password',
+  RESET_PASSWORD: '/reset-password',
   HELP: '/help',
   NEWS: '/news',
   NEWS_POST: '/news/:newsId',
@@ -18,4 +19,5 @@ export const ROUTE_CONSTANTS = {
   USER: '/users/:userId',
   SETTINGS: '/settings',
   NOT_FOUND: '/404',
+  BLOCKED: '/blocked',
 };

@@ -33,12 +33,13 @@ export const conferenceApi = api.injectEndpoints({
       }),
       invalidatesTags: ['Conference'],
     }),
-    // deleteConference: builder.mutation({
-    //   query: (id) => ({
-    //     url: `/conferences/${id}`,
-    //     method: 'DELETE',
-    //   }),
-    // }),
+    deleteConference: builder.mutation({
+      query: (id) => ({
+        url: `/conferences/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Conference'],
+    }),
   }),
 });
 
@@ -47,7 +48,7 @@ export const {
   useGetAllConferencesQuery,
   useGetConferenceByIdQuery,
   useUpdateConferenceMutation,
-  // useDeleteConferenceMutation,
+  useDeleteConferenceMutation,
 } = conferenceApi;
 
 export const {

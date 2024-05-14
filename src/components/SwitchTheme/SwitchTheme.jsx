@@ -1,8 +1,8 @@
+import { Switch } from '@nextui-org/react';
 import React, { useEffect } from 'react';
 import useSwitchTheme from '../../hooks/useSwitchTheme';
-import { Switch } from '@nextui-org/react';
-import { SunIcon } from '../../shared/assets/icons/SunIcon';
 import { MoonIcon } from '../../shared/assets/icons/MoonIcon';
+import { SunIcon } from '../../shared/assets/icons/SunIcon';
 
 export const SwitchTheme = () => {
   const [colorTheme, setColorTheme] = useSwitchTheme();

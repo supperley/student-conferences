@@ -1,7 +1,10 @@
 import { Button, Link } from '@nextui-org/react';
-import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectIsAuthenticated } from '../../redux/slices/authSlice';
 
 const Home = () => {
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+
   return (
     <>
       <div className="relative max-w-5xl mx-auto pt-20 sm:pt-24 lg:pt-32">
@@ -15,7 +18,11 @@ const Home = () => {
           достижения. Присоединяйтесь к нам в этом захватывающем путешествии открытий и знаний!
         </p>
         <div className="mt-4 sm:mt-6 flex justify-center space-x-6 text-sm">
-          <Button href="/login" as={Link} color="primary" className="w-40 h-12 font-bold mt-3">
+          <Button
+            href={isAuthenticated ? '/conferences' : '/login'}
+            as={Link}
+            color="primary"
+            className="w-40 h-12 font-bold mt-3">
             Начать
           </Button>
         </div>

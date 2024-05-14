@@ -1,32 +1,33 @@
 import {
-  Navbar,
-  NavbarContent,
-  DropdownItem,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
   Avatar,
-  NavbarMenuToggle,
-  NavbarBrand,
-  NavbarItem,
-  Link,
   Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Link,
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
   NavbarMenu,
   NavbarMenuItem,
+  NavbarMenuToggle,
 } from '@nextui-org/react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { AppLogo } from '../../shared/components/AppLogo';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useLogoutMutation } from '../../redux/services/authApi';
+import { selectIsAdmin, selectIsAuthenticated, selectUser } from '../../redux/slices/authSlice';
+import { AppLogo } from '../../shared/components/AppLogo';
+import { S3_URL } from '../../shared/config/constants';
 import { ROUTE_CONSTANTS } from '../../shared/config/routes';
 import { SwitchTheme } from '../SwitchTheme/SwitchTheme';
-import { selectIsAuthenticated, selectUser } from '../../redux/slices/authSlice';
-import { S3_URL } from '../../shared/config/constants';
-import { useLogoutMutation } from '../../redux/services/authApi';
 
 const Header = () => {
   const navigate = useNavigate();
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const isAdmin = useSelector(selectIsAdmin);
   const user = useSelector(selectUser);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [logout] = useLogoutMutation();
@@ -41,8 +42,8 @@ const Header = () => {
     { label: 'Новости', link: ROUTE_CONSTANTS.NEWS },
     { label: 'Конференции', link: ROUTE_CONSTANTS.CONFERENCES, protected: true },
     { label: 'Научные работы', link: ROUTE_CONSTANTS.REPORTS, protected: true },
-    { label: 'Пользователи', link: ROUTE_CONSTANTS.USERS, protected: true },
-    { label: 'Дашборд', link: ROUTE_CONSTANTS.DASHBOARD, protected: true },
+    { label: 'Пользователи', link: ROUTE_CONSTANTS.USERS, protected: true, admin: true },
+    // { label: 'Дашборд', link: ROUTE_CONSTANTS.DASHBOARD, protected: true },
   ];
 
   return (
@@ -55,14 +56,18 @@ const Header = () => {
         <NavLink to={ROUTE_CONSTANTS.HOME}>
           <NavbarBrand>
             <AppLogo />
-            <p className="ml-2 font-bold text-inherit">SNTK BNTU</p>
+            <p className="ml-2 font-bold text-inherit">СНТК БНТУ</p>
           </NavbarBrand>
         </NavLink>
       </NavbarContent>
 
       <NavbarContent className="hidden lg:flex gap-4" justify="center">
         {menuItems.map((item, index) => {
-          if (!item.protected || (item.protected && isAuthenticated)) {
+          if (
+            !item.protected ||
+            (item.protected && isAuthenticated && !item.admin) ||
+            (item.admin && isAdmin)
+          ) {
             return (
               <NavbarItem key={item.label}>
                 <NavLink
@@ -82,7 +87,11 @@ const Header = () => {
       </NavbarContent>
       <NavbarMenu>
         {menuItems.map((item, index) => {
-          if (!item.protected || (item.protected && isAuthenticated)) {
+          if (
+            !item.protected ||
+            (item.protected && isAuthenticated && !item.admin) ||
+            (item.admin && isAdmin)
+          ) {
             return (
               <NavbarMenuItem key={`${item}-${index}`} onClick={() => setIsMenuOpen(false)}>
                 <NavLink

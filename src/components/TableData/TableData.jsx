@@ -1,27 +1,29 @@
-import React from 'react';
 import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Input,
   Button,
-  DropdownTrigger,
   Dropdown,
-  DropdownMenu,
   DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Input,
   Pagination,
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
 } from '@nextui-org/react';
+import React from 'react';
 import { ChevronDownIcon } from '../../shared/assets/icons/ChevronDownIcon';
-import { SearchIcon } from '../../shared/assets/icons/SearchIcon';
 import { PlusIcon } from '../../shared/assets/icons/PlusIcon';
+import { SearchIcon } from '../../shared/assets/icons/SearchIcon';
 
 export default function TableData({
   renderCell,
   statusOptions,
   tableColumns,
+  searchColumns = [tableColumns[1].uid],
+  inputPlaceholder = 'Искать по имени...',
   initialVisibleColumns,
   isAddButton = false,
   onOpenModalAdd = () => {},
@@ -53,8 +55,23 @@ export default function TableData({
 
     if (hasSearchFilter) {
       filteredData = filteredData.filter((item) => {
-        const searchColumn = tableColumns[1].uid;
-        return item[searchColumn].toLowerCase().includes(filterValue.toLowerCase());
+        // const searchColumn = tableColumns[1].uid;
+        // return item[searchColumn].toLowerCase().includes(filterValue.toLowerCase());
+        return searchColumns.some((column) => {
+          const columnParts = column.split('.'); // Разделяем колонку по точке
+          let value = item; // Начинаем с целого объекта
+
+          // Проходим по частям и добираемся до нужного свойства
+          for (const part of columnParts) {
+            if (value === undefined) {
+              break; // Если значение undefined, прерываем, чтобы не вызывать ошибку
+            }
+            value = value[part]; // Переходим к следующей части
+          }
+
+          // Проверяем, есть ли значение и совпадает ли оно с фильтром
+          return value?.toLowerCase().includes(filterValue.toLowerCase());
+        });
       });
     }
 
@@ -122,7 +139,7 @@ export default function TableData({
           <Input
             isClearable
             className="w-full sm:max-w-[44%]"
-            placeholder="Искать по имени..."
+            placeholder={inputPlaceholder}
             startContent={<SearchIcon />}
             value={filterValue}
             onClear={() => onClear()}

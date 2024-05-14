@@ -1,13 +1,22 @@
-import { Card, Link, Image, Button, useDisclosure, Chip, User, Skeleton } from '@nextui-org/react';
-import { formatToClientDate } from '../../shared/utils/formatToClientDate';
-import AddReportModal from '../modal/AddReportModal/AddReportModal';
-import { S3_URL } from '../../shared/config/constants';
-import { conferenceStatusMap } from '../../shared/data/dataMap';
-import { faculties } from '../../shared/data/mockData';
+import { Button, Card, Chip, Image, Link, Skeleton, User, useDisclosure } from '@nextui-org/react';
 import defaultConference from '../../shared/assets/images/default-conference.jpg';
+import { S3_URL } from '../../shared/config/constants';
+import { conferenceStatusMap, facultiesDataMap } from '../../shared/data/dataMap';
+import { formatToClientDate } from '../../shared/utils/formatToClientDate';
+import { formatToGoogleDate } from '../../shared/utils/formatToGoogleDate';
+import ReportModal from '../modal/ReportModal/ReportModal';
 
 export const ConferenceCard = ({ conferenceData, isLoading = false }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const createGoogleDate = () => {
+    const startDate = new Date(conferenceData?.date);
+    let endDate = new Date(conferenceData?.date);
+    endDate.setHours(endDate.getHours() + 1);
+    return `https://calendar.google.com/calendar/u/0/r/eventedit?text=${
+      conferenceData?.title
+    }&dates=${formatToGoogleDate(startDate)}/${formatToGoogleDate(endDate)}&trp=false`;
+  };
 
   return (
     <Card className="flex my-6 md:my-10 p-5 sm:p-10 md:flex-row md:justify-around gap-5 md:gap-10">
@@ -23,33 +32,27 @@ export const ConferenceCard = ({ conferenceData, isLoading = false }) => {
       <div className="flex lg:w-2/5 md:justify-center">
         <div className="flex flex-col w-full md:w-auto gap-10 justify-around">
           <div className="flex flex-col gap-4 min-w-[200px] md:min-w-[300px]">
-            <div className="flex flex-col md:flex-row md:items-center gap-2">
-              <span className="w-[130px]">Факультеты</span>
-              <div className="text-default-500 text-small">
-                <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                  {conferenceData?.faculties
-                    ?.map((faculty) => {
-                      return faculties.find((o) => o.value === faculty)?.label;
-                    })
-                    .join(', ')}
-                </Skeleton>
+            {conferenceData?.faculties && conferenceData?.faculties?.length > 0 && (
+              <div className="flex flex-col md:flex-row md:items-center gap-2">
+                <span className="w-[130px]">Факультеты</span>
+                <div className="text-default-500 text-small">
+                  <Skeleton isLoaded={!isLoading} className="rounded-lg">
+                    {conferenceData?.faculties
+                      ?.map((faculty) => {
+                        return facultiesDataMap[faculty]?.label;
+                      })
+                      .join(', ')}
+                  </Skeleton>
+                </div>
               </div>
-            </div>
-            {/* <div className="flex flex-col md:flex-row md:items-center gap-2">
-            <span className="w-[130px]">Кафедра</span>
-            <div className="text-default-500 text-small">{conferenceData?.department}</div>
-          </div> */}
+            )}
             <div className="flex flex-col md:flex-row md:items-center gap-2">
               <span className="w-[130px]">Состояние</span>
-
-              <Chip
-                color={conferenceStatusMap[conferenceData?.status]?.color}
-                className="-ml-1"
-                variant="flat">
-                <Skeleton isLoaded={!isLoading} className="rounded-lg">
+              <Skeleton isLoaded={!isLoading} className="rounded-lg -ml-1">
+                <Chip color={conferenceStatusMap[conferenceData?.status]?.color} variant="flat">
                   {conferenceStatusMap[conferenceData?.status]?.name || 'default'}
-                </Skeleton>
-              </Chip>
+                </Chip>
+              </Skeleton>
             </div>
             <div className="flex flex-col md:flex-row md:items-center gap-2">
               <span className="w-[130px]">Дата</span>
@@ -83,21 +86,35 @@ export const ConferenceCard = ({ conferenceData, isLoading = false }) => {
             </div>
           </div>
           <div className="flex flex-col gap-3 md:items-center">
-            <Button onPress={onOpen} color="primary" className="md:w-full">
-              Подать заявку
-            </Button>
-            {conferenceData?.status === 'registrationOpen' && conferenceData?.link && (
+            {conferenceData?.status === 'registrationOpen' && (
+              <Button onPress={onOpen} color="primary" className="md:w-full">
+                Подать заявку
+              </Button>
+            )}
+            {(conferenceData?.status === 'registrationOpen' ||
+              conferenceData?.status === 'registrationClosed') &&
+              conferenceData?.link && (
+                <Button
+                  as={Link}
+                  href={createGoogleDate(conferenceData?.date)}
+                  target="_blank"
+                  variant="flat"
+                  className="md:w-full">
+                  Добавить в Google Календарь
+                </Button>
+              )}
+            {conferenceData?.status === 'held' && conferenceData?.link && (
               <Button
                 as={Link}
                 href={conferenceData?.link}
                 color="secondary"
                 variant="flat"
+                target="_blank"
                 className="md:w-full">
                 Присоединится к трансляции
               </Button>
             )}
-
-            <AddReportModal isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} />
+            <ReportModal isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} />
           </div>
         </div>
       </div>

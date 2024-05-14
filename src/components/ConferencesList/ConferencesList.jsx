@@ -1,31 +1,32 @@
-import React, { useState } from 'react';
 import {
   Button,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
   Chip,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
   Link,
   useDisclosure,
 } from '@nextui-org/react';
-import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
-import TableData from '../TableData/TableData';
-import { formatToClientDate } from '../../shared/utils/formatToClientDate';
-import ConferenceModal from '../modal/ConferenceModal/ConferenceModal';
-import CancelConferenceModal from '../modal/CancelConferenceModal/CancelConferenceModal';
-import { conferenceStatusMap } from '../../shared/data/dataMap';
-import { useUpdateConferenceMutation } from '../../redux/services/conferenceApi';
-import { hasErrorField } from '../../shared/utils/hasErrorField';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { useUpdateConferenceMutation } from '../../redux/services/conferenceApi';
 import { selectUser } from '../../redux/slices/authSlice';
+import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
+import { conferenceStatusMap, facultiesDataMap } from '../../shared/data/dataMap';
+import { formatToClientDate } from '../../shared/utils/formatToClientDate';
+import TableData from '../TableData/TableData';
+import CancelConferenceModal from '../modal/CancelConferenceModal/CancelConferenceModal';
+import ConferenceModal from '../modal/ConferenceModal/ConferenceModal';
+import DeleteConferenceModal from '../modal/DeleteConferenceModal/DeleteConferenceModal';
 
 export const conferencesTableColumns = [
   { name: 'ID', uid: 'id', sortable: true },
   { name: 'Название конференции', uid: 'title', sortable: true },
   { name: 'Администратор', uid: 'administrator', sortable: true },
-  { name: 'Факультет', uid: 'faculty', sortable: true },
+  { name: 'Факультеты', uid: 'faculties', sortable: true },
   { name: 'Дата', uid: 'date', sortable: true },
   { name: 'Состояние', uid: 'status', sortable: true },
   { name: 'Действия', uid: 'actions' },
@@ -57,21 +58,23 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
     onOpen: onOpenModalAdd,
     onOpenChange: onOpenChangeModalAdd,
   } = useDisclosure();
+  const {
+    isOpen: isOpenModalDelete,
+    onOpen: onOpenModalDelete,
+    onOpenChange: onOpenChangeModalDelete,
+  } = useDisclosure();
   const [modalConference, setModalConference] = useState(undefined);
-  const [updateConference, { isUpdateLoading }] = useUpdateConferenceMutation();
+  const [updateConference, { isLoading: isUpdateLoading }] = useUpdateConferenceMutation();
   const navigate = useNavigate();
   const user = useSelector(selectUser);
 
   const onSubmitStatus = async (conference, status) => {
     try {
-      const data = { id: conference._id, conferenceData: { status } };
-      // console.log(data);
+      const data = { id: conference?._id, conferenceData: { status } };
       await updateConference(data).unwrap();
     } catch (err) {
       console.log(err);
-      if (hasErrorField(err)) {
-        setError(err?.data?.message || err?.error);
-      }
+      toast(JSON.stringify(err));
     }
   };
 
@@ -79,24 +82,26 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
     const cellValue = conference[columnKey];
 
     switch (columnKey) {
+      case 'id':
+        return conference?._id;
       case 'title':
         return (
-          <Link href={'/conferences/' + conference._id} className="text-sm font-medium">
+          <Link href={'/conferences/' + conference?._id} className="text-sm font-medium">
             {cellValue}
           </Link>
         );
       case 'administrator':
         return (
-          <Link href={'/users/' + conference.administrator._id} className="text-sm">
-            {cellValue.first_name + ' ' + cellValue.last_name}
+          <Link href={'/users/' + conference.administrator?._id} className="text-sm">
+            {cellValue?.first_name + ' ' + cellValue?.last_name}
           </Link>
         );
-      case 'faculty':
-        return (
-          <Link href={'/conferences/?faculty=' + conference._id} className="text-sm">
-            {cellValue}
-          </Link>
-        );
+      case 'faculties':
+        return conference?.faculties
+          ?.map((faculty) => {
+            return facultiesDataMap[faculty]?.label;
+          })
+          .join(', ');
       case 'date':
         return formatToClientDate(cellValue);
       case 'status':
@@ -117,7 +122,7 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
               <DropdownMenu>
                 <DropdownItem
                   onPress={() => {
-                    navigate('/conferences/' + conference._id);
+                    navigate('/conferences/' + conference?._id);
                   }}>
                   Подробнее
                 </DropdownItem>
@@ -130,13 +135,36 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
                     Редактировать
                   </DropdownItem>
                 )}
-                {(user?._id === conference?.administrator?._id || user?.role === 'admin') && (
-                  <DropdownItem href={'/conferences/' + conference._id + '/generatePDF'}>
+                {user?.role === 'admin' && (
+                  <DropdownItem href={'/conferences/' + conference?._id + '/generatePDF'}>
                     Сформировать сборник
                   </DropdownItem>
                 )}
                 {(user?._id === conference?.administrator?._id || user?.role === 'admin') &&
-                  conference.status !== 'registrationOpen' && (
+                  conference.status === 'held' && (
+                    <DropdownItem
+                      className="text-success"
+                      color="success"
+                      onPress={() => {
+                        onSubmitStatus(conference, 'completed');
+                      }}>
+                      Завершить проведение
+                    </DropdownItem>
+                  )}
+                {(user?._id === conference?.administrator?._id || user?.role === 'admin') &&
+                  conference.status === 'registrationClosed' && (
+                    <DropdownItem
+                      className="text-secondary"
+                      color="secondary"
+                      onPress={() => {
+                        onSubmitStatus(conference, 'held');
+                      }}>
+                      Начать проведение
+                    </DropdownItem>
+                  )}
+                {(user?._id === conference?.administrator?._id || user?.role === 'admin') &&
+                  (conference.status === 'registrationClosed' ||
+                    conference.status === 'declined') && (
                     <DropdownItem
                       className="text-success"
                       color="success"
@@ -146,9 +174,8 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
                       Открыть регистрацию
                     </DropdownItem>
                   )}
-
                 {(user?._id === conference?.administrator?._id || user?.role === 'admin') &&
-                  conference.status == 'registrationOpen' && (
+                  conference.status === 'registrationOpen' && (
                     <DropdownItem
                       className="text-warning"
                       color="warning"
@@ -159,7 +186,8 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
                     </DropdownItem>
                   )}
                 {(user?._id === conference?.administrator?._id || user?.role === 'admin') &&
-                  conference.status !== 'declined' && (
+                  (conference.status === 'registrationOpen' ||
+                    conference.status === 'registrationClosed') && (
                     <DropdownItem
                       onPress={() => {
                         setModalConference(conference);
@@ -170,6 +198,17 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
                       Отменить проведение
                     </DropdownItem>
                   )}
+                {(user?._id === conference?.administrator?._id || user?.role === 'admin') && (
+                  <DropdownItem
+                    onPress={() => {
+                      setModalConference(conference);
+                      onOpenModalDelete();
+                    }}
+                    className="text-danger"
+                    color="danger">
+                    Удалить
+                  </DropdownItem>
+                )}
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -200,6 +239,12 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
         onOpenChange={onOpenChangeModalCancel}
         conference={modalConference}
         onSubmitStatus={onSubmitStatus}
+        isLoading={isUpdateLoading}
+      />
+      <DeleteConferenceModal
+        isOpen={isOpenModalDelete}
+        onOpenChange={onOpenChangeModalDelete}
+        conference={modalConference}
       />
       <ConferenceModal
         isOpen={isOpenModalAdd}

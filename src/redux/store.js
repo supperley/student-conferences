@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { listenerAuthTokenMiddleware } from './middleware/auth';
 import { api } from './slices/apiSlice';
 import auth from './slices/authSlice';
-import { listenerAuthMiddleware } from './middleware/auth';
 
 export const store = configureStore({
   reducer: {
@@ -9,5 +9,5 @@ export const store = configureStore({
     auth,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.middleware).prepend(listenerAuthMiddleware.middleware),
+    getDefaultMiddleware().concat(api.middleware).prepend(listenerAuthTokenMiddleware.middleware),
 });

@@ -1,16 +1,11 @@
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   Button,
-  useDisclosure,
-  Checkbox,
   Input,
-  Link,
-  Select,
-  SelectItem,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
 } from '@nextui-org/react';
 
 const EditUserModal = ({ isOpen, onOpen, onOpenChange }) => {

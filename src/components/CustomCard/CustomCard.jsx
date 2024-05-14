@@ -1,28 +1,24 @@
 import {
-  Card,
-  CardFooter,
-  CardBody,
-  CardHeader,
-  Link,
   Avatar,
-  Image,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
   Chip,
+  Image,
+  Link,
 } from '@nextui-org/react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import defaultReport from '../../shared/assets/images/default-report.jpg';
+import { S3_URL } from '../../shared/config/constants';
+import { chipDataMap, facultiesDataMap } from '../../shared/data/dataMap';
+import { formatToClientDate } from '../../shared/utils/formatToClientDate';
 import { CustomCardSkeleton } from './CustomCardSkeleton';
-import { format, parseISO } from 'date-fns';
 
-export const CustomCard = ({ data, chipDataMap }) => {
+export const CustomCard = ({ data }) => {
   const isLoaded = true;
-
-  const handlePress = () => {
-    // trackEvent('BlogPostCard - Selection', {
-    //   name: post.title,
-    //   action: 'click',
-    //   category: 'blog',
-    //   data: post.url ?? '',
-    // });
-  };
+  const navigate = useNavigate();
 
   return (
     <AnimatePresence>
@@ -35,18 +31,17 @@ export const CustomCard = ({ data, chipDataMap }) => {
           {isLoaded ? (
             <Card
               isBlurred
-              // as={NextLink}
-              className="p-2 h-full border-transparent text-start bg-white/5 dark:bg-default-400/10 backdrop-blur-lg backdrop-saturate-[1.8]"
-              isPressable={!!data.url}
-              onPress={handlePress}>
+              className="w-full p-2 h-full border-transparent text-start bg-white/5 dark:bg-default-400/10 backdrop-blur-lg backdrop-saturate-[1.8]"
+              isPressable
+              onPress={() => {
+                navigate('/news/' + data?._id);
+              }}>
               <CardHeader className="flex justify-between">
                 <Link
-                  // as={NextLink}
                   className="font-semibold "
-                  href={data?.url}
+                  href={'/news/' + data?._id}
                   size="lg"
-                  underline="hover"
-                  onPress={handlePress}>
+                  underline="hover">
                   {data.title}
                 </Link>
                 {data?.chip && (
@@ -55,16 +50,30 @@ export const CustomCard = ({ data, chipDataMap }) => {
                   </Chip>
                 )}
               </CardHeader>
-              <CardBody className="pt-0 px-2 pb-1">
-                <Image src={data.image} />
-                {data?.tags && data?.tags[0] && <Chip className="mt-4">{data?.tags[0]}</Chip>}
-                <p className="mt-3 font-normal w-full text-default-600">{data.description}</p>
+              <CardBody className="pt-0 px-2 pb-1 justify-center">
+                <div className="self-center">
+                  <Image
+                    src={data?.imageUrl ? S3_URL + data?.imageUrl : defaultReport}
+                    className="max-h-48"
+                  />
+                </div>
+                <div className="flex flex-row gap-2 mt-4">
+                  {data?.faculties &&
+                    data?.faculties
+                      .slice(0, 2)
+                      .map((faculty) => <Chip>{facultiesDataMap[faculty]?.label || faculty}</Chip>)}
+                  {data?.faculties?.length > 2 && 'и более'}
+                </div>
               </CardBody>
               <CardFooter className="flex justify-between items-center">
-                <time className="block text-small text-default-500" dateTime={data.date}>
-                  {format(parseISO(data.date), 'LLLL d, yyyy')}
+                <time className="block text-small text-default-500" dateTime={data?.createdAt}>
+                  {formatToClientDate(data?.createdAt, {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
                 </time>
-                <Avatar size="sm" src={data.author?.avatar} />
+                <Avatar size="sm" src={S3_URL + data.author?.avatarUrl} />
               </CardFooter>
             </Card>
           ) : (

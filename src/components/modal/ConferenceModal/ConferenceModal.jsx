@@ -1,37 +1,50 @@
+import { parseAbsoluteToLocal } from '@internationalized/date';
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Avatar,
   Button,
+  DatePicker,
   Input,
   Link,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
   Select,
   SelectItem,
   Textarea,
-  DatePicker,
-  Avatar,
 } from '@nextui-org/react';
-import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
-import { faculties } from '../../../shared/data/mockData';
-import { S3_URL } from '../../../shared/config/constants';
+import { I18nProvider } from '@react-aria/i18n';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import {
   useCreateConferenceMutation,
   useUpdateConferenceMutation,
 } from '../../../redux/services/conferenceApi';
-import { hasErrorField } from '../../../shared/utils/hasErrorField';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
 import { useGetAllUsersQuery } from '../../../redux/services/userApi';
-import { DevTool } from '@hookform/devtools';
-import { parseAbsoluteToLocal } from '@internationalized/date';
-import { I18nProvider } from '@react-aria/i18n';
 import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
+import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
+import { S3_URL } from '../../../shared/config/constants';
+import { facultiesDataMap } from '../../../shared/data/dataMap';
+import { hasErrorField } from '../../../shared/utils/hasErrorField';
+import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
 
 const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }) => {
-  const { handleSubmit, register, control, reset, setValue } = useForm({
+  const { data: users, error: usersError, isLoading: isUsersLoading } = useGetAllUsersQuery();
+  const [createConference, { isLoading: isCreateLoading }] = useCreateConferenceMutation();
+  const [updateConference, { isLoading: isUpdateLoading }] = useUpdateConferenceMutation();
+  const [error, setError] = useState('');
+  const uploaderRef = useRef(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isDeleteImage, setIsDeleteImage] = useState(false);
+  const handleImageChange = () => {
+    if (event.target.files !== null) {
+      setSelectedFile(event.target.files[0]);
+    }
+  };
+
+  const { handleSubmit, register, control, setValue, getValues } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
     defaultValues: useMemo(
@@ -43,36 +56,21 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
         faculties: new Set([]),
         link: '',
         image: '',
-        imageUrl: '',
       }),
       [conference],
     ),
   });
 
-  // console.log('render ConferenceModal', conference);
   useEffect(() => {
-    // reset();
-    setValue('_id', conference?._id);
-    setValue('title', conference?.title);
-    setValue('description', conference?.description);
-    setValue('date', parseAbsoluteToLocal(conference?.date || '2024-05-05T11:00:00Z'));
-    setValue('administrator', conference?.administrator?._id);
-    setValue('faculties', conference?.faculties);
-    setValue('link', conference?.link);
+    getValues('_id') || setValue('_id', conference?._id);
+    getValues('title') || setValue('title', conference?.title);
+    getValues('description') || setValue('description', conference?.description);
+    getValues('date') ||
+      setValue('date', parseAbsoluteToLocal(conference?.date || '2024-05-05T11:00:00Z'));
+    getValues('administrator') || setValue('administrator', conference?.administrator?._id);
+    getValues('faculties')?.length > 0 || setValue('faculties', conference?.faculties);
+    getValues('link') || setValue('link', conference?.link);
   }, [conference]);
-
-  const { data: users, error: usersError, isLoading: isUsersLoading } = useGetAllUsersQuery();
-  const [createConference, { isCreateLoading }] = useCreateConferenceMutation();
-  const [updateConference, { isUpdateLoading }] = useUpdateConferenceMutation();
-  const [error, setError] = useState('');
-  const uploaderRef = useRef(null);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [isDeleteImage, setIsDeleteImage] = useState(false);
-  const handleImageChange = () => {
-    if (event.target.files !== null) {
-      setSelectedFile(event.target.files[0]);
-    }
-  };
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center" size="2xl">
@@ -99,10 +97,12 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
               } else {
                 await updateConference({ id: data._id, conferenceData: formData }).unwrap();
               }
+
               onClose();
               setSelectedFile(null);
             } catch (err) {
               console.log(err);
+              toast(JSON.stringify(err));
               if (hasErrorField(err)) {
                 setError(err?.data?.message || err?.error);
               }
@@ -119,9 +119,7 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
                   <Controller
                     control={control}
                     name="title"
-                    render={({
-                      field: { onChange: onChangeTitle, onBlur, value: titleValue, ref },
-                    }) => (
+                    render={({ field: { onChange: onChangeTitle, value: titleValue } }) => (
                       <Input
                         label="Название конференции"
                         variant="bordered"
@@ -132,16 +130,23 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
                       />
                     )}
                   />
-                  <Textarea
+                  <Controller
+                    control={control}
                     name="description"
-                    label="Дополнительная информация"
-                    {...register('description')}
-                    variant="bordered"
+                    render={({
+                      field: { onChange: onChangeDescription, value: descriptionValue },
+                    }) => (
+                      <Textarea
+                        label="Дополнительная информация"
+                        onChange={onChangeDescription}
+                        value={descriptionValue}
+                        variant="bordered"
+                      />
+                    )}
                   />
                   <Select
                     isRequired
                     errorMessage="Обязательное поле"
-                    name="administrator"
                     label="Администратор конференции"
                     variant="bordered"
                     isLoading={isUsersLoading}
@@ -158,7 +163,7 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
                             alt={item.data.first_name + ' ' + item.data.last_name}
                             className="flex-shrink-0"
                             size="sm"
-                            src={item.data.avatarUrl}
+                            src={S3_URL + item.data.avatarUrl}
                           />
                           <div className="flex flex-col">
                             <span>{item.data.first_name + ' ' + item.data.last_name}</span>
@@ -198,7 +203,7 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
                         variant="bordered"
                         selectedKeys={facultiesValue}
                         onSelectionChange={onChangeFaculties}>
-                        {faculties.map((faculty) => (
+                        {Object.values(facultiesDataMap).map((faculty) => (
                           <SelectItem key={faculty.value} value={faculty.value}>
                             {faculty.label}
                           </SelectItem>
@@ -235,7 +240,6 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
                       />
                     )}
                   />
-
                   <input
                     ref={uploaderRef}
                     type="file"

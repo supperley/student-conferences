@@ -1,11 +1,9 @@
 import { Button, Link } from '@nextui-org/react';
-import { useForm } from 'react-hook-form';
-import { useLazyCurrentQuery, useLoginMutation } from '../../redux/services/authApi';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { hasErrorField } from '../../shared/utils/hasErrorField';
-import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { Input } from '../../components/Input/Input';
+import { useForgotPasswordMutation } from '../../redux/services/authApi';
 
 const ForgotPasswordCard = () => {
   const { control, handleSubmit } = useForm({
@@ -16,21 +14,16 @@ const ForgotPasswordCard = () => {
     },
   });
 
-  const [login, { isLoading }] = useLoginMutation();
-  const navigate = useNavigate();
-  const [error, setError] = useState('');
-  const [triggerCurrentQuery] = useLazyCurrentQuery();
+  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
+  const [message, setMessage] = useState('');
 
   const onSubmit = async (data) => {
     // console.log(data);
     try {
-      await login(data).unwrap();
-      await triggerCurrentQuery();
-      navigate('/');
+      const result = await forgotPassword(data).unwrap();
+      setMessage(result?.message);
     } catch (err) {
-      if (hasErrorField(err)) {
-        setError(err?.data?.message || err?.error);
-      }
+      toast(JSON.stringify(result));
     }
   };
 
@@ -44,10 +37,18 @@ const ForgotPasswordCard = () => {
         type="email"
         required="Обязательное поле"
       />
-      <ErrorMessage error={error} />
-      <Button size="lg" type="submit" color="primary" className="font-bold" variant="shadow">
-        Восстановить пароль
-      </Button>
+      {message && <div className="bg-neutral-100 rounded-md px-4 py-2">{message}</div>}
+      {!message && (
+        <Button
+          size="lg"
+          type="submit"
+          color="primary"
+          className="font-bold"
+          variant="shadow"
+          isLoading={isLoading}>
+          Восстановить пароль
+        </Button>
+      )}
       <Link className="justify-center my-2" href="/login">
         Назад
       </Link>

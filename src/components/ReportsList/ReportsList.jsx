@@ -1,95 +1,111 @@
-import React, { useState } from 'react';
 import {
   Button,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
   Chip,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
   Link,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   useDisclosure,
 } from '@nextui-org/react';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { useUpdateReportMutation } from '../../redux/services/reportApi';
+import { selectUser } from '../../redux/slices/authSlice';
 import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
-import TableData from '../TableData/TableData';
-import { userReports } from '../../shared/data/mockData';
+import { reportStatusMap } from '../../shared/data/dataMap';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
-import EditReportModal from '../modal/EditReportModal/EditReportModal';
-
-export const reportStatusMap = {
-  accepted: { name: 'Активен', color: 'success' },
-  pending: { name: 'На рассмотрении', color: 'warning' },
-  declined: { name: 'Отклонен', color: 'danger' },
-};
+import TableData from '../TableData/TableData';
+import DeleteReportModal from '../modal/DeleteReportModal/DeleteReportModal';
+import ReportModal from '../modal/ReportModal/ReportModal';
 
 export const reportTableColumns = [
   { name: 'ID', uid: 'id', sortable: true },
   { name: 'Название', uid: 'title', sortable: true },
   { name: 'Автор', uid: 'author', sortable: true },
   { name: 'Конференция', uid: 'conference', sortable: true },
-  { name: 'Факультет', uid: 'faculty' },
   { name: 'Дата', uid: 'date', sortable: true },
   { name: 'Состояние', uid: 'status', sortable: true },
   { name: 'Действия', uid: 'actions' },
 ];
 
+const reportSearchColumns = ['title', 'conference.title'];
+
 const INITIAL_VISIBLE_COLUMNS = ['title', 'author', 'conference', 'date', 'status', 'actions'];
 
-export default function ReportsList() {
+export default function ReportsList({ reports, isParentLoading, emptyText }) {
   const {
-    isOpen: isOpenModalDialog,
-    onOpen: onOpenModalDialog,
-    onOpenChange: onOpenChangeModalDialog,
+    isOpen: isOpenModalCancel,
+    onOpen: onOpenModalCancel,
+    onOpenChange: onOpenChangeModalCancel,
   } = useDisclosure();
   const {
     isOpen: isOpenModalEdit,
     onOpen: onOpenModalEdit,
     onOpenChange: onOpenChangeModalEdit,
   } = useDisclosure();
-  const [modalReportId, setModalReportId] = useState(undefined);
+  const [modalReport, setModalReport] = useState(undefined);
+  const [updateReport, { isLoading: isUpdateLoading }] = useUpdateReportMutation();
+  const navigate = useNavigate();
+  const user = useSelector(selectUser);
+
+  const onSubmitStatus = async (report, status) => {
+    try {
+      const data = { id: report._id, reportData: { status } };
+      // console.log(data);
+      await updateReport(data).unwrap();
+    } catch (err) {
+      console.log(err);
+      toast(JSON.stringify(err));
+      if (hasErrorField(err)) {
+        setError(err?.data?.message || err?.error);
+      }
+    }
+  };
+
   const renderCell = React.useCallback((report, columnKey) => {
     const cellValue = report[columnKey];
 
     switch (columnKey) {
+      case 'id':
+        return report?._id;
       case 'title':
         return (
-          <Link href={'/reports/' + report._id} className="text-sm font-medium">
+          <Link href={'/reports/' + report?._id} className="text-sm font-medium">
             {cellValue}
           </Link>
         );
       case 'author':
         return (
-          <Link href={'/users/' + report.author._id} className="text-sm">
-            {cellValue.name}
+          <Link href={'/users/' + report?.author?._id} className="text-sm">
+            {cellValue?.first_name + ' ' + cellValue?.last_name}
           </Link>
         );
       case 'conference':
         return (
           <div className="flex flex-col">
-            <Link href={'/conferences/' + report.conference._id}>
-              <p className="text-bold text-small">{cellValue.name}</p>
+            <Link href={'/conferences/' + report?.conference?._id}>
+              <p className="text-bold text-small">{cellValue?.title}</p>
             </Link>
-            <Link href={'/conferences/?faculty=' + report.faculty}>
-              <p className="text-bold text-tiny text-default-400">{report.faculty}</p>
+            <Link href={'/conferences/?faculty=' + report?.faculty}>
+              <p className="text-bold text-tiny text-default-400">{report?.faculty}</p>
             </Link>
           </div>
         );
       case 'faculty':
         return (
-          <Link href={'/conferences/?faculty=' + report._id} className="text-sm">
+          <Link href={'/conferences/?faculty=' + report?._id} className="text-sm">
             {cellValue}
           </Link>
         );
       case 'date':
-        return formatToClientDate(cellValue);
+        return formatToClientDate(report?.createdAt);
       case 'status':
         return (
-          <Chip color={reportStatusMap[report.status].color} size="sm" variant="flat">
-            {reportStatusMap[report.status].name || cellValue}
+          <Chip color={reportStatusMap[report?.status].color} size="sm" variant="flat">
+            {reportStatusMap[report?.status].name || cellValue}
           </Chip>
         );
       case 'actions':
@@ -102,29 +118,62 @@ export default function ReportsList() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem href={'/report/' + report._id}>Подробнее</DropdownItem>
                 <DropdownItem
                   onPress={() => {
-                    setModalReportId(report?._id);
-                    onOpenChangeModalEdit();
+                    navigate('/reports/' + report?._id);
                   }}>
-                  Редактировать
+                  Подробнее
                 </DropdownItem>
-                <DropdownItem
-                  onPress={() => {
-                    setModalReportId(report?._id);
-                    onOpenModalDialog();
-                  }}
-                  className="text-danger"
-                  color="danger">
-                  Отменить заявку
-                </DropdownItem>
-                <DropdownItem href={'/report/' + report._id + '/accept'} className="text-success">
-                  Принять
-                </DropdownItem>
-                <DropdownItem href={'/report/' + report._id + '/decline'} className="text-danger">
-                  Отклонить
-                </DropdownItem>
+                {(user?._id === report?.author?._id || user?.role === 'admin') && (
+                  <DropdownItem
+                    onPress={() => {
+                      setModalReport(report);
+                      onOpenChangeModalEdit();
+                    }}>
+                    Редактировать
+                  </DropdownItem>
+                )}
+                {user?._id === report?.author?._id && (
+                  <DropdownItem
+                    onPress={() => {
+                      setModalReport(report);
+                      onOpenModalCancel();
+                    }}
+                    className="text-danger"
+                    color="danger">
+                    Удалить заявку
+                  </DropdownItem>
+                )}
+                {user?.role === 'admin' && report.status !== 'pending' && (
+                  <DropdownItem
+                    onPress={() => {
+                      onSubmitStatus(report, 'pending');
+                    }}
+                    className="text-warning"
+                    color="warning">
+                    На рассмотрение
+                  </DropdownItem>
+                )}
+                {user?.role === 'admin' && report.status !== 'accepted' && (
+                  <DropdownItem
+                    onPress={() => {
+                      onSubmitStatus(report, 'accepted');
+                    }}
+                    className="text-success"
+                    color="success">
+                    Принять
+                  </DropdownItem>
+                )}
+                {user?.role === 'admin' && report.status !== 'declined' && (
+                  <DropdownItem
+                    onPress={() => {
+                      onSubmitStatus(report, 'declined');
+                    }}
+                    className="text-danger"
+                    color="danger">
+                    Отклонить
+                  </DropdownItem>
+                )}
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -141,38 +190,26 @@ export default function ReportsList() {
         renderCell={renderCell}
         statusOptions={reportStatusMap}
         tableColumns={reportTableColumns}
+        searchColumns={reportSearchColumns}
         initialVisibleColumns={INITIAL_VISIBLE_COLUMNS}
-        data={userReports}
+        data={reports}
+        emptyText={isParentLoading ? 'Загрузка...' : emptyText}
+        inputPlaceholder={'Искать по названию работы или конференции...'}
       />
-      <Modal isOpen={isOpenModalDialog} onOpenChange={onOpenChangeModalDialog}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">Подтвердите действие</ModalHeader>
-              <ModalBody>
-                <p>Вы действительно хотите удалить данную заявку?</p>
-                <p>Это действие нельзя отменить.</p>
-              </ModalBody>
-              <ModalFooter>
-                <Button variant="light" onPress={onClose}>
-                  Отменить
-                </Button>
-                <Button
-                  color="danger"
-                  as={Link}
-                  href={'/report/' + modalReportId + '/delete'}
-                  onPress={onClose}>
-                  Удалить
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-      <EditReportModal
+      <DeleteReportModal
+        isOpen={isOpenModalCancel}
+        onOpen={onOpenModalCancel}
+        onOpenChange={onOpenChangeModalCancel}
+        report={modalReport}
+        onSubmitStatus={onSubmitStatus}
+        isLoading={isUpdateLoading}
+      />
+      <ReportModal
         isOpen={isOpenModalEdit}
         onOpen={onOpenModalEdit}
         onOpenChange={onOpenChangeModalEdit}
+        report={modalReport}
+        mode={'edit'}
       />
     </>
   );

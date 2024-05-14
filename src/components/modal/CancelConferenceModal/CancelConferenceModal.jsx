@@ -1,6 +1,5 @@
 import {
   Button,
-  Link,
   Modal,
   ModalBody,
   ModalContent,
@@ -9,7 +8,7 @@ import {
 } from '@nextui-org/react';
 import React from 'react';
 
-const CancelConferenceModal = ({ isOpen, onOpen, onOpenChange, conference, onSubmitStatus }) => {
+const CancelConferenceModal = ({ isOpen, onOpenChange, conference, onSubmitStatus, isLoading }) => {
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent>
@@ -24,11 +23,10 @@ const CancelConferenceModal = ({ isOpen, onOpen, onOpenChange, conference, onSub
                 Назад
               </Button>
               <Button
+                isLoading={isLoading}
                 color="danger"
-                as={Link}
-                // href={'/api/conferences/' + conferenceId + '/decline'}
-                onPress={() => {
-                  onSubmitStatus(conference, 'declined');
+                onPress={async () => {
+                  await onSubmitStatus(conference, 'declined');
                   onClose();
                 }}>
                 Отменить

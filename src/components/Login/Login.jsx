@@ -1,11 +1,12 @@
 import { Button, Link } from '@nextui-org/react';
-import { useForm } from 'react-hook-form';
-import { Input } from '../../components/Input/Input';
-import { useLazyCurrentQuery, useLoginMutation } from '../../redux/services/authApi';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { hasErrorField } from '../../shared/utils/hasErrorField';
+import { toast } from 'sonner';
 import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
+import { Input } from '../../components/Input/Input';
+import { useLoginMutation } from '../../redux/services/authApi';
+import { hasErrorField } from '../../shared/utils/hasErrorField';
 
 const Login = () => {
   const { control, handleSubmit } = useForm({
@@ -20,15 +21,16 @@ const Login = () => {
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
   const [error, setError] = useState('');
-  const [triggerCurrentQuery] = useLazyCurrentQuery();
+  // const [triggerCurrentQuery] = useLazyCurrentQuery();
 
   const onSubmit = async (data) => {
     try {
       await login(data).unwrap();
-      await triggerCurrentQuery();
+      // await triggerCurrentQuery();
       navigate('/');
     } catch (err) {
       console.log(err);
+      toast(JSON.stringify(err));
       if (hasErrorField(err)) {
         setError(err?.data?.message || err?.error);
       }
@@ -56,7 +58,13 @@ const Login = () => {
       <Link className="justify-end" href="/forgot-password">
         Забыли пароль?
       </Link>
-      <Button size="lg" type="submit" color="primary" variant="shadow" className="font-bold">
+      <Button
+        size="lg"
+        isLoading={isLoading}
+        type="submit"
+        color="primary"
+        variant="shadow"
+        className="font-bold">
         Войти
       </Button>
     </form>

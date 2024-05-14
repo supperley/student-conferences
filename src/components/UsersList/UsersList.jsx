@@ -1,45 +1,39 @@
-import React, { useState } from 'react';
 import {
   Button,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
   Chip,
-  User,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
   Link,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  User,
   useDisclosure,
 } from '@nextui-org/react';
-import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
-import TableData from '../TableData/TableData';
-// import { users } from '../../shared/data/mockData';
-import EditUserModal from '../modal/EditUserModal/EditUserModal';
-import { S3_URL } from '../../shared/config/constants';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { toast } from 'sonner';
 import { useUpdateUserMutation } from '../../redux/services/userApi';
-
-export const userStatusMap = {
-  active: { name: 'Активен', color: 'success' },
-  paused: { name: 'Заморожен', color: 'warning' },
-  blocked: { name: 'Заблокирован', color: 'danger' },
-};
+import { selectUser } from '../../redux/slices/authSlice';
+import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
+import { S3_URL } from '../../shared/config/constants';
+import { facultiesDataMap, userStatusMap } from '../../shared/data/dataMap';
+import { hasErrorField } from '../../shared/utils/hasErrorField';
+import TableData from '../TableData/TableData';
+import BlockUserModal from '../modal/BlockUserModal/BlockUserModal';
+import EditUserModal from '../modal/EditUserModal/EditUserModal';
 
 export const userTableColumns = [
   { name: 'ID', uid: '_id', sortable: true },
   { name: 'Имя', uid: 'name', sortable: true },
-  { name: 'Статус', uid: 'role', sortable: true },
-  { name: 'Кафедра', uid: 'department' },
+  { name: 'Права', uid: 'role', sortable: true },
+  { name: 'Должность', uid: 'position' },
   { name: 'Факультет', uid: 'faculty' },
   { name: 'Email', uid: 'email' },
   { name: 'Состояние', uid: 'status', sortable: true },
   { name: 'Действия', uid: 'actions' },
 ];
 
-const INITIAL_VISIBLE_COLUMNS = ['name', 'department', 'faculty', 'status', 'actions'];
+const INITIAL_VISIBLE_COLUMNS = ['name', 'faculty', 'position', 'status', 'actions'];
 
 export default function UsersList({ users, emptyText }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -50,13 +44,29 @@ export default function UsersList({ users, emptyText }) {
   } = useDisclosure();
   const [modalUser, setModalUser] = useState(undefined);
   const [updateUser, { isLoading }] = useUpdateUserMutation();
+  const currentUser = useSelector(selectUser);
 
   const onSubmit = async (data) => {
     try {
-      await updateUser(data, data._id).unwrap();
+      await updateUser({ id: data._id, userData: data }).unwrap();
       // setSelected('login');
     } catch (err) {
       console.log(err);
+      toast(JSON.stringify(err));
+      if (hasErrorField(err)) {
+        setError(err?.data?.message || err?.error);
+      }
+    }
+  };
+
+  const onSubmitStatus = async (user, status) => {
+    try {
+      const data = { id: user?._id, userData: { status } };
+      // console.log(data);
+      await updateUser(data).unwrap();
+    } catch (err) {
+      console.log(err);
+      toast(JSON.stringify(err));
       if (hasErrorField(err)) {
         setError(err?.data?.message || err?.error);
       }
@@ -85,6 +95,8 @@ export default function UsersList({ users, emptyText }) {
             <p className="text-bold text-tiny text-default-400">{user.team}</p>
           </div>
         );
+      case 'faculty':
+        return <span>{facultiesDataMap[cellValue]?.label}</span>;
       case 'status':
         return (
           <Chip
@@ -106,35 +118,45 @@ export default function UsersList({ users, emptyText }) {
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem href={'/users/' + user?._id}>Подробнее</DropdownItem>
-                <DropdownItem
-                  onPress={() => {
-                    setModalUser(user);
-                    onOpenChangeModalEdit();
-                  }}>
-                  Редактировать
-                </DropdownItem>
-                <DropdownItem
-                  // href={'api/users/' + user?._id + '/unblock'}
-                  className="text-success"
-                  color="success"
-                  onPress={onSubmit(user)}>
-                  Разблокировать
-                </DropdownItem>
-                <DropdownItem
-                  // href={'api/users/' + user?._id + '/freeze'}
-                  className="text-warning"
-                  color="warning">
-                  Заморозить
-                </DropdownItem>
-                <DropdownItem
-                  onPress={() => {
-                    setModalUser(user);
-                    onOpen();
-                  }}
-                  className="text-danger"
-                  color="danger">
-                  Заблокировать
-                </DropdownItem>
+                {/* {currentUser?.role === 'admin' && (
+                  <DropdownItem
+                    onPress={() => {
+                      setModalUser(user);
+                      onOpenChangeModalEdit();
+                    }}>
+                    Редактировать
+                  </DropdownItem>
+                )} */}
+                {currentUser?.role === 'admin' &&
+                  user.status !== 'active' &&
+                  currentUser?._id !== user?._id && (
+                    <DropdownItem
+                      className="text-success"
+                      color="success"
+                      onPress={() => {
+                        onSubmitStatus(user, 'active');
+                      }}>
+                      Разблокировать
+                    </DropdownItem>
+                  )}
+                {/* {currentUser?.role === 'admin' && user.status !== 'freezing' && (
+                  <DropdownItem className="text-warning" color="warning">
+                    Заморозить
+                  </DropdownItem>
+                )} */}
+                {currentUser?.role === 'admin' &&
+                  user?.status !== 'blocked' &&
+                  currentUser?._id !== user?._id && (
+                    <DropdownItem
+                      onPress={() => {
+                        setModalUser(user);
+                        onOpen();
+                      }}
+                      className="text-danger"
+                      color="danger">
+                      Заблокировать
+                    </DropdownItem>
+                  )}
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -154,30 +176,12 @@ export default function UsersList({ users, emptyText }) {
         initialVisibleColumns={INITIAL_VISIBLE_COLUMNS}
         emptyText={emptyText}
       />
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">Подтвердите действие</ModalHeader>
-              <ModalBody>
-                <p>Вы действительно хотите заблокировать пользователя?</p>
-              </ModalBody>
-              <ModalFooter>
-                <Button variant="light" onPress={onClose}>
-                  Отменить
-                </Button>
-                <Button
-                  color="danger"
-                  as={Link}
-                  href={'/api/users/' + modalUser._id + '/block'}
-                  onPress={onClose}>
-                  Заблокировать
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+      <BlockUserModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        modalUser={modalUser}
+        onSubmitStatus={onSubmitStatus}
+      />
       <EditUserModal
         isOpen={isOpenModalEdit}
         onOpen={onOpenModalEdit}
