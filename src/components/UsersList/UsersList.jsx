@@ -1,27 +1,26 @@
-import React, { useState } from 'react';
 import {
   Button,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
   Chip,
-  User,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
   Link,
+  User,
   useDisclosure,
 } from '@nextui-org/react';
-import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
-import TableData from '../TableData/TableData';
-import EditUserModal from '../modal/EditUserModal/EditUserModal';
-import { S3_URL } from '../../shared/config/constants';
-import { useUpdateUserMutation } from '../../redux/services/userApi';
-import { faculties } from '../../shared/data/dataMap';
-import BlockUserModal from '../modal/BlockUserModal/BlockUserModal';
-import { hasErrorField } from '../../shared/utils/hasErrorField';
-import { toast } from 'sonner';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { toast } from 'sonner';
+import { useUpdateUserMutation } from '../../redux/services/userApi';
 import { selectUser } from '../../redux/slices/authSlice';
-import { userStatusMap } from '../../shared/data/dataMap';
+import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
+import { S3_URL } from '../../shared/config/constants';
+import { facultiesDataMap, userStatusMap } from '../../shared/data/dataMap';
+import { hasErrorField } from '../../shared/utils/hasErrorField';
+import TableData from '../TableData/TableData';
+import BlockUserModal from '../modal/BlockUserModal/BlockUserModal';
+import EditUserModal from '../modal/EditUserModal/EditUserModal';
 
 export const userTableColumns = [
   { name: 'ID', uid: '_id', sortable: true },
@@ -97,7 +96,7 @@ export default function UsersList({ users, emptyText }) {
           </div>
         );
       case 'faculty':
-        return <span>{faculties.find((o) => o.value === cellValue)?.label}</span>;
+        return <span>{facultiesDataMap[cellValue]?.label}</span>;
       case 'status':
         return (
           <Chip

@@ -1,35 +1,34 @@
+import { parseAbsoluteToLocal } from '@internationalized/date';
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Avatar,
   Button,
+  DatePicker,
   Input,
   Link,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
   Select,
   SelectItem,
   Textarea,
-  DatePicker,
-  Avatar,
 } from '@nextui-org/react';
-import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
-import { faculties } from '../../../shared/data/dataMap';
-import { S3_URL } from '../../../shared/config/constants';
+import { I18nProvider } from '@react-aria/i18n';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import {
   useCreateConferenceMutation,
   useUpdateConferenceMutation,
 } from '../../../redux/services/conferenceApi';
-import { hasErrorField } from '../../../shared/utils/hasErrorField';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
 import { useGetAllUsersQuery } from '../../../redux/services/userApi';
-import { DevTool } from '@hookform/devtools';
-import { parseAbsoluteToLocal } from '@internationalized/date';
-import { I18nProvider } from '@react-aria/i18n';
 import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
-import { toast } from 'sonner';
+import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
+import { S3_URL } from '../../../shared/config/constants';
+import { facultiesDataMap } from '../../../shared/data/dataMap';
+import { hasErrorField } from '../../../shared/utils/hasErrorField';
+import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
 
 const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }) => {
   const { data: users, error: usersError, isLoading: isUsersLoading } = useGetAllUsersQuery();
@@ -204,7 +203,7 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
                         variant="bordered"
                         selectedKeys={facultiesValue}
                         onSelectionChange={onChangeFaculties}>
-                        {faculties.map((faculty) => (
+                        {Object.values(facultiesDataMap).map((faculty) => (
                           <SelectItem key={faculty.value} value={faculty.value}>
                             {faculty.label}
                           </SelectItem>

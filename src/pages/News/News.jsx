@@ -2,9 +2,9 @@ import { useDisclosure } from '@nextui-org/react';
 
 import React from 'react';
 
-import { useGetAllNewsQuery } from '../../redux/services/newsApi';
-import NewsModal from '../../components/modal/NewsModal/NewsModal';
 import GridData from '../../components/GridData/GridData';
+import NewsModal from '../../components/modal/NewsModal/NewsModal';
+import { useGetAllNewsQuery } from '../../redux/services/newsApi';
 
 const News = () => {
   const {

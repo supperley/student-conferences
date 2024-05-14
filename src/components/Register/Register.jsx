@@ -1,11 +1,11 @@
-import { useForm } from 'react-hook-form';
 import { Button } from '@nextui-org/react';
-import { useRegisterMutation } from '../../redux/services/authApi';
 import { useState } from 'react';
-import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
-import { hasErrorField } from '../../shared/utils/hasErrorField';
-import { Input } from '../../components/Input/Input';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
+import { Input } from '../../components/Input/Input';
+import { useRegisterMutation } from '../../redux/services/authApi';
+import { hasErrorField } from '../../shared/utils/hasErrorField';
 
 const Register = ({ setSelected }) => {
   const {
@@ -24,7 +24,7 @@ const Register = ({ setSelected }) => {
     },
   });
 
-  const [register] = useRegisterMutation();
+  const [register, { isLoading }] = useRegisterMutation();
   const [error, setError] = useState('');
 
   const onSubmit = async (data) => {
@@ -81,7 +81,13 @@ const Register = ({ setSelected }) => {
         variant="bordered"
       />
       <ErrorMessage error={error} />
-      <Button size="lg" variant="shadow" className="font-bold" color="primary" type="submit">
+      <Button
+        size="lg"
+        variant="shadow"
+        className="font-bold"
+        color="primary"
+        type="submit"
+        isLoading={isLoading}>
         Зарегистрироваться
       </Button>
     </form>

@@ -1,10 +1,10 @@
-import { Card, Link, Image, Button, useDisclosure, Chip, User, Skeleton } from '@nextui-org/react';
-import { formatToClientDate } from '../../shared/utils/formatToClientDate';
-import ReportModal from '../modal/ReportModal/ReportModal';
-import { S3_URL } from '../../shared/config/constants';
+import { Button, Card, Chip, Image, Link, Skeleton, User, useDisclosure } from '@nextui-org/react';
 import { saveAs } from 'file-saver';
 import defaultReport from '../../shared/assets/images/default-report.jpg';
+import { S3_URL } from '../../shared/config/constants';
 import { reportStatusMap } from '../../shared/data/dataMap';
+import { formatToClientDate } from '../../shared/utils/formatToClientDate';
+import ReportModal from '../modal/ReportModal/ReportModal';
 
 export const ReportCard = ({ reportData, isLoading = false }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -39,11 +39,8 @@ export const ReportCard = ({ reportData, isLoading = false }) => {
             </div>
             <div className="flex flex-col md:flex-row md:items-center gap-2">
               <span className="w-[120px]">Состояние</span>
-              <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                <Chip
-                  color={reportStatusMap[reportData?.status]?.color}
-                  className="-ml-1"
-                  variant="flat">
+              <Skeleton isLoaded={!isLoading} className="rounded-lg -ml-1">
+                <Chip color={reportStatusMap[reportData?.status]?.color} variant="flat">
                   {reportStatusMap[reportData?.status]?.name || 'default'}
                 </Chip>
               </Skeleton>

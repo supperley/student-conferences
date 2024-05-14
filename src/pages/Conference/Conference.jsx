@@ -1,17 +1,17 @@
-import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Link, Skeleton, useDisclosure } from '@nextui-org/react';
-import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'sonner';
 import { ConferenceCard } from '../../components/ConferenceCard/ConferenceCard';
+import CancelConferenceModal from '../../components/modal/CancelConferenceModal/CancelConferenceModal';
+import ConferenceModal from '../../components/modal/ConferenceModal/ConferenceModal';
+import DeleteConferenceModal from '../../components/modal/DeleteConferenceModal/DeleteConferenceModal';
 import {
   useGetConferenceByIdQuery,
   useUpdateConferenceMutation,
 } from '../../redux/services/conferenceApi';
-import ConferenceModal from '../../components/modal/ConferenceModal/ConferenceModal';
-import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/authSlice';
-import { toast } from 'sonner';
-import DeleteConferenceModal from '../../components/modal/DeleteConferenceModal/DeleteConferenceModal';
-import CancelConferenceModal from '../../components/modal/CancelConferenceModal/CancelConferenceModal';
+import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
 
 const Conference = () => {
   const navigate = useNavigate();
@@ -67,7 +67,7 @@ const Conference = () => {
               <h1 className="font-bold text-4xl">{conferenceData?.title}</h1>
             </Skeleton>
             <div className="flex flex-col sm:flex-row gap-3">
-              {(user?._id === conferenceData?.administrator?._id || user?.role === 'admin') &&
+              {/* {(user?._id === conferenceData?.administrator?._id || user?.role === 'admin') &&
                 conferenceData?.status !== 'declined' && (
                   <Button
                     color="danger"
@@ -99,7 +99,7 @@ const Conference = () => {
                     }}>
                     Открыть регистрацию
                   </Button>
-                )}
+                )} */}
               {(user?._id === conferenceData?.administrator?._id || user?.role === 'admin') && (
                 <Button
                   color="primary"

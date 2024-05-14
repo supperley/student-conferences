@@ -1,14 +1,14 @@
-import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Link, Skeleton, useDisclosure } from '@nextui-org/react';
-import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
-import { ReportCard } from '../../components/ReportCard/ReportCard';
-import { CommentsList } from '../../components/CommentsList/CommentsList';
-import { useGetReportByIdQuery, useUpdateReportMutation } from '../../redux/services/reportApi';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { selectUser } from '../../redux/slices/authSlice';
-import DeleteReportModal from '../../components/modal/DeleteReportModal/DeleteReportModal';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
+import { CommentsList } from '../../components/CommentsList/CommentsList';
+import { ReportCard } from '../../components/ReportCard/ReportCard';
+import DeleteReportModal from '../../components/modal/DeleteReportModal/DeleteReportModal';
+import { useGetReportByIdQuery, useUpdateReportMutation } from '../../redux/services/reportApi';
+import { selectUser } from '../../redux/slices/authSlice';
+import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
 
 const Report = () => {
   const navigate = useNavigate();

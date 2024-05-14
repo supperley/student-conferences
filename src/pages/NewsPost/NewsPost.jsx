@@ -1,16 +1,15 @@
-import { useParams } from 'react-router-dom';
 import { Button, Image, Link, Skeleton, User, useDisclosure } from '@nextui-org/react';
-import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
-import { formatToClientDate } from '../../shared/utils/formatToClientDate';
-import { ROUTE_CONSTANTS } from '../../shared/config/routes';
-import { useGetNewsByIdQuery, useUpdateNewsMutation } from '../../redux/services/newsApi';
-import { S3_URL } from '../../shared/config/constants';
-import defaultReport from '../../shared/assets/images/default-report.jpg';
 import { useSelector } from 'react-redux';
-import { selectUser } from '../../redux/slices/authSlice';
-import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import DeleteNewsModal from '../../components/modal/DeleteNewsModal/DeleteNewsModal';
 import NewsModal from '../../components/modal/NewsModal/NewsModal';
+import { useGetNewsByIdQuery, useUpdateNewsMutation } from '../../redux/services/newsApi';
+import { selectUser } from '../../redux/slices/authSlice';
+import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
+import defaultReport from '../../shared/assets/images/default-report.jpg';
+import { S3_URL } from '../../shared/config/constants';
+import { ROUTE_CONSTANTS } from '../../shared/config/routes';
+import { formatToClientDate } from '../../shared/utils/formatToClientDate';
 
 const NewsPost = () => {
   const params = useParams();

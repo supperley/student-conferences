@@ -1,8 +1,8 @@
+import { Link } from '@nextui-org/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ProfileCard } from '../../components/ProfileCard/ProfileCard';
-import { Link } from '@nextui-org/react';
-import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
 import { useGetUserByIdQuery } from '../../redux/services/userApi';
+import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
 
 const User = () => {
   const navigate = useNavigate();

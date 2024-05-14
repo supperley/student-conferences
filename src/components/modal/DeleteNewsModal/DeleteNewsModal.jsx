@@ -1,6 +1,5 @@
 import {
   Button,
-  Link,
   Modal,
   ModalBody,
   ModalContent,
@@ -8,8 +7,8 @@ import {
   ModalHeader,
 } from '@nextui-org/react';
 import React from 'react';
-import { useDeleteNewsMutation } from '../../../redux/services/newsApi';
 import { useNavigate } from 'react-router-dom';
+import { useDeleteNewsMutation } from '../../../redux/services/newsApi';
 
 const DeleteNewsModal = ({ isOpen, onOpenChange, news }) => {
   const [deleteNews, { isLoading: isDeleteLoading }] = useDeleteNewsMutation();

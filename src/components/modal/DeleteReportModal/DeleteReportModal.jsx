@@ -1,6 +1,5 @@
 import {
   Button,
-  Link,
   Modal,
   ModalBody,
   ModalContent,
@@ -8,9 +7,9 @@ import {
   ModalHeader,
 } from '@nextui-org/react';
 import React from 'react';
-import { useDeleteReportMutation } from '../../../redux/services/reportApi';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { useDeleteReportMutation } from '../../../redux/services/reportApi';
 
 const DeleteReportModal = ({ isOpen, onOpenChange, report }) => {
   const navigate = useNavigate();

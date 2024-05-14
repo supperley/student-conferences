@@ -1,12 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react';
 import { Button, Textarea } from '@nextui-org/react';
-import Comment from '../Comment/Comment';
-import { useCreateReportCommentMutation } from '../../redux/services/reportApi';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { hasErrorField } from '../../shared/utils/hasErrorField';
 import { useSelector } from 'react-redux';
+import { toast } from 'sonner';
+import { useCreateReportCommentMutation } from '../../redux/services/reportApi';
 import { selectUser } from '../../redux/slices/authSlice';
+import { hasErrorField } from '../../shared/utils/hasErrorField';
+import Comment from '../Comment/Comment';
 
 export const CommentsList = ({ comments = [], reportId }) => {
   const [createComment, { isLoading }] = useCreateReportCommentMutation();

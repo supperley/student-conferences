@@ -10,11 +10,11 @@ import {
 } from '@nextui-org/react';
 
 import React from 'react';
-import { PlusIcon } from '../../shared/assets/icons/PlusIcon';
 import { ChevronDownIcon } from '../../shared/assets/icons/ChevronDownIcon';
+import { PlusIcon } from '../../shared/assets/icons/PlusIcon';
 import { SearchIcon } from '../../shared/assets/icons/SearchIcon';
+import { chipDataMap, facultiesDataMap } from '../../shared/data/dataMap';
 import { CustomCard } from '../CustomCard/CustomCard';
-import { faculties, newsType } from '../../shared/data/dataMap';
 
 const GridData = ({ data, onOpenModalAdd }) => {
   const [filterValue, setFilterValue] = React.useState('');
@@ -48,9 +48,13 @@ const GridData = ({ data, onOpenModalAdd }) => {
       });
     }
 
+    //todo
     if (facultiesFilter !== 'all' && Array.from(facultiesFilter).length) {
+      console.log(Array.from(facultiesFilter));
       filteredData = filteredData.filter((item) =>
-        Array.from(facultiesFilter).includes(item.tags[0]),
+        item?.faculties.some((faculty) =>
+          Array.from(facultiesFilter).includes(facultiesDataMap[faculty]?.label),
+        ),
       );
     }
 
@@ -112,7 +116,7 @@ const GridData = ({ data, onOpenModalAdd }) => {
               // selectedKeys={statusFilter}
               selectionMode="multiple"
               onSelectionChange={setFacultiesFilter}>
-              {faculties.map((faculty) => (
+              {Object.values(facultiesDataMap).map((faculty) => (
                 <DropdownItem key={faculty.label} value={faculty.label}>
                   {faculty.label}
                 </DropdownItem>
@@ -131,7 +135,7 @@ const GridData = ({ data, onOpenModalAdd }) => {
               // selectedKeys={visibleColumns}
               selectionMode="multiple"
               onSelectionChange={setTypeFilter}>
-              {newsType.map((type) => (
+              {Object.values(chipDataMap).map((type) => (
                 <SelectItem key={type.value} value={type.value}>
                   {type.label}
                 </SelectItem>

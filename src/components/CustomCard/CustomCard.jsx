@@ -1,21 +1,20 @@
 import {
-  Card,
-  CardFooter,
-  CardBody,
-  CardHeader,
-  Link,
   Avatar,
-  Image,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
   Chip,
+  Image,
+  Link,
 } from '@nextui-org/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { CustomCardSkeleton } from './CustomCardSkeleton';
-import { format, parseISO } from 'date-fns';
-import { S3_URL } from '../../shared/config/constants';
 import { useNavigate } from 'react-router-dom';
 import defaultReport from '../../shared/assets/images/default-report.jpg';
-import { facultiesDataMap } from '../../shared/data/dataMap';
-import { chipDataMap } from '../../shared/data/dataMap';
+import { S3_URL } from '../../shared/config/constants';
+import { chipDataMap, facultiesDataMap } from '../../shared/data/dataMap';
+import { formatToClientDate } from '../../shared/utils/formatToClientDate';
+import { CustomCardSkeleton } from './CustomCardSkeleton';
 
 export const CustomCard = ({ data }) => {
   const isLoaded = true;
@@ -68,7 +67,11 @@ export const CustomCard = ({ data }) => {
               </CardBody>
               <CardFooter className="flex justify-between items-center">
                 <time className="block text-small text-default-500" dateTime={data?.createdAt}>
-                  {format(parseISO(data?.createdAt), 'LLLL d, yyyy')}
+                  {formatToClientDate(data?.createdAt, {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
                 </time>
                 <Avatar size="sm" src={S3_URL + data.author?.avatarUrl} />
               </CardFooter>

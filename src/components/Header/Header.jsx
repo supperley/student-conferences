@@ -1,28 +1,28 @@
 import {
-  Navbar,
-  NavbarContent,
-  DropdownItem,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
   Avatar,
-  NavbarMenuToggle,
-  NavbarBrand,
-  NavbarItem,
-  Link,
   Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Link,
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
   NavbarMenu,
   NavbarMenuItem,
+  NavbarMenuToggle,
 } from '@nextui-org/react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { AppLogo } from '../../shared/components/AppLogo';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useLogoutMutation } from '../../redux/services/authApi';
+import { selectIsAdmin, selectIsAuthenticated, selectUser } from '../../redux/slices/authSlice';
+import { AppLogo } from '../../shared/components/AppLogo';
+import { S3_URL } from '../../shared/config/constants';
 import { ROUTE_CONSTANTS } from '../../shared/config/routes';
 import { SwitchTheme } from '../SwitchTheme/SwitchTheme';
-import { selectIsAdmin, selectIsAuthenticated, selectUser } from '../../redux/slices/authSlice';
-import { S3_URL } from '../../shared/config/constants';
-import { useLogoutMutation } from '../../redux/services/authApi';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ const Header = () => {
     { label: 'Конференции', link: ROUTE_CONSTANTS.CONFERENCES, protected: true },
     { label: 'Научные работы', link: ROUTE_CONSTANTS.REPORTS, protected: true },
     { label: 'Пользователи', link: ROUTE_CONSTANTS.USERS, protected: true, admin: true },
-    { label: 'Дашборд', link: ROUTE_CONSTANTS.DASHBOARD, protected: true },
+    // { label: 'Дашборд', link: ROUTE_CONSTANTS.DASHBOARD, protected: true },
   ];
 
   return (

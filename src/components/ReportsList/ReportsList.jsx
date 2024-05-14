@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
 import {
   Button,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
   Chip,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
   Link,
   useDisclosure,
 } from '@nextui-org/react';
-import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
-import TableData from '../TableData/TableData';
-import { formatToClientDate } from '../../shared/utils/formatToClientDate';
-import ReportModal from '../modal/ReportModal/ReportModal';
-import DeleteReportModal from '../modal/DeleteReportModal/DeleteReportModal';
-import { useDeleteReportMutation, useUpdateReportMutation } from '../../redux/services/reportApi';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { selectUser } from '../../redux/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { useUpdateReportMutation } from '../../redux/services/reportApi';
+import { selectUser } from '../../redux/slices/authSlice';
+import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import { reportStatusMap } from '../../shared/data/dataMap';
+import { formatToClientDate } from '../../shared/utils/formatToClientDate';
+import TableData from '../TableData/TableData';
+import DeleteReportModal from '../modal/DeleteReportModal/DeleteReportModal';
+import ReportModal from '../modal/ReportModal/ReportModal';
 
 export const reportTableColumns = [
   { name: 'ID', uid: 'id', sortable: true },

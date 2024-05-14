@@ -8,15 +8,15 @@ import {
   Select,
   SelectItem,
 } from '@nextui-org/react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { useCurrentQuery, useLazyCurrentQuery } from '../../redux/services/authApi';
+import { useUpdateUserMutation } from '../../redux/services/userApi';
 import { CameraIcon } from '../../shared/assets/icons/CameraIcon';
 import { S3_URL } from '../../shared/config/constants';
-import { Controller, useForm } from 'react-hook-form';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { facultiesDataMap } from '../../shared/data/dataMap';
 import { hasErrorField } from '../../shared/utils/hasErrorField';
-import { useUpdateUserMutation } from '../../redux/services/userApi';
-import { useCurrentQuery, useLazyCurrentQuery } from '../../redux/services/authApi';
-import { toast } from 'sonner';
-import { faculties } from '../../shared/data/dataMap';
 
 const Settings = () => {
   // const user = useSelector(selectUser);
@@ -221,7 +221,7 @@ const Settings = () => {
                     variant="bordered"
                     selectedKeys={facultyValue}
                     onSelectionChange={onChangeFaculty}>
-                    {faculties.map((faculty) => (
+                    {Object.values(facultiesDataMap).map((faculty) => (
                       <SelectItem key={faculty.value} value={faculty.value}>
                         {faculty.label}
                       </SelectItem>

@@ -1,9 +1,9 @@
 import { Button, Link } from '@nextui-org/react';
-import { useForm } from 'react-hook-form';
-import { useResetPasswordMutation } from '../../redux/services/authApi';
 import { useState } from 'react';
-import { Input } from '../../components/Input/Input';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { Input } from '../../components/Input/Input';
+import { useResetPasswordMutation } from '../../redux/services/authApi';
 
 const ResetPasswordCard = ({ token }) => {
   const { control, handleSubmit } = useForm({

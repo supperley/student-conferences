@@ -4,23 +4,21 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  Divider,
   Link,
   Textarea,
   User,
 } from '@nextui-org/react';
 import React, { useMemo, useState } from 'react';
-import { S3_URL } from '../../shared/config/constants';
-import { formatToClientDate } from '../../shared/utils/formatToClientDate';
-import { ReplyIcon } from '../../shared/assets/icons/ReplyIcon';
-import { DeleteIcon } from '../../shared/assets/icons/DeleteIcon';
-import { EditIcon } from '../../shared/assets/icons/EditIcon';
+import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import {
   useDeleteCommentMutation,
   useUpdateCommentMutation,
 } from '../../redux/services/commentApi';
-import { Controller, useForm } from 'react-hook-form';
-import { toast } from 'sonner';
+import { DeleteIcon } from '../../shared/assets/icons/DeleteIcon';
+import { EditIcon } from '../../shared/assets/icons/EditIcon';
+import { S3_URL } from '../../shared/config/constants';
+import { formatToClientDate } from '../../shared/utils/formatToClientDate';
 import { hasErrorField } from '../../shared/utils/hasErrorField';
 
 const Comment = ({ commentData }) => {

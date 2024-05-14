@@ -1,33 +1,32 @@
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Avatar,
   Button,
-  useDisclosure,
   Checkbox,
   Input,
   Link,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
   Select,
   SelectItem,
-  Avatar,
   Textarea,
 } from '@nextui-org/react';
-import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
-import { useGetAllUsersQuery } from '../../../redux/services/userApi';
-import { Controller, useForm } from 'react-hook-form';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { S3_URL } from '../../../shared/config/constants';
+import { Controller, useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
+import { toast } from 'sonner';
 import {
   useCreateReportMutation,
   useUpdateReportMutation,
 } from '../../../redux/services/reportApi';
+import { useGetAllUsersQuery } from '../../../redux/services/userApi';
 import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
-import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
+import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
+import { S3_URL } from '../../../shared/config/constants';
 import { hasErrorField } from '../../../shared/utils/hasErrorField';
-import { toast } from 'sonner';
-import { useParams } from 'react-router-dom';
+import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
 
 const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
   const { data: users, error: usersError, isLoading: isUsersLoading } = useGetAllUsersQuery();

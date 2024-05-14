@@ -1,25 +1,24 @@
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   Button,
   Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
   Select,
   SelectItem,
   Textarea,
 } from '@nextui-org/react';
-import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
-import { faculties, newsType } from '../../../shared/data/dataMap';
-import { hasErrorField } from '../../../shared/utils/hasErrorField';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
-import { DevTool } from '@hookform/devtools';
-import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
 import { toast } from 'sonner';
 import { useCreateNewsMutation, useUpdateNewsMutation } from '../../../redux/services/newsApi';
+import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
+import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
+import { facultiesDataMap } from '../../../shared/data/dataMap';
+import { hasErrorField } from '../../../shared/utils/hasErrorField';
+import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
 
 const NewsModal = ({ isOpen, onOpenChange, mode = 'add', news = {} }) => {
   const [createNews, { isLoading: isCreateLoading }] = useCreateNewsMutation();
@@ -142,7 +141,7 @@ const NewsModal = ({ isOpen, onOpenChange, mode = 'add', news = {} }) => {
                         variant="bordered"
                         selectedKeys={facultiesValue}
                         onSelectionChange={onChangeFaculties}>
-                        {faculties.map((faculty) => (
+                        {Object.values(facultiesDataMap).map((faculty) => (
                           <SelectItem key={faculty.value} value={faculty.value}>
                             {faculty.label}
                           </SelectItem>
@@ -161,7 +160,7 @@ const NewsModal = ({ isOpen, onOpenChange, mode = 'add', news = {} }) => {
                         variant="bordered"
                         selectedKeys={chipValue}
                         onSelectionChange={onChangeChip}>
-                        {newsType.map((type) => (
+                        {Object.values(chipDataMap).map((type) => (
                           <SelectItem key={type.value} value={type.value}>
                             {type.label}
                           </SelectItem>

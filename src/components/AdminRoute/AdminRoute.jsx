@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
-import { selectIsAdmin, selectIsBlocked } from '../../redux/slices/authSlice';
+import { selectIsAdmin } from '../../redux/slices/authSlice';
 
 export const AdminRoute = ({ redirectPath = '/blocked', children }) => {
   const isAdmin = useSelector(selectIsAdmin);

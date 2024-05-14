@@ -1,22 +1,22 @@
-import React from 'react';
 import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Input,
   Button,
-  DropdownTrigger,
   Dropdown,
-  DropdownMenu,
   DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Input,
   Pagination,
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
 } from '@nextui-org/react';
+import React from 'react';
 import { ChevronDownIcon } from '../../shared/assets/icons/ChevronDownIcon';
-import { SearchIcon } from '../../shared/assets/icons/SearchIcon';
 import { PlusIcon } from '../../shared/assets/icons/PlusIcon';
+import { SearchIcon } from '../../shared/assets/icons/SearchIcon';
 
 export default function TableData({
   renderCell,

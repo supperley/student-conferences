@@ -1,26 +1,26 @@
 import { Route, Routes } from 'react-router-dom';
-import { ROUTE_CONSTANTS } from '../shared/config/routes';
-import Home from './Home/Home';
-import NotFound from './NotFound/NotFound';
-import PageLayout from '../components/PageLayout/PageLayout';
-import Users from './Users/Users';
-import News from './News/News';
-import Settings from './Settings/Settings';
-import Dashboard from './Dashboard/Dashboard';
-import Reports from './Reports/Reports';
-import Auth from './Auth/Auth';
-import ForgotPassword from './ForgotPassword/ForgotPassword';
-import NewsPost from './NewsPost/NewsPost';
-import Help from './Help/Help';
-import Profile from './Profile/Profile';
-import Conference from './Conference/Conference';
-import User from './User/User';
-import Conferences from './Conferences/Conferences';
-import Report from './Report/Report';
-import { ProtectedRoute } from '../components/ProtectedRoute/ProtectedRoute';
-import Blocked from './Blocked/Blocked';
 import { AdminRoute } from '../components/AdminRoute/AdminRoute';
+import PageLayout from '../components/PageLayout/PageLayout';
+import { ProtectedRoute } from '../components/ProtectedRoute/ProtectedRoute';
+import { ROUTE_CONSTANTS } from '../shared/config/routes';
+import Auth from './Auth/Auth';
+import Blocked from './Blocked/Blocked';
+import Conference from './Conference/Conference';
+import Conferences from './Conferences/Conferences';
+import Dashboard from './Dashboard/Dashboard';
+import ForgotPassword from './ForgotPassword/ForgotPassword';
+import Help from './Help/Help';
+import Home from './Home/Home';
+import News from './News/News';
+import NewsPost from './NewsPost/NewsPost';
+import NotFound from './NotFound/NotFound';
+import Profile from './Profile/Profile';
+import Report from './Report/Report';
+import Reports from './Reports/Reports';
 import ResetPassword from './ResetPassword/ResetPassword';
+import Settings from './Settings/Settings';
+import User from './User/User';
+import Users from './Users/Users';
 
 const Router = () => {
   return (

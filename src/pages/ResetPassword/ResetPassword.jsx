@@ -1,6 +1,6 @@
 import { Card, CardBody } from '@nextui-org/react';
-import ResetPasswordCard from '../../components/ResetPasswordCard/ResetPasswordCard';
 import { useSearchParams } from 'react-router-dom';
+import ResetPasswordCard from '../../components/ResetPasswordCard/ResetPasswordCard';
 
 const ResetPassword = () => {
   const [queryParameters] = useSearchParams();
