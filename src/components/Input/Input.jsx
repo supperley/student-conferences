@@ -8,9 +8,10 @@ export const Input = ({
   placeholder,
   type,
   control,
-  required = '',
+  rules,
   endContent,
   variant,
+  className,
 }) => {
   const {
     field,
@@ -19,11 +20,13 @@ export const Input = ({
   } = useController({
     name,
     control,
-    rules: { required },
+    rules,
   });
 
   return (
     <NextInput
+      isRequired={rules && rules['required'] ? true : false}
+      className={className}
       id={name}
       label={label}
       type={type}

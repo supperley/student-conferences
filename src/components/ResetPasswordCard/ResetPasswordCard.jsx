@@ -41,7 +41,6 @@ const ResetPasswordCard = ({ token }) => {
         name="password"
         label="Новый пароль"
         type="password"
-        required="Обязательное поле"
         variant="bordered"
       />
       <Input
@@ -49,7 +48,6 @@ const ResetPasswordCard = ({ token }) => {
         name="password_repeat"
         label="Повторите пароль"
         type="password"
-        required="Обязательное поле"
         variant="bordered"
       />
       {message && (

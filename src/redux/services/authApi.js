@@ -49,6 +49,12 @@ export const authApi = api.injectEndpoints({
         body: userData,
       }),
     }),
+    deleteAccount: builder.mutation({
+      query: () => ({
+        url: '/auth/delete-account',
+        method: 'POST',
+      }),
+    }),
   }),
 });
 
@@ -61,6 +67,7 @@ export const {
   useChangePasswordMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
+  useDeleteAccountMutation,
 } = authApi;
 
 export const {

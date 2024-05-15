@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import DeleteNewsModal from '../../components/modal/DeleteNewsModal/DeleteNewsModal';
 import NewsModal from '../../components/modal/NewsModal/NewsModal';
-import { useGetNewsByIdQuery, useUpdateNewsMutation } from '../../redux/services/newsApi';
+import { useGetNewsByIdQuery } from '../../redux/services/newsApi';
 import { selectUser } from '../../redux/slices/authSlice';
 import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
 import defaultReport from '../../shared/assets/images/default-report.jpg';
@@ -14,13 +14,12 @@ import { formatToClientDate } from '../../shared/utils/formatToClientDate';
 const NewsPost = () => {
   const params = useParams();
   const newsId = params.newsId;
-  const { data: newsData, error, isLoading } = useGetNewsByIdQuery(newsId);
+  const { data: newsData, isLoading } = useGetNewsByIdQuery(newsId);
   const user = useSelector(selectUser);
-  const [updateNews, { isLoading: isUpdateLoading }] = useUpdateNewsMutation();
   const {
-    isOpen: isOpenModalCancel,
-    onOpen: onOpenModalCancel,
-    onOpenChange: onOpenChangeModalCancel,
+    isOpen: isOpenModalDelete,
+    onOpen: onOpenModalDelete,
+    onOpenChange: onOpenChangeModalDelete,
   } = useDisclosure();
   const {
     isOpen: isOpenModalEdit,
@@ -78,7 +77,7 @@ const NewsPost = () => {
                 color="danger"
                 variant="flat"
                 onPress={() => {
-                  onOpenModalCancel();
+                  onOpenModalDelete();
                 }}>
                 Удалить новость
               </Button>
@@ -109,9 +108,9 @@ const NewsPost = () => {
         </Skeleton>
       </div>
       <DeleteNewsModal
-        isOpen={isOpenModalCancel}
-        onOpen={onOpenModalCancel}
-        onOpenChange={onOpenChangeModalCancel}
+        isOpen={isOpenModalDelete}
+        onOpen={onOpenModalDelete}
+        onOpenChange={onOpenChangeModalDelete}
         news={newsData}
       />
       <NewsModal

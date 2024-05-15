@@ -35,7 +35,9 @@ const ForgotPasswordCard = () => {
         label="Email"
         variant="bordered"
         type="email"
-        required="Обязательное поле"
+        rules={{
+          required: 'Обязательное поле',
+        }}
       />
       {message && <div className="bg-neutral-100 rounded-md px-4 py-2">{message}</div>}
       {!message && (

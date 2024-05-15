@@ -20,7 +20,7 @@ const Login = () => {
 
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
-  const [error, setError] = useState('');
+  const [errorOnSubmit, setErrorOnSubmit] = useState('');
   // const [triggerCurrentQuery] = useLazyCurrentQuery();
 
   const onSubmit = async (data) => {
@@ -32,7 +32,7 @@ const Login = () => {
       console.log(err);
       toast(JSON.stringify(err));
       if (hasErrorField(err)) {
-        setError(err?.data?.message || err?.error);
+        setErrorOnSubmit(err?.data?.message || err?.error);
       }
     }
   };
@@ -44,7 +44,9 @@ const Login = () => {
         name="email"
         label="Электронная почта"
         variant="bordered"
-        required="Обязательное поле"
+        rules={{
+          required: 'Обязательное поле',
+        }}
       />
       <Input
         control={control}
@@ -52,9 +54,11 @@ const Login = () => {
         label="Пароль"
         variant="bordered"
         type="password"
-        required="Обязательное поле"
+        rules={{
+          required: 'Обязательное поле',
+        }}
       />
-      <ErrorMessage error={error} />
+      <ErrorMessage error={errorOnSubmit} />
       <Link className="justify-end" href="/forgot-password">
         Забыли пароль?
       </Link>
