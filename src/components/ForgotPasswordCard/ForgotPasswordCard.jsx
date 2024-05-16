@@ -1,9 +1,10 @@
-import { Button, Link } from '@nextui-org/react';
+import { Button } from '@nextui-org/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { Input } from '../../components/Input/Input';
 import { useForgotPasswordMutation } from '../../redux/services/authApi';
+import { Link } from '../Link/Link';
 
 const ForgotPasswordCard = () => {
   const { control, handleSubmit } = useForm({

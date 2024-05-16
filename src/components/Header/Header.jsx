@@ -5,7 +5,6 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Link,
   Navbar,
   NavbarBrand,
   NavbarContent,
@@ -22,6 +21,7 @@ import { selectIsAdmin, selectIsAuthenticated, selectUser } from '../../redux/sl
 import { AppLogo } from '../../shared/components/AppLogo';
 import { S3_URL } from '../../shared/config/constants';
 import { ROUTE_CONSTANTS } from '../../shared/config/routes';
+import { Link } from '../Link/Link';
 import { SwitchTheme } from '../SwitchTheme/SwitchTheme';
 
 const Header = () => {

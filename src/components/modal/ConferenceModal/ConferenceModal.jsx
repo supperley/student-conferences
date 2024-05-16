@@ -4,7 +4,6 @@ import {
   Button,
   DatePicker,
   Input,
-  Link,
   Modal,
   ModalBody,
   ModalContent,
@@ -29,6 +28,7 @@ import { S3_URL } from '../../../shared/config/constants';
 import { facultiesDataMap } from '../../../shared/data/dataMap';
 import { hasErrorField } from '../../../shared/utils/hasErrorField';
 import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
+import { Link } from '../../Link/Link';
 
 const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }) => {
   const { data: users, error: usersError, isLoading: isUsersLoading } = useGetAllUsersQuery();

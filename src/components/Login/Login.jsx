@@ -1,4 +1,4 @@
-import { Button, Link } from '@nextui-org/react';
+import { Button } from '@nextui-org/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
 import { Input } from '../../components/Input/Input';
 import { useLoginMutation } from '../../redux/services/authApi';
 import { hasErrorField } from '../../shared/utils/hasErrorField';
+import { Link } from '../Link/Link';
 
 const Login = () => {
   const { control, handleSubmit } = useForm({

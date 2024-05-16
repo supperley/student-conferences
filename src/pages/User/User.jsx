@@ -1,5 +1,5 @@
-import { Link } from '@nextui-org/react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Link } from '../../components/Link/Link';
 import { ProfileCard } from '../../components/ProfileCard/ProfileCard';
 import { useGetUserByIdQuery } from '../../redux/services/userApi';
 import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';

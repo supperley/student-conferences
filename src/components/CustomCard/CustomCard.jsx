@@ -1,19 +1,11 @@
-import {
-  Avatar,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Chip,
-  Image,
-  Link,
-} from '@nextui-org/react';
+import { Avatar, Card, CardBody, CardFooter, CardHeader, Chip, Image } from '@nextui-org/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import defaultReport from '../../shared/assets/images/default-report.jpg';
 import { S3_URL } from '../../shared/config/constants';
 import { chipDataMap, facultiesDataMap } from '../../shared/data/dataMap';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
+import { Link } from '../Link/Link';
 import { CustomCardSkeleton } from './CustomCardSkeleton';
 
 export const CustomCard = ({ data }) => {

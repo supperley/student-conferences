@@ -1,9 +1,10 @@
-import { Button, Card, Chip, Image, Link, Skeleton, User, useDisclosure } from '@nextui-org/react';
+import { Button, Card, Chip, Image, Skeleton, User, useDisclosure } from '@nextui-org/react';
 import { saveAs } from 'file-saver';
 import defaultReport from '../../shared/assets/images/default-report.jpg';
 import { S3_URL } from '../../shared/config/constants';
 import { reportStatusMap } from '../../shared/data/dataMap';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
+import { Link } from '../Link/Link';
 import ReportModal from '../modal/ReportModal/ReportModal';
 
 export const ReportCard = ({ reportData, isLoading = false }) => {

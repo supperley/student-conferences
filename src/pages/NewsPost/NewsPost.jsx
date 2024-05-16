@@ -1,6 +1,7 @@
-import { Button, Image, Link, Skeleton, User, useDisclosure } from '@nextui-org/react';
+import { Button, Image, Skeleton, User, useDisclosure } from '@nextui-org/react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { Link } from '../../components/Link/Link';
 import DeleteNewsModal from '../../components/modal/DeleteNewsModal/DeleteNewsModal';
 import NewsModal from '../../components/modal/NewsModal/NewsModal';
 import { useGetNewsByIdQuery } from '../../redux/services/newsApi';

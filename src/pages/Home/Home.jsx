@@ -1,5 +1,6 @@
-import { Button, Link } from '@nextui-org/react';
+import { Button } from '@nextui-org/react';
 import { useSelector } from 'react-redux';
+import { Link } from '../../components/Link/Link';
 import { selectIsAuthenticated } from '../../redux/slices/authSlice';
 
 const Home = () => {

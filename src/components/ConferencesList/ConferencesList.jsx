@@ -5,7 +5,6 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Link,
   useDisclosure,
 } from '@nextui-org/react';
 import React, { useState } from 'react';
@@ -21,6 +20,7 @@ import TableData from '../TableData/TableData';
 import CancelConferenceModal from '../modal/CancelConferenceModal/CancelConferenceModal';
 import ConferenceModal from '../modal/ConferenceModal/ConferenceModal';
 import DeleteConferenceModal from '../modal/DeleteConferenceModal/DeleteConferenceModal';
+import { Link } from '../Link/Link';
 
 export const conferencesTableColumns = [
   { name: 'ID', uid: 'id', sortable: true },
