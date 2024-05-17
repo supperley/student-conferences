@@ -1,9 +1,10 @@
-import { Button, Card, Chip, Image, Link, Skeleton, User, useDisclosure } from '@nextui-org/react';
+import { Button, Card, Chip, Image, Skeleton, User, useDisclosure } from '@nextui-org/react';
 import { saveAs } from 'file-saver';
 import defaultReport from '../../shared/assets/images/default-report.jpg';
 import { S3_URL } from '../../shared/config/constants';
 import { reportStatusMap } from '../../shared/data/dataMap';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
+import { Link } from '../Link/Link';
 import ReportModal from '../modal/ReportModal/ReportModal';
 
 export const ReportCard = ({ reportData, isLoading = false }) => {
@@ -26,7 +27,7 @@ export const ReportCard = ({ reportData, isLoading = false }) => {
         <div className="flex flex-col w-full md:w-auto gap-10 justify-around">
           <div className="flex flex-col gap-4 min-w-[200px] md:min-w-[350px]">
             <div className="flex flex-col md:flex-row md:items-center gap-2">
-              <span className="w-[120px]">Конференция</span>
+              <span className="min-w-[120px]">Конференция</span>
               <Link
                 isBlock
                 href={`/conferences/${reportData?.conference?._id}`}
@@ -38,7 +39,7 @@ export const ReportCard = ({ reportData, isLoading = false }) => {
               </Link>
             </div>
             <div className="flex flex-col md:flex-row md:items-center gap-2">
-              <span className="w-[120px]">Состояние</span>
+              <span className="min-w-[120px]">Состояние</span>
               <Skeleton isLoaded={!isLoading} className="rounded-lg -ml-1">
                 <Chip color={reportStatusMap[reportData?.status]?.color} variant="flat">
                   {reportStatusMap[reportData?.status]?.name || 'default'}
@@ -46,7 +47,7 @@ export const ReportCard = ({ reportData, isLoading = false }) => {
               </Skeleton>
             </div>
             <div className="flex flex-col md:flex-row md:items-center gap-2">
-              <span className="w-[120px]">Дата подачи</span>
+              <span className="min-w-[120px]">Дата подачи</span>
               <div className="text-default-500 text-small">
                 <Skeleton isLoaded={!isLoading} className="rounded-lg">
                   {formatToClientDate(reportData?.createdAt)}
@@ -54,7 +55,7 @@ export const ReportCard = ({ reportData, isLoading = false }) => {
               </div>
             </div>
             <div className="flex flex-col md:flex-row md:items-center gap-2">
-              <span className="w-[120px]">Автор</span>
+              <span className="min-w-[120px]">Автор</span>
               <Link
                 isBlock
                 href={'/users/' + reportData?.author?._id}
@@ -73,7 +74,7 @@ export const ReportCard = ({ reportData, isLoading = false }) => {
             </div>
             {reportData?.supervisor && (
               <div className="flex flex-col md:flex-row md:items-center gap-2">
-                <span className="w-[120px]">Научный руководитель</span>
+                <span className="min-w-[120px]">Научный руководитель</span>
                 <Link
                   isBlock
                   href="/news"

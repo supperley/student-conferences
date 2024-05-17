@@ -1,8 +1,9 @@
-import { Button, Link, Skeleton, useDisclosure } from '@nextui-org/react';
+import { Button, Skeleton, useDisclosure } from '@nextui-org/react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { ConferenceCard } from '../../components/ConferenceCard/ConferenceCard';
+import { Link } from '../../components/Link/Link';
 import CancelConferenceModal from '../../components/modal/CancelConferenceModal/CancelConferenceModal';
 import ConferenceModal from '../../components/modal/ConferenceModal/ConferenceModal';
 import DeleteConferenceModal from '../../components/modal/DeleteConferenceModal/DeleteConferenceModal';

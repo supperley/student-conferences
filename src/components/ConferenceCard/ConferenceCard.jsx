@@ -1,9 +1,10 @@
-import { Button, Card, Chip, Image, Link, Skeleton, User, useDisclosure } from '@nextui-org/react';
+import { Button, Card, Chip, Image, Skeleton, User, useDisclosure } from '@nextui-org/react';
 import defaultConference from '../../shared/assets/images/default-conference.jpg';
 import { S3_URL } from '../../shared/config/constants';
 import { conferenceStatusMap, facultiesDataMap } from '../../shared/data/dataMap';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
 import { formatToGoogleDate } from '../../shared/utils/formatToGoogleDate';
+import { Link } from '../Link/Link';
 import ReportModal from '../modal/ReportModal/ReportModal';
 
 export const ConferenceCard = ({ conferenceData, isLoading = false }) => {
@@ -34,7 +35,7 @@ export const ConferenceCard = ({ conferenceData, isLoading = false }) => {
           <div className="flex flex-col gap-4 min-w-[200px] md:min-w-[300px]">
             {conferenceData?.faculties && conferenceData?.faculties?.length > 0 && (
               <div className="flex flex-col md:flex-row md:items-center gap-2">
-                <span className="w-[130px]">Факультеты</span>
+                <span className="min-w-[130px]">Факультеты</span>
                 <div className="text-default-500 text-small">
                   <Skeleton isLoaded={!isLoading} className="rounded-lg">
                     {conferenceData?.faculties
@@ -47,7 +48,7 @@ export const ConferenceCard = ({ conferenceData, isLoading = false }) => {
               </div>
             )}
             <div className="flex flex-col md:flex-row md:items-center gap-2">
-              <span className="w-[130px]">Состояние</span>
+              <span className="min-w-[130px]">Состояние</span>
               <Skeleton isLoaded={!isLoading} className="rounded-lg -ml-1">
                 <Chip color={conferenceStatusMap[conferenceData?.status]?.color} variant="flat">
                   {conferenceStatusMap[conferenceData?.status]?.name || 'default'}
@@ -55,7 +56,7 @@ export const ConferenceCard = ({ conferenceData, isLoading = false }) => {
               </Skeleton>
             </div>
             <div className="flex flex-col md:flex-row md:items-center gap-2">
-              <span className="w-[130px]">Дата</span>
+              <span className="min-w-[130px]">Дата</span>
               <Skeleton isLoaded={!isLoading} className="rounded-lg">
                 <div className="text-default-500 text-small">
                   {formatToClientDate(conferenceData?.date)}
@@ -63,7 +64,7 @@ export const ConferenceCard = ({ conferenceData, isLoading = false }) => {
               </Skeleton>
             </div>
             <div className="flex flex-col md:flex-row md:items-center gap-2">
-              <span className="w-[130px]">Администратор</span>
+              <span className="min-w-[130px]">Администратор</span>
               <Link
                 isBlock
                 href={'/users/' + conferenceData?.administrator?._id}
@@ -92,17 +93,17 @@ export const ConferenceCard = ({ conferenceData, isLoading = false }) => {
               </Button>
             )}
             {(conferenceData?.status === 'registrationOpen' ||
-              conferenceData?.status === 'registrationClosed') &&
-              conferenceData?.link && (
-                <Button
-                  as={Link}
-                  href={createGoogleDate(conferenceData?.date)}
-                  target="_blank"
-                  variant="flat"
-                  className="md:w-full">
-                  Добавить в Google Календарь
-                </Button>
-              )}
+              conferenceData?.status === 'registrationClosed') && (
+              <Button
+                as={Link}
+                href={createGoogleDate(conferenceData?.date)}
+                target="_blank"
+                isExternal
+                variant="flat"
+                className="md:w-full">
+                Добавить в Google Календарь
+              </Button>
+            )}
             {conferenceData?.status === 'held' && conferenceData?.link && (
               <Button
                 as={Link}
@@ -110,6 +111,7 @@ export const ConferenceCard = ({ conferenceData, isLoading = false }) => {
                 color="secondary"
                 variant="flat"
                 target="_blank"
+                isExternal
                 className="md:w-full">
                 Присоединится к трансляции
               </Button>

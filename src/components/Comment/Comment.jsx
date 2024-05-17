@@ -1,13 +1,4 @@
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Link,
-  Textarea,
-  User,
-} from '@nextui-org/react';
+import { Button, Card, CardBody, CardFooter, CardHeader, Textarea, User } from '@nextui-org/react';
 import React, { useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -20,6 +11,7 @@ import { EditIcon } from '../../shared/assets/icons/EditIcon';
 import { S3_URL } from '../../shared/config/constants';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
 import { hasErrorField } from '../../shared/utils/hasErrorField';
+import { Link } from '../Link/Link';
 
 const Comment = ({ commentData }) => {
   const [deleteComment, { isLoadingDelete }] = useDeleteCommentMutation();

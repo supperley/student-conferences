@@ -3,7 +3,6 @@ import {
   Button,
   Checkbox,
   Input,
-  Link,
   Modal,
   ModalBody,
   ModalContent,
@@ -27,6 +26,7 @@ import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
 import { S3_URL } from '../../../shared/config/constants';
 import { hasErrorField } from '../../../shared/utils/hasErrorField';
 import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
+import { Link } from '../../Link/Link';
 
 const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
   const { data: users, error: usersError, isLoading: isUsersLoading } = useGetAllUsersQuery();

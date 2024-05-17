@@ -1,9 +1,10 @@
-import { Button, Link } from '@nextui-org/react';
+import { Button } from '@nextui-org/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { Input } from '../../components/Input/Input';
 import { useForgotPasswordMutation } from '../../redux/services/authApi';
+import { Link } from '../Link/Link';
 
 const ForgotPasswordCard = () => {
   const { control, handleSubmit } = useForm({
@@ -35,7 +36,9 @@ const ForgotPasswordCard = () => {
         label="Email"
         variant="bordered"
         type="email"
-        required="Обязательное поле"
+        rules={{
+          required: 'Обязательное поле',
+        }}
       />
       {message && <div className="bg-neutral-100 rounded-md px-4 py-2">{message}</div>}
       {!message && (

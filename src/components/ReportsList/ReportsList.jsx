@@ -5,7 +5,6 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Link,
   useDisclosure,
 } from '@nextui-org/react';
 import React, { useState } from 'react';
@@ -17,6 +16,7 @@ import { selectUser } from '../../redux/slices/authSlice';
 import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import { reportStatusMap } from '../../shared/data/dataMap';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
+import { Link } from '../Link/Link';
 import TableData from '../TableData/TableData';
 import DeleteReportModal from '../modal/DeleteReportModal/DeleteReportModal';
 import ReportModal from '../modal/ReportModal/ReportModal';

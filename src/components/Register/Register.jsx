@@ -11,12 +11,13 @@ const Register = ({ setSelected }) => {
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    watch,
+    formState: { errors: formErrors },
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onBlur',
     defaultValues: {
-      login: '',
+      // login: '',
       email: '',
       password: '',
       first_name: '',
@@ -25,7 +26,7 @@ const Register = ({ setSelected }) => {
   });
 
   const [register, { isLoading }] = useRegisterMutation();
-  const [error, setError] = useState('');
+  const [errorOnSubmit, setErrorOnSubmit] = useState('');
 
   const onSubmit = async (data) => {
     try {
@@ -34,53 +35,94 @@ const Register = ({ setSelected }) => {
       toast.success('Вы успешно зарегистрированы!');
     } catch (err) {
       console.log(err);
-      toast(JSON.stringify(err));
+      // toast(JSON.stringify(err));
       if (hasErrorField(err)) {
-        setError(err?.data?.message || err?.error);
+        setErrorOnSubmit(err?.data?.message || err?.error);
       }
     }
   };
 
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-      <Input
+      {/* <Input
         control={control}
-        required="Обязательное поле"
         label="Логин"
         name="login"
         variant="bordered"
-      />
+        rules={{
+          required: 'Обязательное поле',
+        }}
+      /> */}
       <Input
         control={control}
         name="email"
-        label="Email"
+        label="Электронная почта"
         type="email"
-        required="Обязательное поле"
         variant="bordered"
+        rules={{
+          required: 'Обязательное поле',
+        }}
       />
       <Input
         control={control}
         name="password"
         label="Пароль"
         type="password"
-        required="Обязательное поле"
         variant="bordered"
+        rules={{
+          required: 'Обязательное поле',
+          minLength: {
+            value: 4,
+            message: 'Пароль должен содержать не менее 4 символов',
+          },
+          maxLength: {
+            value: 64,
+            message: 'Пароль должен содержать не более 64 символов',
+          },
+        }}
+      />
+      <Input
+        control={control}
+        name="repeatPassword"
+        label="Повторите пароль"
+        type="password"
+        variant="bordered"
+        rules={{
+          required: 'Обязательное поле',
+          minLength: {
+            value: 4,
+            message: 'Пароль должен содержать не менее 4 символов',
+          },
+          maxLength: {
+            value: 64,
+            message: 'Пароль должен содержать не более 64 символов',
+          },
+          validate: (val) => {
+            if (watch('password') != val) {
+              return 'Пароли не совпадают';
+            }
+          },
+        }}
       />
       <Input
         control={control}
         name="first_name"
         label="Имя"
-        required="Обязательное поле"
         variant="bordered"
+        rules={{
+          required: 'Обязательное поле',
+        }}
       />
       <Input
         control={control}
         name="last_name"
         label="Фамилия"
-        required="Обязательное поле"
         variant="bordered"
+        rules={{
+          required: 'Обязательное поле',
+        }}
       />
-      <ErrorMessage error={error} />
+      <ErrorMessage error={errorOnSubmit} />
       <Button
         size="lg"
         variant="shadow"

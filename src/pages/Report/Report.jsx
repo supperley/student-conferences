@@ -1,9 +1,10 @@
-import { Button, Link, Skeleton, useDisclosure } from '@nextui-org/react';
+import { Button, Skeleton, useDisclosure } from '@nextui-org/react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { CommentsList } from '../../components/CommentsList/CommentsList';
+import { Link } from '../../components/Link/Link';
 import { ReportCard } from '../../components/ReportCard/ReportCard';
 import DeleteReportModal from '../../components/modal/DeleteReportModal/DeleteReportModal';
 import { useGetReportByIdQuery, useUpdateReportMutation } from '../../redux/services/reportApi';

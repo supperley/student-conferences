@@ -2,9 +2,11 @@ import { useDisclosure } from '@nextui-org/react';
 
 import React from 'react';
 
+import { useSelector } from 'react-redux';
 import GridData from '../../components/GridData/GridData';
 import NewsModal from '../../components/modal/NewsModal/NewsModal';
 import { useGetAllNewsQuery } from '../../redux/services/newsApi';
+import { selectIsAdmin } from '../../redux/slices/authSlice';
 
 const News = () => {
   const {
@@ -14,6 +16,8 @@ const News = () => {
   } = useDisclosure();
 
   const { data, error, isLoading } = useGetAllNewsQuery();
+
+  const isAdmin = useSelector(selectIsAdmin);
 
   return (
     <>
@@ -25,11 +29,11 @@ const News = () => {
           </h5>
         </div>
         {error ? (
-          <span>Произошла ошибка</span>
+          <span>Произошла ошибка: {JSON.stringify(error)}</span>
         ) : isLoading ? (
           <span>Загрузка...</span>
         ) : (
-          <GridData data={data} onOpenModalAdd={onOpenModalAdd} />
+          <GridData data={data} onOpenModalAdd={onOpenModalAdd} isAddButton={isAdmin} />
         )}
       </div>
       <NewsModal

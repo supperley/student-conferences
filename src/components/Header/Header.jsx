@@ -5,7 +5,6 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Link,
   Navbar,
   NavbarBrand,
   NavbarContent,
@@ -22,6 +21,7 @@ import { selectIsAdmin, selectIsAuthenticated, selectUser } from '../../redux/sl
 import { AppLogo } from '../../shared/components/AppLogo';
 import { S3_URL } from '../../shared/config/constants';
 import { ROUTE_CONSTANTS } from '../../shared/config/routes';
+import { Link } from '../Link/Link';
 import { SwitchTheme } from '../SwitchTheme/SwitchTheme';
 
 const Header = () => {
@@ -47,7 +47,12 @@ const Header = () => {
   ];
 
   return (
-    <Navbar isBordered shouldHideOnScroll maxWidth="2xl" onMenuOpenChange={setIsMenuOpen}>
+    <Navbar
+      isBordered
+      shouldHideOnScroll
+      maxWidth="2xl"
+      isMenuOpen={isMenuOpen}
+      onMenuOpenChange={setIsMenuOpen}>
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
@@ -60,7 +65,6 @@ const Header = () => {
           </NavbarBrand>
         </NavLink>
       </NavbarContent>
-
       <NavbarContent className="hidden lg:flex gap-4" justify="center">
         {menuItems.map((item, index) => {
           if (
@@ -93,7 +97,11 @@ const Header = () => {
             (item.admin && isAdmin)
           ) {
             return (
-              <NavbarMenuItem key={`${item}-${index}`} onClick={() => setIsMenuOpen(false)}>
+              <NavbarMenuItem
+                key={`${item}-${index}`}
+                onClick={() => {
+                  setIsMenuOpen(false);
+                }}>
                 <NavLink
                   className={({ isActive }) => {
                     if (isActive) {
@@ -118,7 +126,7 @@ const Header = () => {
                 as="button"
                 className="transition-transform"
                 color="default"
-                name={user?.login}
+                name={user?.email}
                 size="sm"
                 src={S3_URL + user?.avatarUrl}
               />

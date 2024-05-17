@@ -5,7 +5,6 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Link,
   User,
   useDisclosure,
 } from '@nextui-org/react';
@@ -17,7 +16,7 @@ import { selectUser } from '../../redux/slices/authSlice';
 import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import { S3_URL } from '../../shared/config/constants';
 import { facultiesDataMap, userStatusMap } from '../../shared/data/dataMap';
-import { hasErrorField } from '../../shared/utils/hasErrorField';
+import { Link } from '../Link/Link';
 import TableData from '../TableData/TableData';
 import BlockUserModal from '../modal/BlockUserModal/BlockUserModal';
 import EditUserModal from '../modal/EditUserModal/EditUserModal';
@@ -46,16 +45,15 @@ export default function UsersList({ users, emptyText }) {
   const [updateUser, { isLoading }] = useUpdateUserMutation();
   const currentUser = useSelector(selectUser);
 
-  const onSubmit = async (data) => {
+  const onSubmitRole = async (user, role) => {
     try {
-      await updateUser({ id: data._id, userData: data }).unwrap();
-      // setSelected('login');
+      const data = { id: user?._id, userData: { role } };
+      // console.log(data);
+      await updateUser(data).unwrap();
+      toast.success('Права пользователя успешно изменены');
     } catch (err) {
       console.log(err);
       toast(JSON.stringify(err));
-      if (hasErrorField(err)) {
-        setError(err?.data?.message || err?.error);
-      }
     }
   };
 
@@ -64,12 +62,10 @@ export default function UsersList({ users, emptyText }) {
       const data = { id: user?._id, userData: { status } };
       // console.log(data);
       await updateUser(data).unwrap();
+      toast.success('Статус пользователя успешно изменен');
     } catch (err) {
       console.log(err);
       toast(JSON.stringify(err));
-      if (hasErrorField(err)) {
-        setError(err?.data?.message || err?.error);
-      }
     }
   };
 
@@ -144,6 +140,29 @@ export default function UsersList({ users, emptyText }) {
                     Заморозить
                   </DropdownItem>
                 )} */}
+                {currentUser?.role === 'admin' &&
+                  user?.status !== 'blocked' &&
+                  currentUser?._id !== user?._id &&
+                  user?.role !== 'admin' && (
+                    <DropdownItem
+                      onPress={() => {
+                        onSubmitRole(user, 'admin');
+                      }}>
+                      Назначить администратором
+                    </DropdownItem>
+                  )}
+                {console.log(user)}
+                {currentUser?.role === 'admin' &&
+                  user?.status !== 'blocked' &&
+                  currentUser?._id !== user?._id &&
+                  user?.role === 'admin' && (
+                    <DropdownItem
+                      onPress={() => {
+                        onSubmitRole(user, 'user');
+                      }}>
+                      Сделать пользователем
+                    </DropdownItem>
+                  )}
                 {currentUser?.role === 'admin' &&
                   user?.status !== 'blocked' &&
                   currentUser?._id !== user?._id && (

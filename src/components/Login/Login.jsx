@@ -1,12 +1,12 @@
-import { Button, Link } from '@nextui-org/react';
+import { Button } from '@nextui-org/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
 import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
 import { Input } from '../../components/Input/Input';
 import { useLoginMutation } from '../../redux/services/authApi';
 import { hasErrorField } from '../../shared/utils/hasErrorField';
+import { Link } from '../Link/Link';
 
 const Login = () => {
   const { control, handleSubmit } = useForm({
@@ -20,7 +20,7 @@ const Login = () => {
 
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
-  const [error, setError] = useState('');
+  const [errorOnSubmit, setErrorOnSubmit] = useState('');
   // const [triggerCurrentQuery] = useLazyCurrentQuery();
 
   const onSubmit = async (data) => {
@@ -30,9 +30,9 @@ const Login = () => {
       navigate('/');
     } catch (err) {
       console.log(err);
-      toast(JSON.stringify(err));
+      // toast(JSON.stringify(err));
       if (hasErrorField(err)) {
-        setError(err?.data?.message || err?.error);
+        setErrorOnSubmit(err?.data?.message || err?.error);
       }
     }
   };
@@ -44,7 +44,9 @@ const Login = () => {
         name="email"
         label="Электронная почта"
         variant="bordered"
-        required="Обязательное поле"
+        rules={{
+          required: 'Обязательное поле',
+        }}
       />
       <Input
         control={control}
@@ -52,9 +54,11 @@ const Login = () => {
         label="Пароль"
         variant="bordered"
         type="password"
-        required="Обязательное поле"
+        rules={{
+          required: 'Обязательное поле',
+        }}
       />
-      <ErrorMessage error={error} />
+      <ErrorMessage error={errorOnSubmit} />
       <Link className="justify-end" href="/forgot-password">
         Забыли пароль?
       </Link>

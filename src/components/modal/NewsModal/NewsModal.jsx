@@ -16,7 +16,7 @@ import { toast } from 'sonner';
 import { useCreateNewsMutation, useUpdateNewsMutation } from '../../../redux/services/newsApi';
 import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
 import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
-import { facultiesDataMap } from '../../../shared/data/dataMap';
+import { chipDataMap, facultiesDataMap } from '../../../shared/data/dataMap';
 import { hasErrorField } from '../../../shared/utils/hasErrorField';
 import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
 
@@ -65,7 +65,9 @@ const NewsModal = ({ isOpen, onOpenChange, mode = 'add', news = {} }) => {
         {(onClose) => {
           const onSubmit = async (data) => {
             try {
-              console.log(data);
+              {
+                /* console.log(data); */
+              }
               const formData = new FormData();
               data.title && formData.append('title', data.title);
               data.description && formData.append('description', data.description);
@@ -73,7 +75,7 @@ const NewsModal = ({ isOpen, onOpenChange, mode = 'add', news = {} }) => {
                 Array.from(data.faculties).forEach((faculty) => {
                   formData.append('faculties', faculty);
                 });
-              data.chip && data.chip[0] && formData.append('chip', [...data.chip][0]);
+              data.chip && [...data.chip][0] && formData.append('chip', [...data.chip][0]);
               isDeleteImage && formData.append('image', 'delete');
               selectedFile && formData.append('image', selectedFile);
 
@@ -132,9 +134,7 @@ const NewsModal = ({ isOpen, onOpenChange, mode = 'add', news = {} }) => {
                   <Controller
                     control={control}
                     name="faculties"
-                    render={({
-                      field: { onChange: onChangeFaculties, onBlur, value: facultiesValue, ref },
-                    }) => (
+                    render={({ field: { onChange: onChangeFaculties, value: facultiesValue } }) => (
                       <Select
                         label="Факультеты"
                         selectionMode="multiple"
@@ -162,7 +162,7 @@ const NewsModal = ({ isOpen, onOpenChange, mode = 'add', news = {} }) => {
                         onSelectionChange={onChangeChip}>
                         {Object.values(chipDataMap).map((type) => (
                           <SelectItem key={type.value} value={type.value}>
-                            {type.label}
+                            {type.name}
                           </SelectItem>
                         ))}
                       </Select>

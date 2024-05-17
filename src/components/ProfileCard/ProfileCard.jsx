@@ -1,8 +1,9 @@
-import { Button, Card, CardBody, Image, Link } from '@nextui-org/react';
+import { Button, Card, CardBody, Image } from '@nextui-org/react';
 import { MailIcon } from '../../shared/assets/icons/MailIcon';
 import { S3_URL } from '../../shared/config/constants';
 import { facultiesDataMap } from '../../shared/data/dataMap';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
+import { Link } from '../Link/Link';
 
 export const ProfileCard = ({ user, isPersonal = false, emptyText = 'Произошла ошибка' }) => {
   return (
@@ -49,7 +50,7 @@ export const ProfileCard = ({ user, isPersonal = false, emptyText = 'Произ�
                     </Button>
                   ) : (
                     <Button
-                      href={'mailto:' + user.email}
+                      href={'mailto:' + user?.email}
                       as={Link}
                       color="primary"
                       variant="flat"
