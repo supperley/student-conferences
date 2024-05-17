@@ -1,6 +1,7 @@
 export const facultiesDataMap = {
   fitr: { label: 'ФИТР', value: 'fitr' },
   fmmp: { label: 'ФММП', value: 'fmmp' },
+  msf: { label: 'МСФ', value: 'msf' },
 };
 
 export const chipDataMap = {

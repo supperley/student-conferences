@@ -5,7 +5,7 @@ import PersonalSettings from '../../components/PersonalSettings/PersonalSettings
 const Settings = () => {
   return (
     <div className="my-10">
-      <Tabs>
+      <Tabs className="w-full block lg:w-auto lg:inline-flex">
         <Tab key="personal" title="Персональная информация">
           <PersonalSettings />
         </Tab>

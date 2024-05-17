@@ -38,7 +38,7 @@ const ManageAccount = () => {
       toast('Данные обновлены');
     } catch (err) {
       console.log(err);
-      toast(JSON.stringify(err));
+      // toast(JSON.stringify(err));
       if (hasErrorField(err)) {
         setErrorOnSubmit(err?.data?.message || err?.error);
       }
@@ -49,7 +49,7 @@ const ManageAccount = () => {
     <>
       <Card className="px-5 py-3">
         <CardBody className="flex flex-col sm:flex-row gap-5 sm:gap-10 items-center justify-center md:items-start">
-          <form onSubmit={handleSubmit(onSubmitData)}>
+          <form onSubmit={handleSubmit(onSubmitData)} className="w-full">
             <h4 className="mb-5 font-bold text-large">Смена пароля</h4>
             <div className="inline-flex flex-col gap-5 w-full md:w-[300px]">
               <Input
@@ -115,7 +115,7 @@ const ManageAccount = () => {
               </Button>
             </div>
           </form>
-          <div>
+          <div className="w-full">
             <h4 className="mb-5 font-bold text-large">Удаление аккаунта</h4>
             <div className="inline-flex flex-col gap-5 w-full md:w-[300px] items-center">
               <Button

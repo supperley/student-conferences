@@ -16,7 +16,7 @@ import { SearchIcon } from '../../shared/assets/icons/SearchIcon';
 import { chipDataMap, facultiesDataMap } from '../../shared/data/dataMap';
 import { CustomCard } from '../CustomCard/CustomCard';
 
-const GridData = ({ data, onOpenModalAdd }) => {
+const GridData = ({ data, onOpenModalAdd, isAddButton = false }) => {
   const [filterValue, setFilterValue] = React.useState('');
   const hasSearchFilter = Boolean(filterValue);
   const [facultiesFilter, setFacultiesFilter] = React.useState('all');
@@ -137,22 +137,24 @@ const GridData = ({ data, onOpenModalAdd }) => {
               onSelectionChange={setTypeFilter}>
               {Object.values(chipDataMap).map((type) => (
                 <SelectItem key={type.value} value={type.value}>
-                  {type.label}
+                  {type.name}
                 </SelectItem>
               ))}
             </DropdownMenu>
           </Dropdown>
-          <Button
-            color="primary"
-            endContent={<PlusIcon />}
-            onPress={() => {
-              onOpenModalAdd();
-            }}>
-            Добавить
-          </Button>
+          {isAddButton && (
+            <Button
+              color="primary"
+              endContent={<PlusIcon />}
+              onPress={() => {
+                onOpenModalAdd();
+              }}>
+              Добавить
+            </Button>
+          )}
         </div>
       </div>
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-3 sm:flex-row justify-between items-center">
         <span className="text-default-400 text-small">Всего {data.length} элементов</span>
         <label className="flex items-center text-default-400 text-small">
           Элементов на странице:
@@ -167,7 +169,7 @@ const GridData = ({ data, onOpenModalAdd }) => {
       </div>
       <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
         {items.map((card, idx) => (
-          <CustomCard key={idx} data={card} />
+          <CustomCard key={card?._id || idx} data={card} />
         ))}
       </div>
       <div className="mt-6 py-2 px-2 flex justify-between items-center">

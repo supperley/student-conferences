@@ -81,7 +81,7 @@ const PersonalSettings = () => {
       data.last_name && formData.append('last_name', data.last_name);
       data.patronymic && formData.append('patronymic', data.patronymic);
       data.email && formData.append('email', data.email);
-      data.faculty && formData.append('faculty', [...data.faculty][0]);
+      data.faculty && [...data.faculty][0] && formData.append('faculty', [...data.faculty][0]);
       data.position && formData.append('position', data.position);
       selectedAvatar && formData.append('avatar', selectedAvatar);
 
@@ -108,8 +108,8 @@ const PersonalSettings = () => {
         <form onSubmit={handleSubmit(onSubmitAvatar)}>
           <div className="flex flex-col gap-3 min-w-[200px] sm:min-w-[250px]">
             <Image
-              width={250}
-              height={250}
+              width={235}
+              // height={235}
               shadow="sm"
               alt="Avatar"
               src={S3_URL + user?.avatarUrl}
@@ -144,7 +144,7 @@ const PersonalSettings = () => {
             </Button>
           </div>
         </form>
-        <form onSubmit={handleSubmit(onSubmitData)}>
+        <form onSubmit={handleSubmit(onSubmitData)} className="w-full">
           <div className="inline-flex flex-col md:flex-row flex-wrap gap-5 w-full md:max-w-[650px] items-center justify-center">
             <Input
               className="max-w-[300px]"

@@ -17,7 +17,7 @@ const Register = ({ setSelected }) => {
     mode: 'onChange',
     reValidateMode: 'onBlur',
     defaultValues: {
-      login: '',
+      // login: '',
       email: '',
       password: '',
       first_name: '',
@@ -35,7 +35,7 @@ const Register = ({ setSelected }) => {
       toast.success('Вы успешно зарегистрированы!');
     } catch (err) {
       console.log(err);
-      toast(JSON.stringify(err));
+      // toast(JSON.stringify(err));
       if (hasErrorField(err)) {
         setErrorOnSubmit(err?.data?.message || err?.error);
       }
@@ -44,7 +44,7 @@ const Register = ({ setSelected }) => {
 
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-      <Input
+      {/* <Input
         control={control}
         label="Логин"
         name="login"
@@ -52,7 +52,7 @@ const Register = ({ setSelected }) => {
         rules={{
           required: 'Обязательное поле',
         }}
-      />
+      /> */}
       <Input
         control={control}
         name="email"

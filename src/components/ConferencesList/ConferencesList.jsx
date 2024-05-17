@@ -16,11 +16,11 @@ import { selectUser } from '../../redux/slices/authSlice';
 import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import { conferenceStatusMap, facultiesDataMap } from '../../shared/data/dataMap';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
+import { Link } from '../Link/Link';
 import TableData from '../TableData/TableData';
 import CancelConferenceModal from '../modal/CancelConferenceModal/CancelConferenceModal';
 import ConferenceModal from '../modal/ConferenceModal/ConferenceModal';
 import DeleteConferenceModal from '../modal/DeleteConferenceModal/DeleteConferenceModal';
-import { Link } from '../Link/Link';
 
 export const conferencesTableColumns = [
   { name: 'ID', uid: 'id', sortable: true },
@@ -135,11 +135,11 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
                     Редактировать
                   </DropdownItem>
                 )}
-                {user?.role === 'admin' && (
+                {/* {user?.role === 'admin' && (
                   <DropdownItem href={'/conferences/' + conference?._id + '/generatePDF'}>
                     Сформировать сборник
                   </DropdownItem>
-                )}
+                )} */}
                 {(user?._id === conference?.administrator?._id || user?.role === 'admin') &&
                   conference.status === 'held' && (
                     <DropdownItem
@@ -227,7 +227,7 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
         tableColumns={conferencesTableColumns}
         initialVisibleColumns={INITIAL_VISIBLE_COLUMNS}
         data={conferences}
-        isAddButton
+        isAddButton={user?.role === 'admin'}
         onOpenModalAdd={() => {
           onOpenModalAdd();
         }}
