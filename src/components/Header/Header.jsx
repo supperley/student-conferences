@@ -17,7 +17,11 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useLogoutMutation } from '../../redux/services/authApi';
-import { selectIsAdmin, selectIsAuthenticated, selectUser } from '../../redux/slices/authSlice';
+import {
+  selectIsAuthenticated,
+  selectIsPrivileged,
+  selectUser,
+} from '../../redux/slices/authSlice';
 import { AppLogo } from '../../shared/components/AppLogo';
 import { S3_URL } from '../../shared/config/constants';
 import { ROUTE_CONSTANTS } from '../../shared/config/routes';
@@ -27,7 +31,7 @@ import { SwitchTheme } from '../SwitchTheme/SwitchTheme';
 const Header = () => {
   const navigate = useNavigate();
   const isAuthenticated = useSelector(selectIsAuthenticated);
-  const isAdmin = useSelector(selectIsAdmin);
+  const isPrivileged = useSelector(selectIsPrivileged);
   const user = useSelector(selectUser);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [logout] = useLogoutMutation();
@@ -40,10 +44,10 @@ const Header = () => {
   const menuItems = [
     { label: 'Главная', link: ROUTE_CONSTANTS.HOME },
     { label: 'Новости', link: ROUTE_CONSTANTS.NEWS },
-    { label: 'Конференции', link: ROUTE_CONSTANTS.CONFERENCES, protected: true },
-    { label: 'Научные работы', link: ROUTE_CONSTANTS.REPORTS, protected: true },
-    { label: 'Пользователи', link: ROUTE_CONSTANTS.USERS, protected: true, admin: true },
-    // { label: 'Дашборд', link: ROUTE_CONSTANTS.DASHBOARD, protected: true },
+    { label: 'Конференции', link: ROUTE_CONSTANTS.CONFERENCES, auth: true },
+    { label: 'Научные работы', link: ROUTE_CONSTANTS.REPORTS, auth: true },
+    { label: 'Пользователи', link: ROUTE_CONSTANTS.USERS, auth: true, protected: true },
+    // { label: 'Дашборд', link: ROUTE_CONSTANTS.DASHBOARD, auth: true },
   ];
 
   return (
@@ -68,9 +72,9 @@ const Header = () => {
       <NavbarContent className="hidden lg:flex gap-4" justify="center">
         {menuItems.map((item, index) => {
           if (
-            !item.protected ||
-            (item.protected && isAuthenticated && !item.admin) ||
-            (item.admin && isAdmin)
+            !item.auth ||
+            (item.auth && isAuthenticated && !item.protected) ||
+            (item.protected && isPrivileged)
           ) {
             return (
               <NavbarItem key={item.label}>
@@ -92,9 +96,9 @@ const Header = () => {
       <NavbarMenu>
         {menuItems.map((item, index) => {
           if (
-            !item.protected ||
-            (item.protected && isAuthenticated && !item.admin) ||
-            (item.admin && isAdmin)
+            !item.auth ||
+            (item.auth && isAuthenticated && !item.protected) ||
+            (item.protected && isPrivileged)
           ) {
             return (
               <NavbarMenuItem

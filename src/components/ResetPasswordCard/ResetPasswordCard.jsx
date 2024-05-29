@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { Input } from '../../components/Input/Input';
 import { useResetPasswordMutation } from '../../redux/services/authApi';
+import { getErrorField } from '../../shared/utils/getErrorField';
 import { Link } from '../Link/Link';
 
 const ResetPasswordCard = ({ token }) => {
@@ -28,7 +29,11 @@ const ResetPasswordCard = ({ token }) => {
         const result = await resetPassword(data).unwrap();
         setMessage(result?.message);
       } catch (err) {
-        toast(JSON.stringify(err));
+        if (getErrorField(err)) {
+          toast.error(getErrorField(err));
+        } else {
+          toast.error(JSON.stringify(err));
+        }
       }
     } else {
       toast.error('Пароли не совпадают');

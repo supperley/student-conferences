@@ -13,6 +13,7 @@ import {
 } from '../../redux/services/conferenceApi';
 import { selectUser } from '../../redux/slices/authSlice';
 import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
+import { getErrorField } from '../../shared/utils/getErrorField';
 
 const Conference = () => {
   const navigate = useNavigate();
@@ -43,7 +44,11 @@ const Conference = () => {
       await updateConference(data).unwrap();
     } catch (err) {
       console.log(err);
-      toast(JSON.stringify(err));
+      if (getErrorField(err)) {
+        toast.error(getErrorField(err));
+      } else {
+        toast.error(JSON.stringify(err));
+      }
     }
   };
 
@@ -128,7 +133,7 @@ const Conference = () => {
             <>
               <h2 className="font-bold text-3xl">Описание</h2>
               <Skeleton isLoaded={!isLoading} className="rounded-lg my-6">
-                <div>{conferenceData?.description}</div>
+                <div className="whitespace-pre-line">{conferenceData?.description}</div>
               </Skeleton>
             </>
           )}

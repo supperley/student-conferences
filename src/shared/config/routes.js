@@ -13,7 +13,6 @@ export const ROUTE_CONSTANTS = {
   REPORTS: '/reports',
   REPORT: '/reports/:reportId',
   CONFERENCES: '/conferences',
-  CONFERENCES_ADMIN: '/conferences/admin',
   CONFERENCE: '/conferences/:conferenceId',
   USERS: '/users',
   USER: '/users/:userId',

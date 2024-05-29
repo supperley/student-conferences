@@ -24,15 +24,13 @@ import { useGetAllUsersQuery } from '../../../redux/services/userApi';
 import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
 import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
 import { S3_URL } from '../../../shared/config/constants';
-import { hasErrorField } from '../../../shared/utils/hasErrorField';
-import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
+import { getErrorField } from '../../../shared/utils/getErrorField';
 import { Link } from '../../Link/Link';
 
 const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
   const { data: users, error: usersError, isLoading: isUsersLoading } = useGetAllUsersQuery();
   const [createReport, { isLoading: isCreateLoading }] = useCreateReportMutation();
   const [updateReport, { isLoading: isUpdateLoading }] = useUpdateReportMutation();
-  const [error, setError] = useState('');
   const uploaderRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isDeleteFile, setIsDeleteFile] = useState(false);
@@ -94,12 +92,13 @@ const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
 
               onClose();
               setSelectedFile(null);
-              toast.success('Научная работа успешно добавлена');
+              toast.success(`Научная работа успешно ${mode === 'add' ? 'добавлена' : 'обновлена'}`);
             } catch (err) {
               console.log(err);
-              toast(JSON.stringify(err));
-              if (hasErrorField(err)) {
-                setError(err?.data?.message || err?.error);
+              if (getErrorField(err)) {
+                toast.error(getErrorField(err));
+              } else {
+                toast.error(JSON.stringify(err));
               }
             }
           };
@@ -230,7 +229,6 @@ const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
                   <Link color="primary" href="/help" size="sm">
                     Возникли вопросы?
                   </Link>
-                  <ErrorMessage error={error} />
                   <div className="flex gap-2">
                     <Button variant="flat" onPress={onClose}>
                       Отменить

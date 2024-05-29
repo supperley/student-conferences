@@ -17,7 +17,7 @@ import { useCreateNewsMutation, useUpdateNewsMutation } from '../../../redux/ser
 import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
 import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
 import { chipDataMap, facultiesDataMap } from '../../../shared/data/dataMap';
-import { hasErrorField } from '../../../shared/utils/hasErrorField';
+import { getErrorField } from '../../../shared/utils/getErrorField';
 import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
 
 const NewsModal = ({ isOpen, onOpenChange, mode = 'add', news = {} }) => {
@@ -89,9 +89,15 @@ const NewsModal = ({ isOpen, onOpenChange, mode = 'add', news = {} }) => {
               setSelectedFile(null);
             } catch (err) {
               console.log(err);
-              toast(JSON.stringify(err));
-              if (hasErrorField(err)) {
+              if (getErrorField(err)) {
+                toast.error(getErrorField(err));
+              } else {
+                toast.error(JSON.stringify(err));
+              }
+              {
+                /* if (getErrorField(err)) {
                 setError(err?.data?.message || err?.error);
+              } */
               }
             }
           };

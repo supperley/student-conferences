@@ -105,7 +105,7 @@ const NewsPost = () => {
           </Skeleton>
         </div>
         <Skeleton isLoaded={!isLoading} className="rounded-lg">
-          <div>{newsData?.description}</div>
+          <div className="whitespace-pre-line">{newsData?.description}</div>
         </Skeleton>
       </div>
       <DeleteNewsModal

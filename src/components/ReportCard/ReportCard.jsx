@@ -1,5 +1,7 @@
 import { Button, Card, Chip, Image, Skeleton, User, useDisclosure } from '@nextui-org/react';
 import { saveAs } from 'file-saver';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../redux/slices/authSlice';
 import defaultReport from '../../shared/assets/images/default-report.jpg';
 import { S3_URL } from '../../shared/config/constants';
 import { reportStatusMap } from '../../shared/data/dataMap';
@@ -9,6 +11,7 @@ import ReportModal from '../modal/ReportModal/ReportModal';
 
 export const ReportCard = ({ reportData, isLoading = false }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const user = useSelector(selectUser);
 
   return (
     <Card className="my-6 md:my-10 p-5 sm:p-10 flex md:flex-row md:justify-around gap-5 md:gap-10">
@@ -96,9 +99,13 @@ export const ReportCard = ({ reportData, isLoading = false }) => {
             )}
           </div>
           <div className="flex flex-col gap-3 md:items-center">
-            <Button onPress={onOpen} color="primary" variant="solid" className="md:w-full">
-              Редактировать
-            </Button>
+            {(user?._id === reportData?.author?._id ||
+              user?._id === reportData?.conference?.administrator ||
+              user?.role === 'admin') && (
+              <Button onPress={onOpen} color="primary" variant="solid" className="md:w-full">
+                Редактировать
+              </Button>
+            )}
             {reportData?.fileUrl && (
               <Button
                 as={Link}

@@ -26,7 +26,7 @@ import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
 import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
 import { S3_URL } from '../../../shared/config/constants';
 import { facultiesDataMap } from '../../../shared/data/dataMap';
-import { hasErrorField } from '../../../shared/utils/hasErrorField';
+import { getErrorField } from '../../../shared/utils/getErrorField';
 import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
 import { Link } from '../../Link/Link';
 
@@ -102,9 +102,15 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
               setSelectedFile(null);
             } catch (err) {
               console.log(err);
-              toast(JSON.stringify(err));
-              if (hasErrorField(err)) {
+              if (getErrorField(err)) {
+                toast.error(getErrorField(err));
+              } else {
+                toast.error(JSON.stringify(err));
+              }
+              {
+                /* if (getErrorField(err)) {
                 setError(err?.data?.message || err?.error);
+              } */
               }
             }
           };

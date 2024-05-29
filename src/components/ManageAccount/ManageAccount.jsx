@@ -3,7 +3,7 @@ import React, { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { useChangePasswordMutation } from '../../redux/services/authApi';
-import { hasErrorField } from '../../shared/utils/hasErrorField';
+import { getErrorField } from '../../shared/utils/getErrorField';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { Input } from '../Input/Input';
 import DeleteAccountModal from '../modal/DeleteAccountModal/DeleteAccountModal';
@@ -35,13 +35,17 @@ const ManageAccount = () => {
       await changePassword(data).unwrap();
       setErrorOnSubmit('');
       reset();
-      toast('Данные обновлены');
+      toast.success('Данные обновлены');
     } catch (err) {
       console.log(err);
-      // toast(JSON.stringify(err));
-      if (hasErrorField(err)) {
-        setErrorOnSubmit(err?.data?.message || err?.error);
+      if (getErrorField(err)) {
+        toast.error(getErrorField(err));
+      } else {
+        toast.error(JSON.stringify(err));
       }
+      // if (getErrorField(err)) {
+      //   setErrorOnSubmit(err?.data?.message || err?.error);
+      // }
     }
   };
 
@@ -49,7 +53,7 @@ const ManageAccount = () => {
     <>
       <Card className="px-5 py-3">
         <CardBody className="flex flex-col sm:flex-row gap-5 sm:gap-10 items-center justify-center md:items-start">
-          <form onSubmit={handleSubmit(onSubmitData)} className="w-full">
+          <form onSubmit={handleSubmit(onSubmitData)} className="w-full md:w-auto">
             <h4 className="mb-5 font-bold text-large">Смена пароля</h4>
             <div className="inline-flex flex-col gap-5 w-full md:w-[300px]">
               <Input
@@ -115,7 +119,7 @@ const ManageAccount = () => {
               </Button>
             </div>
           </form>
-          <div className="w-full">
+          <div className="w-full md:w-auto">
             <h4 className="mb-5 font-bold text-large">Удаление аккаунта</h4>
             <div className="inline-flex flex-col gap-5 w-full md:w-[300px] items-center">
               <Button

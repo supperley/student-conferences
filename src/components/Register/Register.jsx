@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
 import { Input } from '../../components/Input/Input';
 import { useRegisterMutation } from '../../redux/services/authApi';
-import { hasErrorField } from '../../shared/utils/hasErrorField';
+import { getErrorField } from '../../shared/utils/getErrorField';
 
 const Register = ({ setSelected }) => {
   const {
@@ -35,10 +35,14 @@ const Register = ({ setSelected }) => {
       toast.success('Вы успешно зарегистрированы!');
     } catch (err) {
       console.log(err);
-      // toast(JSON.stringify(err));
-      if (hasErrorField(err)) {
-        setErrorOnSubmit(err?.data?.message || err?.error);
+      if (getErrorField(err)) {
+        toast.error(getErrorField(err));
+      } else {
+        toast.error(JSON.stringify(err));
       }
+      // if (getErrorField(err)) {
+      //   setErrorOnSubmit(err?.data?.message || err?.error);
+      // }
     }
   };
 

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import { useCreateReportCommentMutation } from '../../redux/services/reportApi';
 import { selectUser } from '../../redux/slices/authSlice';
-import { hasErrorField } from '../../shared/utils/hasErrorField';
+import { getErrorField } from '../../shared/utils/getErrorField';
 import Comment from '../Comment/Comment';
 
 export const CommentsList = ({ comments = [], reportId }) => {
@@ -30,9 +30,10 @@ export const CommentsList = ({ comments = [], reportId }) => {
       reset();
     } catch (err) {
       console.log(err);
-      toast(JSON.stringify(err));
-      if (hasErrorField(err)) {
-        // setError(err?.data?.message || err?.error);
+      if (getErrorField(err)) {
+        toast.error(getErrorField(err));
+      } else {
+        toast.error(JSON.stringify(err));
       }
     }
   };

@@ -10,6 +10,7 @@ import DeleteReportModal from '../../components/modal/DeleteReportModal/DeleteRe
 import { useGetReportByIdQuery, useUpdateReportMutation } from '../../redux/services/reportApi';
 import { selectUser } from '../../redux/slices/authSlice';
 import { ArrowIcon } from '../../shared/assets/icons/ArrowIcon';
+import { getErrorField } from '../../shared/utils/getErrorField';
 
 const Report = () => {
   const navigate = useNavigate();
@@ -32,7 +33,11 @@ const Report = () => {
       await updateReport(data).unwrap();
     } catch (err) {
       console.log(err);
-      toast(JSON.stringify(err));
+      if (getErrorField(err)) {
+        toast.error(getErrorField(err));
+      } else {
+        toast.error(JSON.stringify(err));
+      }
     }
   };
 
@@ -68,36 +73,39 @@ const Report = () => {
               </Button>
             )} */}
               <div className="flex flex-col sm:flex-row gap-3">
-                {user?.role === 'admin' && reportData?.status !== 'accepted' && (
-                  <Button
-                    onPress={() => {
-                      onSubmitStatus(reportData, 'accepted');
-                    }}
-                    color="success"
-                    variant="flat">
-                    Принять
-                  </Button>
-                )}
-                {user?.role === 'admin' && reportData?.status !== 'pending' && (
-                  <Button
-                    onPress={() => {
-                      onSubmitStatus(reportData, 'pending');
-                    }}
-                    color="warning"
-                    variant="flat">
-                    На рассмотрение
-                  </Button>
-                )}
-                {user?.role === 'admin' && reportData?.status !== 'declined' && (
-                  <Button
-                    onPress={() => {
-                      onSubmitStatus(reportData, 'declined');
-                    }}
-                    color="danger"
-                    variant="flat">
-                    Отклонить
-                  </Button>
-                )}
+                {(user?.role === 'admin' || user?._id === reportData?.conference?.administrator) &&
+                  reportData?.status !== 'accepted' && (
+                    <Button
+                      onPress={() => {
+                        onSubmitStatus(reportData, 'accepted');
+                      }}
+                      color="success"
+                      variant="flat">
+                      Принять
+                    </Button>
+                  )}
+                {(user?.role === 'admin' || user?._id === reportData?.conference?.administrator) &&
+                  reportData?.status !== 'pending' && (
+                    <Button
+                      onPress={() => {
+                        onSubmitStatus(reportData, 'pending');
+                      }}
+                      color="warning"
+                      variant="flat">
+                      На рассмотрение
+                    </Button>
+                  )}
+                {(user?.role === 'admin' || user?._id === reportData?.conference?.administrator) &&
+                  reportData?.status !== 'declined' && (
+                    <Button
+                      onPress={() => {
+                        onSubmitStatus(reportData, 'declined');
+                      }}
+                      color="danger"
+                      variant="flat">
+                      Отклонить
+                    </Button>
+                  )}
                 {user?._id === reportData?.author?._id && (
                   <Button
                     color="danger"
@@ -116,7 +124,7 @@ const Report = () => {
               <>
                 <h2 className="font-bold text-3xl">Описание</h2>
                 <Skeleton isLoaded={!isLoading} className="rounded-lg my-6">
-                  <div>{reportData?.description}</div>
+                  <div className="whitespace-pre-line">{reportData?.description}</div>
                 </Skeleton>
               </>
             )}

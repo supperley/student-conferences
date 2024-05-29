@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import GridData from '../../components/GridData/GridData';
 import NewsModal from '../../components/modal/NewsModal/NewsModal';
 import { useGetAllNewsQuery } from '../../redux/services/newsApi';
-import { selectIsAdmin } from '../../redux/slices/authSlice';
+import { selectIsPrivileged } from '../../redux/slices/authSlice';
 
 const News = () => {
   const {
@@ -17,7 +17,7 @@ const News = () => {
 
   const { data, error, isLoading } = useGetAllNewsQuery();
 
-  const isAdmin = useSelector(selectIsAdmin);
+  const isPrivileged = useSelector(selectIsPrivileged);
 
   return (
     <>
@@ -33,7 +33,7 @@ const News = () => {
         ) : isLoading ? (
           <span>Загрузка...</span>
         ) : (
-          <GridData data={data} onOpenModalAdd={onOpenModalAdd} isAddButton={isAdmin} />
+          <GridData data={data} onOpenModalAdd={onOpenModalAdd} isAddButton={isPrivileged} />
         )}
       </div>
       <NewsModal

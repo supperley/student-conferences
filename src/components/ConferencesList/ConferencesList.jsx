@@ -12,10 +12,11 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useUpdateConferenceMutation } from '../../redux/services/conferenceApi';
-import { selectUser } from '../../redux/slices/authSlice';
+import { selectIsPrivileged, selectUser } from '../../redux/slices/authSlice';
 import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import { conferenceStatusMap, facultiesDataMap } from '../../shared/data/dataMap';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
+import { getErrorField } from '../../shared/utils/getErrorField';
 import { Link } from '../Link/Link';
 import TableData from '../TableData/TableData';
 import CancelConferenceModal from '../modal/CancelConferenceModal/CancelConferenceModal';
@@ -67,6 +68,7 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
   const [updateConference, { isLoading: isUpdateLoading }] = useUpdateConferenceMutation();
   const navigate = useNavigate();
   const user = useSelector(selectUser);
+  const isPrivileged = useSelector(selectIsPrivileged);
 
   const onSubmitStatus = async (conference, status) => {
     try {
@@ -74,7 +76,11 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
       await updateConference(data).unwrap();
     } catch (err) {
       console.log(err);
-      toast(JSON.stringify(err));
+      if (getErrorField(err)) {
+        toast.error(getErrorField(err));
+      } else {
+        toast.error(JSON.stringify(err));
+      }
     }
   };
 
@@ -227,7 +233,7 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
         tableColumns={conferencesTableColumns}
         initialVisibleColumns={INITIAL_VISIBLE_COLUMNS}
         data={conferences}
-        isAddButton={user?.role === 'admin'}
+        isAddButton={isPrivileged}
         onOpenModalAdd={() => {
           onOpenModalAdd();
         }}
