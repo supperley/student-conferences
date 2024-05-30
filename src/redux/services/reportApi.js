@@ -4,10 +4,14 @@ export const reportApi = api.injectEndpoints({
   tagTypes: ['Report'],
   endpoints: (builder) => ({
     getAllReports: builder.query({
-      query: () => ({
-        url: '/reports',
-        method: 'GET',
-      }),
+      query: (args) => {
+        const conferenceId = args?.conferenceId;
+        return {
+          url: '/reports',
+          method: 'GET',
+          params: { conferenceId },
+        };
+      },
       providesTags: ['Report'],
     }),
     getReportById: builder.query({

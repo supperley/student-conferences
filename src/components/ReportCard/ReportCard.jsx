@@ -78,23 +78,11 @@ export const ReportCard = ({ reportData, isLoading = false }) => {
             {reportData?.supervisor && (
               <div className="flex flex-col md:flex-row md:items-center gap-2">
                 <span className="min-w-[120px]">Научный руководитель</span>
-                <Link
-                  isBlock
-                  href="/news"
-                  color="foreground"
-                  className="text-default-500 text-small -ml-2">
+                <div className="text-default-500 text-small">
                   <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                    <User
-                      name={
-                        reportData?.supervisor?.first_name + ' ' + reportData?.supervisor?.last_name
-                      }
-                      description={reportData?.supervisor?.position}
-                      avatarProps={{
-                        src: S3_URL + reportData?.supervisor?.avatarUrl,
-                      }}
-                    />
+                    {reportData?.supervisor}
                   </Skeleton>
-                </Link>
+                </div>
               </div>
             )}
           </div>

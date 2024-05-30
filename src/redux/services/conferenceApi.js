@@ -47,6 +47,7 @@ export const {
   useCreateConferenceMutation,
   useGetAllConferencesQuery,
   useGetConferenceByIdQuery,
+  useLazyGetConferenceParticipantsQuery,
   useUpdateConferenceMutation,
   useDeleteConferenceMutation,
 } = conferenceApi;

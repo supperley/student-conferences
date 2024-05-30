@@ -27,16 +27,19 @@ export const reportTableColumns = [
   { name: 'Название', uid: 'title', sortable: true },
   { name: 'Автор', uid: 'author', sortable: true },
   { name: 'Конференция', uid: 'conference', sortable: true },
+  { name: 'Научный руководитель', uid: 'supervisor', sortable: true },
   { name: 'Дата', uid: 'date', sortable: true },
   { name: 'Состояние', uid: 'status', sortable: true },
   { name: 'Действия', uid: 'actions' },
 ];
 
-const reportSearchColumns = ['title', 'conference.title'];
-
-const INITIAL_VISIBLE_COLUMNS = ['title', 'author', 'conference', 'date', 'status', 'actions'];
-
-export default function ReportsList({ reports, isParentLoading, emptyText }) {
+export default function ReportsList({
+  reports,
+  isParentLoading,
+  emptyText,
+  initialVisibleColumns = ['title', 'author', 'conference', 'status', 'actions'],
+  reportSearchColumns = ['title', 'conference.title'],
+}) {
   const {
     isOpen: isOpenModalCancel,
     onOpen: onOpenModalCancel,
@@ -99,12 +102,8 @@ export default function ReportsList({ reports, isParentLoading, emptyText }) {
             </Link>
           </div>
         );
-      case 'faculty':
-        return (
-          <Link href={'/conferences/?faculty=' + report?._id} className="text-sm">
-            {cellValue}
-          </Link>
-        );
+      case 'supervisor':
+        return cellValue;
       case 'date':
         return formatToClientDate(report?.createdAt);
       case 'status':
@@ -201,7 +200,7 @@ export default function ReportsList({ reports, isParentLoading, emptyText }) {
         statusOptions={reportStatusMap}
         tableColumns={reportTableColumns}
         searchColumns={reportSearchColumns}
-        initialVisibleColumns={INITIAL_VISIBLE_COLUMNS}
+        initialVisibleColumns={initialVisibleColumns}
         data={reports}
         emptyText={isParentLoading ? 'Загрузка...' : emptyText}
         inputPlaceholder={'Искать по названию работы или конференции...'}

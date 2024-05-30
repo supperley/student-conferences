@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   Checkbox,
   Input,
@@ -8,8 +7,6 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  Select,
-  SelectItem,
   Textarea,
 } from '@nextui-org/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -23,7 +20,6 @@ import {
 import { useGetAllUsersQuery } from '../../../redux/services/userApi';
 import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
 import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
-import { S3_URL } from '../../../shared/config/constants';
 import { getErrorField } from '../../../shared/utils/getErrorField';
 import { Link } from '../../Link/Link';
 
@@ -62,7 +58,7 @@ const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
     getValues('_id') || setValue('_id', report?._id);
     getValues('title') || setValue('title', report?.title);
     getValues('description') || setValue('description', report?.description);
-    getValues('supervisor') || setValue('supervisor', report?.supervisor?._id);
+    getValues('supervisor') || setValue('supervisor', report?.supervisor);
     getValues('conference') || setValue('conference', conferenceId);
   }, [report]);
 
@@ -124,51 +120,21 @@ const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
                       />
                     )}
                   />
-                  <Select
-                    label="Научный руководитель"
-                    variant="bordered"
-                    isLoading={isUsersLoading}
-                    {...register('supervisor')}
-                    items={users || []}
-                    classNames={{
-                      label: 'group-data-[filled=true]:-translate-y-6',
-                      trigger: 'min-h-20',
-                    }}
-                    renderValue={(items) => {
-                      return items.map((item) => (
-                        <div key={item.data._id} className="flex items-center gap-2">
-                          <Avatar
-                            alt={item.data.first_name + ' ' + item.data.last_name}
-                            className="flex-shrink-0"
-                            size="sm"
-                            src={S3_URL + item.data.avatarUrl}
-                          />
-                          <div className="flex flex-col">
-                            <span>{item.data.first_name + ' ' + item.data.last_name}</span>
-                            <span className="text-default-500 text-tiny">({item.data.email})</span>
-                          </div>
-                        </div>
-                      ));
-                    }}>
-                    {(user) => (
-                      <SelectItem key={user._id} textValue={user.last_name}>
-                        <div className="flex gap-2 items-center">
-                          <Avatar
-                            alt={user.first_name + ' ' + user.last_name}
-                            className="flex-shrink-0"
-                            size="sm"
-                            src={S3_URL + user.avatarUrl}
-                          />
-                          <div className="flex flex-col">
-                            <span className="text-small">
-                              {user.first_name + ' ' + user.last_name}
-                            </span>
-                            <span className="text-tiny text-default-400">{user.email}</span>
-                          </div>
-                        </div>
-                      </SelectItem>
+                  <Controller
+                    control={control}
+                    name="supervisor"
+                    render={({
+                      field: { onChange: onChangeSupervisor, value: supervisorValue },
+                    }) => (
+                      <Input
+                        label="Научный руководитель"
+                        variant="bordered"
+                        errorMessage="Обязательное поле"
+                        onChange={onChangeSupervisor}
+                        value={supervisorValue}
+                      />
                     )}
-                  </Select>
+                  />
                   <Controller
                     control={control}
                     name="description"
