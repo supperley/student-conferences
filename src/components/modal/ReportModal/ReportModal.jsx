@@ -17,14 +17,12 @@ import {
   useCreateReportMutation,
   useUpdateReportMutation,
 } from '../../../redux/services/reportApi';
-import { useGetAllUsersQuery } from '../../../redux/services/userApi';
 import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
 import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
 import { getErrorField } from '../../../shared/utils/getErrorField';
 import { Link } from '../../Link/Link';
 
 const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
-  const { data: users, error: usersError, isLoading: isUsersLoading } = useGetAllUsersQuery();
   const [createReport, { isLoading: isCreateLoading }] = useCreateReportMutation();
   const [updateReport, { isLoading: isUpdateLoading }] = useUpdateReportMutation();
   const uploaderRef = useRef(null);
@@ -55,11 +53,11 @@ const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
   });
 
   useEffect(() => {
-    getValues('_id') || setValue('_id', report?._id);
-    getValues('title') || setValue('title', report?.title);
-    getValues('description') || setValue('description', report?.description);
-    getValues('supervisor') || setValue('supervisor', report?.supervisor);
-    getValues('conference') || setValue('conference', conferenceId);
+    setValue('_id', report?._id);
+    setValue('title', report?.title);
+    setValue('description', report?.description);
+    setValue('supervisor', report?.supervisor);
+    setValue('conference', conferenceId);
   }, [report]);
 
   return (

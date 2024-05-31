@@ -253,6 +253,7 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
         conference={modalConference}
       />
       <ConferenceModal
+        conference={{}}
         isOpen={isOpenModalAdd}
         onOpen={onOpenModalAdd}
         onOpenChange={onOpenChangeModalAdd}

@@ -116,7 +116,7 @@ export const ConferenceCard = ({ conferenceData, isLoading = false }) => {
                 Присоединится к трансляции
               </Button>
             )}
-            <ReportModal isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} />
+            <ReportModal report={{}} isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} />
           </div>
         </div>
       </div>

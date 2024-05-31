@@ -1,4 +1,4 @@
-import { Avatar, Card, CardBody, CardFooter, CardHeader, Chip, Image } from '@nextui-org/react';
+import { Avatar, Card, CardBody, CardFooter, CardHeader, Chip } from '@nextui-org/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import defaultReport from '../../shared/assets/images/default-report.jpg';
@@ -38,10 +38,10 @@ export const CustomCard = ({ data }) => {
                 </Link>
               </CardHeader>
               <CardBody className="pt-0 px-2 pb-1 justify-center">
-                <div className="self-center">
-                  <Image
+                <div className="self-center w-full ">
+                  <img
                     src={data?.imageUrl ? S3_URL + data?.imageUrl : defaultReport}
-                    className="max-h-48"
+                    className="h-48 w-full rounded-large object-cover"
                   />
                 </div>
                 <div className="flex flex-row justify-between gap-2 mt-4 max-h-[30px] overflow-hidden">

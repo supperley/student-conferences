@@ -52,6 +52,7 @@ const PersonalSettings = () => {
     setValue('_id', user?._id);
     setValue('first_name', user?.first_name);
     setValue('last_name', user?.last_name);
+    setValue('patronymic', user?.patronymic);
     setValue('email', user?.email);
     setValue('faculty', [user?.faculty]);
     setValue('position', user?.position);
@@ -83,10 +84,10 @@ const PersonalSettings = () => {
       const formData = new FormData();
       data.first_name && formData.append('first_name', data.first_name);
       data.last_name && formData.append('last_name', data.last_name);
-      data.patronymic && formData.append('patronymic', data.patronymic);
+      formData.append('patronymic', data.patronymic);
       data.email && formData.append('email', data.email);
-      data.faculty && [...data.faculty][0] && formData.append('faculty', [...data.faculty][0]);
-      data.position && formData.append('position', data.position);
+      formData.append('faculty', [...data.faculty][0] || '');
+      formData.append('position', data.position);
       selectedAvatar && formData.append('avatar', selectedAvatar);
 
       await updateUser({ id: data._id, userData: formData }).unwrap();

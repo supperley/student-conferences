@@ -1,4 +1,4 @@
-import { Button, Image, Skeleton, User, useDisclosure } from '@nextui-org/react';
+import { Button, Skeleton, User, useDisclosure } from '@nextui-org/react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Link } from '../../components/Link/Link';
@@ -95,12 +95,11 @@ const NewsPost = () => {
             )}
           </div>
         </div>
-        <div className="max-w-[90%] self-center my-5">
+        <div className="w-[90%] self-center my-5">
           <Skeleton isLoaded={!isLoading} className={`rounded-lg ${isLoading}`}>
-            <Image
-              className="max-h-[500px]"
-              alt="NextUI hero Image"
+            <img
               src={newsData?.imageUrl ? S3_URL + newsData?.imageUrl : defaultReport}
+              className="max-h-[500px] w-full rounded-large object-cover"
             />
           </Skeleton>
         </div>

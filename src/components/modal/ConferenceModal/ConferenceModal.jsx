@@ -62,14 +62,14 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
   });
 
   useEffect(() => {
-    getValues('_id') || setValue('_id', conference?._id);
-    getValues('title') || setValue('title', conference?.title);
-    getValues('description') || setValue('description', conference?.description);
-    getValues('date') ||
-      setValue('date', parseAbsoluteToLocal(conference?.date || '2024-05-05T11:00:00Z'));
-    getValues('administrator') || setValue('administrator', conference?.administrator?._id);
-    getValues('faculties')?.length > 0 || setValue('faculties', conference?.faculties);
-    getValues('link') || setValue('link', conference?.link);
+    console.log('rerender', conference);
+    setValue('_id', conference?._id);
+    setValue('title', conference?.title);
+    setValue('description', conference?.description);
+    setValue('date', parseAbsoluteToLocal(conference?.date || '2024-05-05T11:00:00Z'));
+    setValue('administrator', conference?.administrator?._id);
+    setValue('faculties', conference?.faculties);
+    setValue('link', conference?.link);
   }, [conference]);
 
   return (

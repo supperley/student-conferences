@@ -25,13 +25,15 @@ export const ProfileCard = ({ user, isPersonal = false, emptyText = 'Произ�
               <div className="flex justify-between items-center flex-col gap-5 md:flex-row">
                 <div className="flex flex-col gap-1">
                   <h1 className="inline font-bold text-3xl">
-                    {user?.first_name + ' ' + user?.last_name}
+                    {`${user?.last_name} ${user?.first_name} ${user?.patronymic}`}
                   </h1>
                   <p className="font-normal w-full text-default-600">{user?.description}</p>
                   <p className="font-normal w-full text-default-600">{user?.email}</p>
-                  <p className="font-normal w-full text-default-600">
-                    Факультет: {facultiesDataMap[user?.faculty]?.label}
-                  </p>
+                  {user?.faculty && (
+                    <p className="font-normal w-full text-default-600">
+                      Факультет: {facultiesDataMap[user?.faculty]?.label}
+                    </p>
+                  )}
                   <p className="font-normal w-full text-default-600">Должность: {user?.position}</p>
                   <time className="block text-small text-default-500" dateTime={user?.date}>
                     Дата регистрации: {formatToClientDate(user?.createdAt)}
