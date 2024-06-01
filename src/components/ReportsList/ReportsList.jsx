@@ -16,6 +16,7 @@ import { selectUser } from '../../redux/slices/authSlice';
 import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import { reportStatusMap } from '../../shared/data/dataMap';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
+import { getErrorField } from '../../shared/utils/getErrorField';
 import { Link } from '../Link/Link';
 import TableData from '../TableData/TableData';
 import DeleteReportModal from '../modal/DeleteReportModal/DeleteReportModal';
@@ -26,16 +27,19 @@ export const reportTableColumns = [
   { name: 'Название', uid: 'title', sortable: true },
   { name: 'Автор', uid: 'author', sortable: true },
   { name: 'Конференция', uid: 'conference', sortable: true },
+  { name: 'Научный руководитель', uid: 'supervisor', sortable: true },
   { name: 'Дата', uid: 'date', sortable: true },
   { name: 'Состояние', uid: 'status', sortable: true },
   { name: 'Действия', uid: 'actions' },
 ];
 
-const reportSearchColumns = ['title', 'conference.title'];
-
-const INITIAL_VISIBLE_COLUMNS = ['title', 'author', 'conference', 'date', 'status', 'actions'];
-
-export default function ReportsList({ reports, isParentLoading, emptyText }) {
+export default function ReportsList({
+  reports,
+  isParentLoading,
+  emptyText,
+  initialVisibleColumns = ['title', 'author', 'conference', 'status', 'actions'],
+  reportSearchColumns = ['title', 'conference.title'],
+}) {
   const {
     isOpen: isOpenModalCancel,
     onOpen: onOpenModalCancel,
@@ -58,10 +62,14 @@ export default function ReportsList({ reports, isParentLoading, emptyText }) {
       await updateReport(data).unwrap();
     } catch (err) {
       console.log(err);
-      toast(JSON.stringify(err));
-      if (hasErrorField(err)) {
-        setError(err?.data?.message || err?.error);
+      if (getErrorField(err)) {
+        toast.error(getErrorField(err));
+      } else {
+        toast.error(JSON.stringify(err));
       }
+      // if (getErrorField(err)) {
+      //   setError(err?.data?.message || err?.error);
+      // }
     }
   };
 
@@ -94,12 +102,8 @@ export default function ReportsList({ reports, isParentLoading, emptyText }) {
             </Link>
           </div>
         );
-      case 'faculty':
-        return (
-          <Link href={'/conferences/?faculty=' + report?._id} className="text-sm">
-            {cellValue}
-          </Link>
-        );
+      case 'supervisor':
+        return cellValue;
       case 'date':
         return formatToClientDate(report?.createdAt);
       case 'status':
@@ -124,7 +128,9 @@ export default function ReportsList({ reports, isParentLoading, emptyText }) {
                   }}>
                   Подробнее
                 </DropdownItem>
-                {(user?._id === report?.author?._id || user?.role === 'admin') && (
+                {(user?._id === report?.author?._id ||
+                  user?._id === report?.conference?.administrator ||
+                  user?.role === 'admin') && (
                   <DropdownItem
                     onPress={() => {
                       setModalReport(report);
@@ -144,36 +150,39 @@ export default function ReportsList({ reports, isParentLoading, emptyText }) {
                     Удалить заявку
                   </DropdownItem>
                 )}
-                {user?.role === 'admin' && report.status !== 'pending' && (
-                  <DropdownItem
-                    onPress={() => {
-                      onSubmitStatus(report, 'pending');
-                    }}
-                    className="text-warning"
-                    color="warning">
-                    На рассмотрение
-                  </DropdownItem>
-                )}
-                {user?.role === 'admin' && report.status !== 'accepted' && (
-                  <DropdownItem
-                    onPress={() => {
-                      onSubmitStatus(report, 'accepted');
-                    }}
-                    className="text-success"
-                    color="success">
-                    Принять
-                  </DropdownItem>
-                )}
-                {user?.role === 'admin' && report.status !== 'declined' && (
-                  <DropdownItem
-                    onPress={() => {
-                      onSubmitStatus(report, 'declined');
-                    }}
-                    className="text-danger"
-                    color="danger">
-                    Отклонить
-                  </DropdownItem>
-                )}
+                {(user?.role === 'admin' || user?._id === report?.conference?.administrator) &&
+                  report?.status !== 'pending' && (
+                    <DropdownItem
+                      onPress={() => {
+                        onSubmitStatus(report, 'pending');
+                      }}
+                      className="text-warning"
+                      color="warning">
+                      На рассмотрение
+                    </DropdownItem>
+                  )}
+                {(user?.role === 'admin' || user?._id === report?.conference?.administrator) &&
+                  report.status !== 'accepted' && (
+                    <DropdownItem
+                      onPress={() => {
+                        onSubmitStatus(report, 'accepted');
+                      }}
+                      className="text-success"
+                      color="success">
+                      Принять
+                    </DropdownItem>
+                  )}
+                {(user?.role === 'admin' || user?._id === report?.conference?.administrator) &&
+                  report.status !== 'declined' && (
+                    <DropdownItem
+                      onPress={() => {
+                        onSubmitStatus(report, 'declined');
+                      }}
+                      className="text-danger"
+                      color="danger">
+                      Отклонить
+                    </DropdownItem>
+                  )}
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -191,7 +200,7 @@ export default function ReportsList({ reports, isParentLoading, emptyText }) {
         statusOptions={reportStatusMap}
         tableColumns={reportTableColumns}
         searchColumns={reportSearchColumns}
-        initialVisibleColumns={INITIAL_VISIBLE_COLUMNS}
+        initialVisibleColumns={initialVisibleColumns}
         data={reports}
         emptyText={isParentLoading ? 'Загрузка...' : emptyText}
         inputPlaceholder={'Искать по названию работы или конференции...'}

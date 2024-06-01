@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { AdminRoute } from '../components/AdminRoute/AdminRoute';
+import { AuthRoute } from '../components/AuthRoute/AuthRoute';
 import PageLayout from '../components/PageLayout/PageLayout';
 import { ProtectedRoute } from '../components/ProtectedRoute/ProtectedRoute';
 import { ROUTE_CONSTANTS } from '../shared/config/routes';
@@ -36,7 +36,7 @@ const Router = () => {
         <Route path={ROUTE_CONSTANTS.NEWS_POST} element={<NewsPost />} />
         <Route path={ROUTE_CONSTANTS.NOT_FOUND} element={<NotFound />} />
         <Route path={ROUTE_CONSTANTS.BLOCKED} element={<Blocked />} />
-        <Route element={<ProtectedRoute />}>
+        <Route element={<AuthRoute />}>
           <Route path={ROUTE_CONSTANTS.DASHBOARD} element={<Dashboard />} />
           <Route path={ROUTE_CONSTANTS.USER} element={<User />} />
           <Route path={ROUTE_CONSTANTS.HELP} element={<Help />} />
@@ -46,7 +46,7 @@ const Router = () => {
           <Route path={ROUTE_CONSTANTS.CONFERENCE} element={<Conference />} />
           <Route path={ROUTE_CONSTANTS.REPORTS} element={<Reports />} />
           <Route path={ROUTE_CONSTANTS.REPORT} element={<Report />} />
-          <Route element={<AdminRoute />}>
+          <Route element={<ProtectedRoute />}>
             <Route path={ROUTE_CONSTANTS.USERS} element={<Users />} />
           </Route>
         </Route>

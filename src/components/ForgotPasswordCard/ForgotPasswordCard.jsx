@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { Input } from '../../components/Input/Input';
 import { useForgotPasswordMutation } from '../../redux/services/authApi';
+import { getErrorField } from '../../shared/utils/getErrorField';
 import { Link } from '../Link/Link';
 
 const ForgotPasswordCard = () => {
@@ -24,7 +25,11 @@ const ForgotPasswordCard = () => {
       const result = await forgotPassword(data).unwrap();
       setMessage(result?.message);
     } catch (err) {
-      toast(JSON.stringify(result));
+      if (getErrorField(err)) {
+        toast.error(getErrorField(err));
+      } else {
+        toast.error(JSON.stringify(err));
+      }
     }
   };
 

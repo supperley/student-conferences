@@ -14,7 +14,7 @@ import { ChevronDownIcon } from '../../shared/assets/icons/ChevronDownIcon';
 import { PlusIcon } from '../../shared/assets/icons/PlusIcon';
 import { SearchIcon } from '../../shared/assets/icons/SearchIcon';
 import { chipDataMap, facultiesDataMap } from '../../shared/data/dataMap';
-import { CustomCard } from '../CustomCard/CustomCard';
+import { NewsCard } from '../NewsCard/NewsCard';
 
 const GridData = ({ data, onOpenModalAdd, isAddButton = false }) => {
   const [filterValue, setFilterValue] = React.useState('');
@@ -169,7 +169,7 @@ const GridData = ({ data, onOpenModalAdd, isAddButton = false }) => {
       </div>
       <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
         {items.map((card, idx) => (
-          <CustomCard key={card?._id || idx} data={card} />
+          <NewsCard key={card?._id || idx} data={card} />
         ))}
       </div>
       <div className="mt-6 py-2 px-2 flex justify-between items-center">

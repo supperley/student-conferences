@@ -2,12 +2,13 @@ import { Link as NextLink } from '@nextui-org/react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export const Link = ({ href, isExternal, ...props }) => {
+export const Link = ({ href, isExternal, className, ...props }) => {
   const navigate = useNavigate();
   return (
     <NextLink
       {...props}
-      href={href}
+      className={className + ' cursor-pointer'}
+      // href={href}
       onPress={() => {
         if (href) {
           if (!isExternal) {

@@ -7,7 +7,7 @@ import { useUpdateUserMutation } from '../../redux/services/userApi';
 import { CameraIcon } from '../../shared/assets/icons/CameraIcon';
 import { S3_URL } from '../../shared/config/constants';
 import { facultiesDataMap } from '../../shared/data/dataMap';
-import { hasErrorField } from '../../shared/utils/hasErrorField';
+import { getErrorField } from '../../shared/utils/getErrorField';
 import { Input } from '../Input/Input';
 
 const PersonalSettings = () => {
@@ -52,6 +52,7 @@ const PersonalSettings = () => {
     setValue('_id', user?._id);
     setValue('first_name', user?.first_name);
     setValue('last_name', user?.last_name);
+    setValue('patronymic', user?.patronymic);
     setValue('email', user?.email);
     setValue('faculty', [user?.faculty]);
     setValue('position', user?.position);
@@ -67,10 +68,14 @@ const PersonalSettings = () => {
       await triggerCurrentQuery();
     } catch (err) {
       console.log(err);
-      toast(JSON.stringify(err));
-      if (hasErrorField(err)) {
-        setError(err?.data?.message || err?.error);
+      if (getErrorField(err)) {
+        toast.error(getErrorField(err));
+      } else {
+        toast.error(JSON.stringify(err));
       }
+      // if (getErrorField(err)) {
+      //   setError(err?.data?.message || err?.error);
+      // }
     }
   };
 
@@ -79,23 +84,27 @@ const PersonalSettings = () => {
       const formData = new FormData();
       data.first_name && formData.append('first_name', data.first_name);
       data.last_name && formData.append('last_name', data.last_name);
-      data.patronymic && formData.append('patronymic', data.patronymic);
+      formData.append('patronymic', data.patronymic);
       data.email && formData.append('email', data.email);
-      data.faculty && [...data.faculty][0] && formData.append('faculty', [...data.faculty][0]);
-      data.position && formData.append('position', data.position);
+      formData.append('faculty', [...data.faculty][0] || '');
+      formData.append('position', data.position);
       selectedAvatar && formData.append('avatar', selectedAvatar);
 
       await updateUser({ id: data._id, userData: formData }).unwrap();
       setSelectedAvatar(null);
       uploaderRef.current.value = null;
       await triggerCurrentQuery();
-      toast('Данные обновлены');
+      toast.success('Данные обновлены');
     } catch (err) {
       console.log(err);
-      toast(JSON.stringify(err));
-      if (hasErrorField(err)) {
-        setError(err?.data?.message || err?.error);
+      if (getErrorField(err)) {
+        toast.error(getErrorField(err));
+      } else {
+        toast.error(JSON.stringify(err));
       }
+      // if (getErrorField(err)) {
+      //   setError(err?.data?.message || err?.error);
+      // }
     }
   };
 
@@ -106,7 +115,7 @@ const PersonalSettings = () => {
         </CardHeader> */}
       <CardBody className="flex flex-col sm:flex-row gap-5 sm:gap-10 items-center md:items-start justify-evenly">
         <form onSubmit={handleSubmit(onSubmitAvatar)}>
-          <div className="flex flex-col gap-3 min-w-[200px] sm:min-w-[250px]">
+          <div className="flex flex-col gap-3 min-w-[200px] sm:min-w-[235px]">
             <Image
               width={235}
               // height={235}
@@ -144,7 +153,7 @@ const PersonalSettings = () => {
             </Button>
           </div>
         </form>
-        <form onSubmit={handleSubmit(onSubmitData)} className="w-full">
+        <form onSubmit={handleSubmit(onSubmitData)} className="w-full md:w-auto">
           <div className="inline-flex flex-col md:flex-row flex-wrap gap-5 w-full md:max-w-[650px] items-center justify-center">
             <Input
               className="max-w-[300px]"

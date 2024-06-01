@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   Checkbox,
   Input,
@@ -8,8 +7,6 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  Select,
-  SelectItem,
   Textarea,
 } from '@nextui-org/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -20,19 +17,14 @@ import {
   useCreateReportMutation,
   useUpdateReportMutation,
 } from '../../../redux/services/reportApi';
-import { useGetAllUsersQuery } from '../../../redux/services/userApi';
 import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
 import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
-import { S3_URL } from '../../../shared/config/constants';
-import { hasErrorField } from '../../../shared/utils/hasErrorField';
-import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
+import { getErrorField } from '../../../shared/utils/getErrorField';
 import { Link } from '../../Link/Link';
 
 const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
-  const { data: users, error: usersError, isLoading: isUsersLoading } = useGetAllUsersQuery();
   const [createReport, { isLoading: isCreateLoading }] = useCreateReportMutation();
   const [updateReport, { isLoading: isUpdateLoading }] = useUpdateReportMutation();
-  const [error, setError] = useState('');
   const uploaderRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isDeleteFile, setIsDeleteFile] = useState(false);
@@ -61,11 +53,11 @@ const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
   });
 
   useEffect(() => {
-    getValues('_id') || setValue('_id', report?._id);
-    getValues('title') || setValue('title', report?.title);
-    getValues('description') || setValue('description', report?.description);
-    getValues('supervisor') || setValue('supervisor', report?.supervisor?._id);
-    getValues('conference') || setValue('conference', conferenceId);
+    setValue('_id', report?._id);
+    setValue('title', report?.title);
+    setValue('description', report?.description);
+    setValue('supervisor', report?.supervisor);
+    setValue('conference', conferenceId);
   }, [report]);
 
   return (
@@ -94,12 +86,13 @@ const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
 
               onClose();
               setSelectedFile(null);
-              toast.success('Научная работа успешно добавлена');
+              toast.success(`Научная работа успешно ${mode === 'add' ? 'добавлена' : 'обновлена'}`);
             } catch (err) {
               console.log(err);
-              toast(JSON.stringify(err));
-              if (hasErrorField(err)) {
-                setError(err?.data?.message || err?.error);
+              if (getErrorField(err)) {
+                toast.error(getErrorField(err));
+              } else {
+                toast.error(JSON.stringify(err));
               }
             }
           };
@@ -125,51 +118,21 @@ const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
                       />
                     )}
                   />
-                  <Select
-                    label="Научный руководитель"
-                    variant="bordered"
-                    isLoading={isUsersLoading}
-                    {...register('supervisor')}
-                    items={users || []}
-                    classNames={{
-                      label: 'group-data-[filled=true]:-translate-y-6',
-                      trigger: 'min-h-20',
-                    }}
-                    renderValue={(items) => {
-                      return items.map((item) => (
-                        <div key={item.data._id} className="flex items-center gap-2">
-                          <Avatar
-                            alt={item.data.first_name + ' ' + item.data.last_name}
-                            className="flex-shrink-0"
-                            size="sm"
-                            src={S3_URL + item.data.avatarUrl}
-                          />
-                          <div className="flex flex-col">
-                            <span>{item.data.first_name + ' ' + item.data.last_name}</span>
-                            <span className="text-default-500 text-tiny">({item.data.email})</span>
-                          </div>
-                        </div>
-                      ));
-                    }}>
-                    {(user) => (
-                      <SelectItem key={user._id} textValue={user.last_name}>
-                        <div className="flex gap-2 items-center">
-                          <Avatar
-                            alt={user.first_name + ' ' + user.last_name}
-                            className="flex-shrink-0"
-                            size="sm"
-                            src={S3_URL + user.avatarUrl}
-                          />
-                          <div className="flex flex-col">
-                            <span className="text-small">
-                              {user.first_name + ' ' + user.last_name}
-                            </span>
-                            <span className="text-tiny text-default-400">{user.email}</span>
-                          </div>
-                        </div>
-                      </SelectItem>
+                  <Controller
+                    control={control}
+                    name="supervisor"
+                    render={({
+                      field: { onChange: onChangeSupervisor, value: supervisorValue },
+                    }) => (
+                      <Input
+                        label="Научный руководитель"
+                        variant="bordered"
+                        errorMessage="Обязательное поле"
+                        onChange={onChangeSupervisor}
+                        value={supervisorValue}
+                      />
                     )}
-                  </Select>
+                  />
                   <Controller
                     control={control}
                     name="description"
@@ -230,7 +193,6 @@ const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
                   <Link color="primary" href="/help" size="sm">
                     Возникли вопросы?
                   </Link>
-                  <ErrorMessage error={error} />
                   <div className="flex gap-2">
                     <Button variant="flat" onPress={onClose}>
                       Отменить

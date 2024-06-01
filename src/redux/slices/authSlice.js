@@ -42,6 +42,9 @@ export const { logout } = slice.actions;
 export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
 export const selectIsBlocked = (state) => state.auth.user?.status === 'blocked';
 export const selectIsAdmin = (state) => state.auth.user?.role === 'admin';
+export const selectIsModerator = (state) => state.auth.user?.role === 'moderator';
+export const selectIsPrivileged = (state) =>
+  state.auth.user?.role === 'admin' || state.auth.user?.role === 'moderator';
 
 export const selectCurrent = (state) => state.auth.current;
 

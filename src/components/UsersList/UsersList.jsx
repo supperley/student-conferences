@@ -16,6 +16,7 @@ import { selectUser } from '../../redux/slices/authSlice';
 import { VerticalDotsIcon } from '../../shared/assets/icons/VerticalDotsIcon';
 import { S3_URL } from '../../shared/config/constants';
 import { facultiesDataMap, userStatusMap } from '../../shared/data/dataMap';
+import { getErrorField } from '../../shared/utils/getErrorField';
 import { Link } from '../Link/Link';
 import TableData from '../TableData/TableData';
 import BlockUserModal from '../modal/BlockUserModal/BlockUserModal';
@@ -53,7 +54,11 @@ export default function UsersList({ users, emptyText }) {
       toast.success('Права пользователя успешно изменены');
     } catch (err) {
       console.log(err);
-      toast(JSON.stringify(err));
+      if (getErrorField(err)) {
+        toast.error(getErrorField(err));
+      } else {
+        toast.error(JSON.stringify(err));
+      }
     }
   };
 
@@ -65,7 +70,11 @@ export default function UsersList({ users, emptyText }) {
       toast.success('Статус пользователя успешно изменен');
     } catch (err) {
       console.log(err);
-      toast(JSON.stringify(err));
+      if (getErrorField(err)) {
+        toast.error(getErrorField(err));
+      } else {
+        toast.error(JSON.stringify(err));
+      }
     }
   };
 
@@ -149,6 +158,17 @@ export default function UsersList({ users, emptyText }) {
                         onSubmitRole(user, 'admin');
                       }}>
                       Назначить администратором
+                    </DropdownItem>
+                  )}
+                {currentUser?.role === 'admin' &&
+                  user?.status !== 'blocked' &&
+                  currentUser?._id !== user?._id &&
+                  user?.role !== 'moderator' && (
+                    <DropdownItem
+                      onPress={() => {
+                        onSubmitRole(user, 'moderator');
+                      }}>
+                      Назначить модератором
                     </DropdownItem>
                   )}
                 {console.log(user)}

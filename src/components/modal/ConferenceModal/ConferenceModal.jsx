@@ -25,9 +25,9 @@ import { useGetAllUsersQuery } from '../../../redux/services/userApi';
 import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
 import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
 import { S3_URL } from '../../../shared/config/constants';
-import { facultiesDataMap } from '../../../shared/data/dataMap';
-import { hasErrorField } from '../../../shared/utils/hasErrorField';
+import { getErrorField } from '../../../shared/utils/getErrorField';
 import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
+import FacultySelect from '../../FacultySelect/FacultySelect';
 import { Link } from '../../Link/Link';
 
 const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }) => {
@@ -62,14 +62,14 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
   });
 
   useEffect(() => {
-    getValues('_id') || setValue('_id', conference?._id);
-    getValues('title') || setValue('title', conference?.title);
-    getValues('description') || setValue('description', conference?.description);
-    getValues('date') ||
-      setValue('date', parseAbsoluteToLocal(conference?.date || '2024-05-05T11:00:00Z'));
-    getValues('administrator') || setValue('administrator', conference?.administrator?._id);
-    getValues('faculties')?.length > 0 || setValue('faculties', conference?.faculties);
-    getValues('link') || setValue('link', conference?.link);
+    console.log('rerender', conference);
+    setValue('_id', conference?._id);
+    setValue('title', conference?.title);
+    setValue('description', conference?.description);
+    setValue('date', parseAbsoluteToLocal(conference?.date || '2024-05-05T11:00:00Z'));
+    setValue('administrator', conference?.administrator?._id);
+    setValue('faculties', conference?.faculties);
+    setValue('link', conference?.link);
   }, [conference]);
 
   return (
@@ -102,9 +102,15 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
               setSelectedFile(null);
             } catch (err) {
               console.log(err);
-              toast(JSON.stringify(err));
-              if (hasErrorField(err)) {
+              if (getErrorField(err)) {
+                toast.error(getErrorField(err));
+              } else {
+                toast.error(JSON.stringify(err));
+              }
+              {
+                /* if (getErrorField(err)) {
                 setError(err?.data?.message || err?.error);
+              } */
               }
             }
           };
@@ -191,26 +197,7 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
                       </SelectItem>
                     )}
                   </Select>
-                  <Controller
-                    control={control}
-                    name="faculties"
-                    render={({
-                      field: { onChange: onChangeFaculties, onBlur, value: facultiesValue, ref },
-                    }) => (
-                      <Select
-                        label="Факультеты"
-                        selectionMode="multiple"
-                        variant="bordered"
-                        selectedKeys={facultiesValue}
-                        onSelectionChange={onChangeFaculties}>
-                        {Object.values(facultiesDataMap).map((faculty) => (
-                          <SelectItem key={faculty.value} value={faculty.value}>
-                            {faculty.label}
-                          </SelectItem>
-                        ))}
-                      </Select>
-                    )}
-                  />
+                  <FacultySelect control={control} getValues={getValues} />
                   <Controller
                     control={control}
                     name="date"

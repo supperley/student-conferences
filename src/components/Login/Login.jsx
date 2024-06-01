@@ -2,10 +2,11 @@ import { Button } from '@nextui-org/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
 import { Input } from '../../components/Input/Input';
 import { useLoginMutation } from '../../redux/services/authApi';
-import { hasErrorField } from '../../shared/utils/hasErrorField';
+import { getErrorField } from '../../shared/utils/getErrorField';
 import { Link } from '../Link/Link';
 
 const Login = () => {
@@ -30,10 +31,14 @@ const Login = () => {
       navigate('/');
     } catch (err) {
       console.log(err);
-      // toast(JSON.stringify(err));
-      if (hasErrorField(err)) {
-        setErrorOnSubmit(err?.data?.message || err?.error);
+      if (getErrorField(err)) {
+        toast.error(getErrorField(err));
+      } else {
+        toast.error(JSON.stringify(err));
       }
+      // if (getErrorField(err)) {
+      //   setErrorOnSubmit(err?.data?.message || err?.error);
+      // }
     }
   };
 

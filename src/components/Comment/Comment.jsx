@@ -10,7 +10,7 @@ import { DeleteIcon } from '../../shared/assets/icons/DeleteIcon';
 import { EditIcon } from '../../shared/assets/icons/EditIcon';
 import { S3_URL } from '../../shared/config/constants';
 import { formatToClientDate } from '../../shared/utils/formatToClientDate';
-import { hasErrorField } from '../../shared/utils/hasErrorField';
+import { getErrorField } from '../../shared/utils/getErrorField';
 import { Link } from '../Link/Link';
 
 const Comment = ({ commentData }) => {
@@ -29,7 +29,20 @@ const Comment = ({ commentData }) => {
     ),
   });
 
-  const onSubmit = async (data) => {
+  const onDelete = async () => {
+    try {
+      await deleteComment(commentData?._id).unwrap();
+    } catch (err) {
+      console.log(err);
+      if (getErrorField(err)) {
+        toast.error(getErrorField(err));
+      } else {
+        toast.error(JSON.stringify(err));
+      }
+    }
+  };
+
+  const onEdit = async (data) => {
     console.log(commentData);
     try {
       await updateComment({
@@ -39,8 +52,8 @@ const Comment = ({ commentData }) => {
       setIsEdit(false);
     } catch (err) {
       console.log(err);
-      toast(JSON.stringify(err));
-      if (hasErrorField(err)) {
+      toast.error(JSON.stringify(err));
+      if (getErrorField(err)) {
         // setError(err?.data?.message || err?.error);
       }
     }
@@ -72,7 +85,7 @@ const Comment = ({ commentData }) => {
           })}
         </div>
       </CardHeader>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onEdit)}>
         <CardBody className="pt-1">
           {!isEdit ? (
             <p>{commentData?.text}</p>
@@ -97,7 +110,7 @@ const Comment = ({ commentData }) => {
               <Button
                 isLoading={isLoadingDelete}
                 onPress={() => {
-                  deleteComment(commentData?._id);
+                  onDelete();
                 }}
                 className="px-2"
                 startContent={<DeleteIcon filled className="text-default-300" />}
