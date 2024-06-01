@@ -16,9 +16,10 @@ import { toast } from 'sonner';
 import { useCreateNewsMutation, useUpdateNewsMutation } from '../../../redux/services/newsApi';
 import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
 import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
-import { chipDataMap, facultiesDataMap } from '../../../shared/data/dataMap';
+import { chipDataMap } from '../../../shared/data/dataMap';
 import { getErrorField } from '../../../shared/utils/getErrorField';
 import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
+import FacultySelect from '../../FacultySelect/FacultySelect';
 
 const NewsModal = ({ isOpen, onOpenChange, mode = 'add', news = {} }) => {
   const [createNews, { isLoading: isCreateLoading }] = useCreateNewsMutation();
@@ -137,24 +138,7 @@ const NewsModal = ({ isOpen, onOpenChange, mode = 'add', news = {} }) => {
                       />
                     )}
                   />
-                  <Controller
-                    control={control}
-                    name="faculties"
-                    render={({ field: { onChange: onChangeFaculties, value: facultiesValue } }) => (
-                      <Select
-                        label="Факультеты"
-                        selectionMode="multiple"
-                        variant="bordered"
-                        selectedKeys={facultiesValue}
-                        onSelectionChange={onChangeFaculties}>
-                        {Object.values(facultiesDataMap).map((faculty) => (
-                          <SelectItem key={faculty.value} value={faculty.value}>
-                            {faculty.label}
-                          </SelectItem>
-                        ))}
-                      </Select>
-                    )}
-                  />
+                  <FacultySelect control={control} getValues={getValues} />
                   <Controller
                     control={control}
                     name="chip"

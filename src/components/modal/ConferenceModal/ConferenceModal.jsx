@@ -25,9 +25,9 @@ import { useGetAllUsersQuery } from '../../../redux/services/userApi';
 import { CheckIcon } from '../../../shared/assets/icons/CheckIcon';
 import { UploadIcon } from '../../../shared/assets/icons/UploadIcon';
 import { S3_URL } from '../../../shared/config/constants';
-import { facultiesDataMap } from '../../../shared/data/dataMap';
 import { getErrorField } from '../../../shared/utils/getErrorField';
 import { ErrorMessage } from '../../ErrorMessage/ErrorMessage';
+import FacultySelect from '../../FacultySelect/FacultySelect';
 import { Link } from '../../Link/Link';
 
 const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }) => {
@@ -197,26 +197,7 @@ const ConferenceModal = ({ isOpen, onOpenChange, mode = 'add', conference = {} }
                       </SelectItem>
                     )}
                   </Select>
-                  <Controller
-                    control={control}
-                    name="faculties"
-                    render={({
-                      field: { onChange: onChangeFaculties, onBlur, value: facultiesValue, ref },
-                    }) => (
-                      <Select
-                        label="Факультеты"
-                        selectionMode="multiple"
-                        variant="bordered"
-                        selectedKeys={facultiesValue}
-                        onSelectionChange={onChangeFaculties}>
-                        {Object.values(facultiesDataMap).map((faculty) => (
-                          <SelectItem key={faculty.value} value={faculty.value}>
-                            {faculty.label}
-                          </SelectItem>
-                        ))}
-                      </Select>
-                    )}
-                  />
+                  <FacultySelect control={control} getValues={getValues} />
                   <Controller
                     control={control}
                     name="date"
