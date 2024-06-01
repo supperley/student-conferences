@@ -34,11 +34,7 @@ const Comment = ({ commentData }) => {
       await deleteComment(commentData?._id).unwrap();
     } catch (err) {
       console.log(err);
-      if (getErrorField(err)) {
-        toast.error(getErrorField(err));
-      } else {
-        toast.error(JSON.stringify(err));
-      }
+      toast.error(getErrorField(err));
     }
   };
 
@@ -52,7 +48,7 @@ const Comment = ({ commentData }) => {
       setIsEdit(false);
     } catch (err) {
       console.log(err);
-      toast.error(JSON.stringify(err));
+      toast.error(getErrorField(err));
       if (getErrorField(err)) {
         // setError(err?.data?.message || err?.error);
       }

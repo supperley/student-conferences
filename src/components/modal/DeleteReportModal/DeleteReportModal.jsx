@@ -10,6 +10,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useDeleteReportMutation } from '../../../redux/services/reportApi';
+import { getErrorField } from '../../../shared/utils/getErrorField';
 
 const DeleteReportModal = ({ isOpen, onOpenChange, report }) => {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const DeleteReportModal = ({ isOpen, onOpenChange, report }) => {
                     onClose();
                     navigate('/reports');
                   } catch (err) {
-                    toast.error(JSON.stringify(err));
+                    toast.error(getErrorField(err));
                   }
                 }}>
                 Удалить

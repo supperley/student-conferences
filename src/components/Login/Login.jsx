@@ -31,11 +31,7 @@ const Login = () => {
       navigate('/');
     } catch (err) {
       console.log(err);
-      if (getErrorField(err)) {
-        toast.error(getErrorField(err));
-      } else {
-        toast.error(JSON.stringify(err));
-      }
+      toast.error(getErrorField(err));
       // if (getErrorField(err)) {
       //   setErrorOnSubmit(err?.data?.message || err?.error);
       // }

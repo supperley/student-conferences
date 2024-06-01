@@ -77,11 +77,7 @@ const Conference = () => {
       await updateConference(data).unwrap();
     } catch (err) {
       console.log(err);
-      if (getErrorField(err)) {
-        toast.error(getErrorField(err));
-      } else {
-        toast.error(JSON.stringify(err));
-      }
+      toast.error(getErrorField(err));
     }
   };
 
@@ -96,11 +92,7 @@ const Conference = () => {
       }
     } catch (err) {
       console.log(err);
-      if (getErrorField(err)) {
-        toast.error(getErrorField(err));
-      } else {
-        toast.error(JSON.stringify(err));
-      }
+      toast.error(getErrorField(err));
     }
   };
 

@@ -76,11 +76,7 @@ export default function ConferencesList({ conferences, emptyText, isParentLoadin
       await updateConference(data).unwrap();
     } catch (err) {
       console.log(err);
-      if (getErrorField(err)) {
-        toast.error(getErrorField(err));
-      } else {
-        toast.error(JSON.stringify(err));
-      }
+      toast.error(getErrorField(err));
     }
   };
 

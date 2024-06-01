@@ -68,11 +68,7 @@ const PersonalSettings = () => {
       await triggerCurrentQuery();
     } catch (err) {
       console.log(err);
-      if (getErrorField(err)) {
-        toast.error(getErrorField(err));
-      } else {
-        toast.error(JSON.stringify(err));
-      }
+      toast.error(getErrorField(err));
       // if (getErrorField(err)) {
       //   setError(err?.data?.message || err?.error);
       // }
@@ -97,11 +93,7 @@ const PersonalSettings = () => {
       toast.success('Данные обновлены');
     } catch (err) {
       console.log(err);
-      if (getErrorField(err)) {
-        toast.error(getErrorField(err));
-      } else {
-        toast.error(JSON.stringify(err));
-      }
+      toast.error(getErrorField(err));
       // if (getErrorField(err)) {
       //   setError(err?.data?.message || err?.error);
       // }

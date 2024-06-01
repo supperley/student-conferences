@@ -7,6 +7,7 @@ import GridData from '../../components/GridData/GridData';
 import NewsModal from '../../components/modal/NewsModal/NewsModal';
 import { useGetAllNewsQuery } from '../../redux/services/newsApi';
 import { selectIsPrivileged } from '../../redux/slices/authSlice';
+import { getErrorField } from '../../shared/utils/getErrorField';
 
 const News = () => {
   const {
@@ -29,7 +30,7 @@ const News = () => {
           </h5>
         </div>
         {error ? (
-          <span>Произошла ошибка: {JSON.stringify(error)}</span>
+          <span>Произошла ошибка: {getErrorField(error)}</span>
         ) : isLoading ? (
           <span>Загрузка...</span>
         ) : (
