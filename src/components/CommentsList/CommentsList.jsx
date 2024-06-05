@@ -30,11 +30,7 @@ export const CommentsList = ({ comments = [], reportId }) => {
       reset();
     } catch (err) {
       console.log(err);
-      if (getErrorField(err)) {
-        toast.error(getErrorField(err));
-      } else {
-        toast.error(JSON.stringify(err));
-      }
+      toast.error(getErrorField(err));
     }
   };
 

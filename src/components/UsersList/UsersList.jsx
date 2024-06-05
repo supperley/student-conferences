@@ -54,11 +54,7 @@ export default function UsersList({ users, emptyText }) {
       toast.success('Права пользователя успешно изменены');
     } catch (err) {
       console.log(err);
-      if (getErrorField(err)) {
-        toast.error(getErrorField(err));
-      } else {
-        toast.error(JSON.stringify(err));
-      }
+      toast.error(getErrorField(err));
     }
   };
 
@@ -70,11 +66,7 @@ export default function UsersList({ users, emptyText }) {
       toast.success('Статус пользователя успешно изменен');
     } catch (err) {
       console.log(err);
-      if (getErrorField(err)) {
-        toast.error(getErrorField(err));
-      } else {
-        toast.error(JSON.stringify(err));
-      }
+      toast.error(getErrorField(err));
     }
   };
 

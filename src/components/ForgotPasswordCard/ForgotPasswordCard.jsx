@@ -25,11 +25,7 @@ const ForgotPasswordCard = () => {
       const result = await forgotPassword(data).unwrap();
       setMessage(result?.message);
     } catch (err) {
-      if (getErrorField(err)) {
-        toast.error(getErrorField(err));
-      } else {
-        toast.error(JSON.stringify(err));
-      }
+      toast.error(getErrorField(err));
     }
   };
 

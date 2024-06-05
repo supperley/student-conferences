@@ -89,11 +89,7 @@ const ReportModal = ({ isOpen, onOpenChange, mode = 'add', report = {} }) => {
               toast.success(`Научная работа успешно ${mode === 'add' ? 'добавлена' : 'обновлена'}`);
             } catch (err) {
               console.log(err);
-              if (getErrorField(err)) {
-                toast.error(getErrorField(err));
-              } else {
-                toast.error(JSON.stringify(err));
-              }
+              toast.error(getErrorField(err));
             }
           };
 

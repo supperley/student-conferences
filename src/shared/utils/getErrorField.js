@@ -1,5 +1,8 @@
 export function getErrorField(err) {
-  const errMsgOne = JSON.stringify(err?.data?.message);
-  const errMsgTwo = JSON.stringify(err?.message);
-  return errMsgOne || errMsgTwo || JSON.stringify(err);
+  return (
+    JSON.stringify(err?.data?.message) ||
+    JSON.stringify(err?.message) ||
+    JSON.stringify(err?.error) ||
+    JSON.stringify(err)
+  );
 }
