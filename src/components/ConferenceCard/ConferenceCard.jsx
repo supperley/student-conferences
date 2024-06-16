@@ -77,7 +77,7 @@ export const ConferenceCard = ({ conferenceData, isLoading = false }) => {
                       ' ' +
                       conferenceData?.administrator?.last_name
                     }
-                    description="Product Designer"
+                    description={conferenceData?.administrator?.position || ''}
                     avatarProps={{
                       src: S3_URL + conferenceData?.administrator?.avatarUrl,
                     }}

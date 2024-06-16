@@ -38,6 +38,7 @@ const News = () => {
         )}
       </div>
       <NewsModal
+        news={{}}
         isOpen={isOpenModalAdd}
         onOpen={onOpenModalAdd}
         onOpenChange={onOpenChangeModalAdd}
